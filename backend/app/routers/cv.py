@@ -31,9 +31,15 @@ async def parse_cv(
     if sess is None:
         raise HTTPException(status_code=404, detail="Session not found")
 
-    data = await file.read()
+    # --- File validation ---
+    MAX_SIZE = 10 * 1024 * 1024  # 10 MB
+    data = await file.read(MAX_SIZE + 1)
     if not data:
         raise HTTPException(status_code=400, detail="Empty file")
+    if len(data) > MAX_SIZE:
+        raise HTTPException(status_code=413, detail="File too large (max 10 MB)")
+    if data[:5] != b"%PDF-":
+        raise HTTPException(status_code=422, detail="Invalid file: not a PDF")
 
     text = parse_pdf_bytes(data)
     if not text:
