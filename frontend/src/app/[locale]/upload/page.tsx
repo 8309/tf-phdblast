@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 import { useSession } from "@/hooks/useSession";
 import { parseCV } from "@/lib/api";
 import type { Profile } from "@/lib/types";
@@ -127,7 +127,7 @@ export default function UploadPage() {
 
         <button
           type="button"
-          onClick={() => router.push("search")}
+          onClick={() => router.push("/search")}
           className="text-sm text-gray-500 underline hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
         >
           {t("btn.skip_to_search")}

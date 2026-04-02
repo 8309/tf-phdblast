@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     OPENAI_MODEL: str = "gpt-4o"
     EMAIL_MODEL: str = "gpt-4o"
     CV_MODEL: str = "gpt-4o-mini"
+    KEYWORD_MATCH_MODEL: str = "gpt-4o-mini"  # cheap model for keyword semantic matching
 
     # --- TinyFish ---
     TINYFISH_API_KEY: str = ""
@@ -27,6 +28,7 @@ class Settings(BaseSettings):
     # --- Cache ---
     CACHE_TTL_PASS1_DAYS: int = 7
     CACHE_TTL_PASS2_DAYS: int = 14
+    CACHE_STALE_DAYS: int = 30  # re-crawl department if professors older than this
 
     # --- CORS ---
     CORS_ORIGINS: list[str] = ["http://localhost:3000"]

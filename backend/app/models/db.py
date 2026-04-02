@@ -122,7 +122,7 @@ class Professor(Base):
     recruiting_likelihood = Column(String, default="unknown")
 
     # Metadata
-    crawled_at = Column(String, default="")
+    crawled_at = Column(DateTime, nullable=True)
     source = Column(String, default="faculty_directory")
 
     # Scoring
@@ -196,6 +196,35 @@ class CachedSchool(Base):
     # Relationships
     departments = relationship(
         "CachedDepartment", back_populates="school", cascade="all, delete-orphan"
+    )
+    crawl_records = relationship(
+        "CachedCrawlRecord", back_populates="school", cascade="all, delete-orphan"
+    )
+
+
+class CachedCrawlRecord(Base):
+    """Tracks which keyword sets have been crawled for a school.
+
+    Each Pass 1 crawl creates a record so future sessions with overlapping
+    research directions can skip re-crawling.
+    """
+
+    __tablename__ = "cached_crawl_records"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    cached_school_id = Column(
+        Integer, ForeignKey("cached_schools.id"), nullable=False
+    )
+    keywords = Column(JSON, default=list)  # e.g. ["NLP", "machine learning"]
+    departments_found = Column(JSON, default=list)  # e.g. ["EECS", "Linguistics"]
+    professor_count = Column(Integer, default=0)
+    crawled_at = Column(DateTime, default=_utcnow)
+
+    # Relationship
+    school = relationship("CachedSchool", back_populates="crawl_records")
+
+    __table_args__ = (
+        Index("ix_crawl_record_school", "cached_school_id"),
     )
 
 

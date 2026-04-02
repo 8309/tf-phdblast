@@ -16,8 +16,12 @@ from typing import Callable
 from sqlalchemy.orm import Session
 from tinyfish import TinyFish
 
+from openai import OpenAI
+
 from app.config import settings
+from app.services.ranking_service import FIELD_DISPLAY
 from app.models.db import (
+    CachedCrawlRecord,
     CachedDepartment,
     CachedProfessor,
     CachedSchool,
@@ -45,6 +49,16 @@ def _profile_summary_text(profile: dict) -> str:
     )
 
 
+def _parse_iso_dt(val: str | None) -> datetime | None:
+    """Parse an ISO 8601 string to a datetime, or return None."""
+    if not val:
+        return None
+    try:
+        return datetime.fromisoformat(val)
+    except (ValueError, TypeError):
+        return None
+
+
 def _crawl_prof_to_db(
     cp: CrawlProfessor, session_id: str, phase: str = "pass1",
 ) -> DBProfessor:
@@ -61,7 +75,7 @@ def _crawl_prof_to_db(
         university_domain=cp.university_domain,
         profile_url=d.get("profile_url", ""),
         research_summary=d.get("research_summary", ""),
-        crawled_at=d.get("crawled_at", ""),
+        crawled_at=_parse_iso_dt(d.get("crawled_at")),
         source=d.get("source", "faculty_directory"),
         phase=phase,
     )
@@ -74,6 +88,57 @@ def _crawl_prof_to_db(
 _now = lambda: datetime.now(timezone.utc)  # noqa: E731
 
 
+_FIELD_LABELS = list(FIELD_DISPLAY.values())
+
+
+def _normalize_keywords(raw_keywords: list[str]) -> list[str]:
+    """Map user-supplied keywords to standard field labels via gpt-4o-mini.
+
+    Returns at most 3 canonical labels so cache matching is consistent.
+    """
+    if not raw_keywords:
+        return raw_keywords
+
+    try:
+        client = OpenAI()
+        resp = client.chat.completions.create(
+            model=settings.KEYWORD_MATCH_MODEL,
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        "You are a keyword normalizer. Given user-provided research "
+                        "keywords and a list of AVAILABLE academic field labels, "
+                        "map each user keyword to the CLOSEST matching label(s).\n"
+                        "Rules:\n"
+                        "- Return a JSON array of label strings (max 3).\n"
+                        "- Only use labels from the AVAILABLE list.\n"
+                        "- If a keyword clearly doesn't match any label, drop it.\n"
+                        "- Prefer specific labels over general ones.\n"
+                        "- Return ONLY the JSON array, nothing else."
+                    ),
+                },
+                {
+                    "role": "user",
+                    "content": (
+                        f"AVAILABLE labels: {_FIELD_LABELS}\n\n"
+                        f"User keywords: {raw_keywords}"
+                    ),
+                },
+            ],
+            temperature=0,
+            max_tokens=150,
+        )
+        import json
+        result = json.loads(resp.choices[0].message.content.strip())
+        if isinstance(result, list) and result:
+            return [str(r) for r in result[:3]]
+    except Exception:
+        pass
+    # Fallback: return originals trimmed
+    return raw_keywords[:3]
+
+
 def _cache_is_fresh(cached: CachedSchool, ttl_days: int) -> bool:
     """Return True if the cached school was crawled within *ttl_days*."""
     if cached.status != "done" or cached.last_crawled_at is None:
@@ -81,17 +146,131 @@ def _cache_is_fresh(cached: CachedSchool, ttl_days: int) -> bool:
     return (_now() - cached.last_crawled_at) < timedelta(days=ttl_days)
 
 
+def _departments_are_stale(
+    db: Session,
+    cached_school: CachedSchool,
+    dept_ids: list[int] | None,
+) -> bool:
+    """Return True if ANY of the relevant departments haven't been updated
+    in more than CACHE_STALE_DAYS (default 30 days)."""
+    stale_cutoff = _now() - timedelta(days=settings.CACHE_STALE_DAYS)
+    query = db.query(CachedDepartment).filter(
+        CachedDepartment.cached_school_id == cached_school.id,
+    )
+    if dept_ids is not None:
+        query = query.filter(CachedDepartment.id.in_(dept_ids))
+
+    stale = query.filter(
+        (CachedDepartment.last_crawled_at == None)  # noqa: E711
+        | (CachedDepartment.last_crawled_at < stale_cutoff)
+    ).count()
+    return stale > 0
+
+
+def _resolve_relevant_dept_ids(
+    db: Session,
+    cached_school: CachedSchool,
+    keywords: list[str],
+) -> list[int] | None:
+    """Return CachedDepartment IDs relevant to *keywords*, or None for 'all'.
+
+    Looks at CachedCrawlRecords whose keywords overlap, collects their
+    ``departments_found``, then resolves to department IDs.
+    Returns None if no records exist (legacy data → copy everything).
+    """
+    records = (
+        db.query(CachedCrawlRecord)
+        .filter(CachedCrawlRecord.cached_school_id == cached_school.id)
+        .all()
+    )
+    if not records:
+        return None  # no records → legacy, copy all
+
+    # Collect department names from matching records
+    matched_depts: set[str] = set()
+    kw_lower = {k.lower() for k in keywords}
+
+    for rec in records:
+        rec_kw_lower = {k.lower() for k in (rec.keywords or [])}
+        # Match if any keyword overlaps (substring either direction)
+        if any(
+            any(n in r or r in n for r in rec_kw_lower)
+            for n in kw_lower
+        ):
+            matched_depts.update(rec.departments_found or [])
+
+    # If substring match found nothing, try LLM
+    if not matched_depts:
+        try:
+            client = OpenAI()
+            all_records_info = [
+                {"keywords": r.keywords, "departments": r.departments_found}
+                for r in records
+            ]
+            resp = client.chat.completions.create(
+                model=settings.KEYWORD_MATCH_MODEL,
+                messages=[
+                    {
+                        "role": "system",
+                        "content": (
+                            "Given crawl records (each with keywords and departments found) "
+                            "and a new set of keywords, return ONLY the department names "
+                            "that are relevant to the new keywords.\n"
+                            "Reply with a JSON array of department name strings. "
+                            "If none match, reply with []."
+                        ),
+                    },
+                    {
+                        "role": "user",
+                        "content": (
+                            f"Crawl records: {all_records_info}\n"
+                            f"New keywords: {keywords}"
+                        ),
+                    },
+                ],
+                temperature=0,
+                max_tokens=200,
+            )
+            import json
+            answer = resp.choices[0].message.content.strip()
+            dept_names = json.loads(answer)
+            if isinstance(dept_names, list):
+                matched_depts.update(dept_names)
+        except Exception:
+            pass
+
+    if not matched_depts:
+        return None  # can't determine → copy all (safe fallback)
+
+    # Resolve names to IDs
+    dept_rows = (
+        db.query(CachedDepartment.id)
+        .filter(
+            CachedDepartment.cached_school_id == cached_school.id,
+            CachedDepartment.name.in_(matched_depts),
+        )
+        .all()
+    )
+    return [r[0] for r in dept_rows] if dept_rows else None
+
+
 def _copy_cached_to_session(
     db: Session,
     cached_school: CachedSchool,
     session_id: str,
+    dept_ids: list[int] | None = None,
 ) -> list[DBProfessor]:
-    """Copy all CachedProfessors for a school into session-scoped professors."""
-    cached_profs = (
-        db.query(CachedProfessor)
-        .filter(CachedProfessor.cached_school_id == cached_school.id)
-        .all()
+    """Copy CachedProfessors for a school into session-scoped professors.
+
+    If *dept_ids* is given, only professors in those departments are copied.
+    If None, all professors are copied (legacy / fallback).
+    """
+    query = db.query(CachedProfessor).filter(
+        CachedProfessor.cached_school_id == cached_school.id
     )
+    if dept_ids is not None:
+        query = query.filter(CachedProfessor.cached_department_id.in_(dept_ids))
+    cached_profs = query.all()
     db_profs: list[DBProfessor] = []
     for cp in cached_profs:
         dbp = DBProfessor(
@@ -104,7 +283,7 @@ def _copy_cached_to_session(
             university_domain=cp.university_domain,
             profile_url=cp.profile_url,
             research_summary=cp.research_summary,
-            crawled_at=cp.crawled_at.isoformat() if cp.crawled_at else "",
+            crawled_at=cp.crawled_at,
             source=cp.source,
             phase="pass1",
         )
@@ -134,46 +313,70 @@ def _upsert_cache_school(
     name: str,
     crawl_profs: list[CrawlProfessor],
     error: str | None,
+    keywords: list[str] | None = None,
 ) -> None:
-    """Insert or update the global cache for a school after a fresh crawl.
+    """Insert or *merge* crawl results into the global cache for a school.
 
-    Professors are grouped by their ``department`` field into
-    ``CachedDepartment`` rows.
+    New professors are added; existing professors (matched by name) are
+    skipped to avoid overwriting deep-crawl data.  Departments are
+    created on demand.  A ``CachedCrawlRecord`` is appended so future
+    sessions can check keyword coverage.
     """
     cached = db.query(CachedSchool).filter(CachedSchool.domain == domain).first()
-    if not cached:
+    is_new_school = cached is None
+    if is_new_school:
         cached = CachedSchool(domain=domain, name=name)
         db.add(cached)
         db.flush()
 
-    # Clear old data (cascade deletes professors via department)
-    db.query(CachedProfessor).filter(
-        CachedProfessor.cached_school_id == cached.id
-    ).delete()
-    db.query(CachedDepartment).filter(
-        CachedDepartment.cached_school_id == cached.id
-    ).delete()
-
     now = _now()
 
-    # Group professors by department name
+    # Build set of already-cached professor names for dedup
+    existing_names: set[str] = set()
+    if not is_new_school:
+        rows = (
+            db.query(CachedProfessor.name)
+            .filter(CachedProfessor.cached_school_id == cached.id)
+            .all()
+        )
+        existing_names = {r[0] for r in rows}
+
+    # Group new professors by department name
     dept_map: dict[str, list[CrawlProfessor]] = {}
     for cp in crawl_profs:
         dept_name = (cp.department or "").strip() or "Unknown"
         dept_map.setdefault(dept_name, []).append(cp)
 
-    # Create department rows and attach professors
+    new_count = 0
+    depts_found: list[str] = []
+
     for dept_name, profs in dept_map.items():
-        dept = CachedDepartment(
-            cached_school_id=cached.id,
-            name=dept_name,
-            professor_count=len(profs),
-            last_crawled_at=now,
+        # Get or create department
+        dept = (
+            db.query(CachedDepartment)
+            .filter(
+                CachedDepartment.cached_school_id == cached.id,
+                CachedDepartment.name == dept_name,
+            )
+            .first()
         )
-        db.add(dept)
-        db.flush()
+        if not dept:
+            dept = CachedDepartment(
+                cached_school_id=cached.id,
+                name=dept_name,
+                professor_count=0,
+                last_crawled_at=now,
+            )
+            db.add(dept)
+            db.flush()
+
+        depts_found.append(dept_name)
+        added_in_dept = 0
 
         for cp in profs:
+            if cp.name in existing_names:
+                continue  # skip duplicate
+            existing_names.add(cp.name)
             db.add(CachedProfessor(
                 cached_school_id=cached.id,
                 cached_department_id=dept.id,
@@ -188,14 +391,99 @@ def _upsert_cache_school(
                 source=cp.source,
                 crawled_at=now,
             ))
+            new_count += 1
+            added_in_dept += 1
 
+        dept.professor_count += added_in_dept
+        dept.last_crawled_at = now
+
+    # Update school-level counts
     cached.name = name
     cached.status = "error" if error else "done"
     cached.error_message = error or ""
-    cached.professor_count = len(crawl_profs)
-    cached.department_count = len(dept_map)
+    cached.professor_count = (
+        db.query(CachedProfessor)
+        .filter(CachedProfessor.cached_school_id == cached.id)
+        .count()
+    )
+    cached.department_count = (
+        db.query(CachedDepartment)
+        .filter(CachedDepartment.cached_school_id == cached.id)
+        .count()
+    )
     cached.last_crawled_at = now
+
+    # Record this crawl's keywords
+    if keywords:
+        db.add(CachedCrawlRecord(
+            cached_school_id=cached.id,
+            keywords=keywords,
+            departments_found=depts_found,
+            professor_count=new_count,
+        ))
+
     db.commit()
+
+
+def _keywords_already_covered(
+    db: Session,
+    cached_school: CachedSchool,
+    new_keywords: list[str],
+) -> bool:
+    """Check if *new_keywords* are semantically covered by existing crawl records.
+
+    Uses gpt-4o-mini for a cheap yes/no judgement.  Falls back to simple
+    substring matching if the LLM call fails.
+    """
+    records = (
+        db.query(CachedCrawlRecord)
+        .filter(CachedCrawlRecord.cached_school_id == cached_school.id)
+        .all()
+    )
+    if not records:
+        return False
+
+    # Gather all previously crawled keyword sets
+    all_prev: list[list[str]] = [r.keywords or [] for r in records]
+
+    # Fast path: exact substring match
+    prev_flat = {k.lower() for kws in all_prev for k in kws}
+    new_lower = [k.lower() for k in new_keywords]
+    if all(any(n in p or p in n for p in prev_flat) for n in new_lower):
+        return True
+
+    # LLM semantic check
+    try:
+        client = OpenAI()
+        resp = client.chat.completions.create(
+            model=settings.KEYWORD_MATCH_MODEL,
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        "You decide whether a NEW set of research keywords is already "
+                        "covered by PREVIOUS crawl keyword sets. 'Covered' means the "
+                        "previous crawls would have targeted the same university "
+                        "departments that the new keywords would target.\n"
+                        "Reply with ONLY 'yes' or 'no'."
+                    ),
+                },
+                {
+                    "role": "user",
+                    "content": (
+                        f"Previous crawl keyword sets: {all_prev}\n"
+                        f"New keywords: {new_keywords}\n"
+                        "Are the new keywords already covered?"
+                    ),
+                },
+            ],
+            temperature=0,
+            max_tokens=3,
+        )
+        answer = resp.choices[0].message.content.strip().lower()
+        return answer.startswith("yes")
+    except Exception:
+        return False
 
 
 def _update_cache_deep(
@@ -256,7 +544,8 @@ def run_pass1(
     MAX_CONCURRENT = settings.MAX_CONCURRENT_CRAWL
     TTL = settings.CACHE_TTL_PASS1_DAYS
     client = TinyFish()
-    kw_trimmed = sorted(keywords, key=len)[:3]
+    # Normalize user keywords to standard field labels for consistent caching
+    kw_trimmed = _normalize_keywords(keywords)
     profile_text = _profile_summary_text(profile) if profile else ""
 
     all_db_profs: list[DBProfessor] = []
@@ -283,28 +572,52 @@ def run_pass1(
             .first()
         )
         if cached and _cache_is_fresh(cached, TTL):
-            # Cache hit — copy professors to this session
-            on_event({
-                "type": "progress",
-                "school": name,
-                "message": f"Using cached data ({cached.professor_count} professors, "
-                           f"crawled {cached.last_crawled_at:%Y-%m-%d})",
-            })
-            copied = _copy_cached_to_session(db_session, cached, session_id)
-            all_db_profs.extend(copied)
+            # School exists in cache — check if keywords are covered
+            if _keywords_already_covered(db_session, cached, kw_trimmed):
+                # Keywords covered — but check if departments are stale (>30d)
+                relevant_ids = _resolve_relevant_dept_ids(
+                    db_session, cached, kw_trimmed,
+                )
+                if _departments_are_stale(db_session, cached, relevant_ids):
+                    # Data too old — re-crawl
+                    on_event({
+                        "type": "progress",
+                        "school": name,
+                        "message": f"Cached data older than {settings.CACHE_STALE_DAYS} days — re-crawling",
+                    })
+                    to_crawl.append((idx, domain, name))
+                else:
+                    # Fresh cache hit
+                    on_event({
+                        "type": "progress",
+                        "school": name,
+                        "message": f"Using cached data (crawled {cached.last_crawled_at:%Y-%m-%d})",
+                    })
+                    copied = _copy_cached_to_session(
+                        db_session, cached, session_id, dept_ids=relevant_ids,
+                    )
+                    all_db_profs.extend(copied)
 
-            cs = session_school_rows[idx]
-            cs.status = "done"
-            cs.professor_count = len(copied)
-            cs.crawled_at = cached.last_crawled_at
-            db_session.commit()
+                    cs = session_school_rows[idx]
+                    cs.status = "done"
+                    cs.professor_count = len(copied)
+                    cs.crawled_at = cached.last_crawled_at
+                    db_session.commit()
 
-            on_event({
-                "type": "school_done",
-                "school": name,
-                "count": len(copied),
-                "cached": True,
-            })
+                    on_event({
+                        "type": "school_done",
+                        "school": name,
+                        "count": len(copied),
+                        "cached": True,
+                    })
+            else:
+                # School cached but keywords NOT covered — incremental crawl
+                on_event({
+                    "type": "progress",
+                    "school": name,
+                    "message": "Cached school found but new research direction — crawling additional departments",
+                })
+                to_crawl.append((idx, domain, name))
         else:
             to_crawl.append((idx, domain, name))
 
@@ -328,7 +641,6 @@ def run_pass1(
                     university_name=name,
                     keywords=kw_trimmed,
                     stealth=stealth,
-                    max_professors=50,
                     on_progress=_cb,
                     profile_summary=profile_text,
                 )
@@ -372,27 +684,30 @@ def run_pass1(
                 r = results_map.get(idx)
                 cs = session_school_rows[idx]
                 if r:
-                    # Persist professors to session
+                    # Update global cache first (incremental merge + record keywords)
+                    _upsert_cache_school(
+                        db_session, domain, name, r.professors, r.error,
+                        keywords=kw_trimmed,
+                    )
+
+                    # Copy only THIS crawl's professors to session
                     for cp in r.professors:
                         db_prof = _crawl_prof_to_db(cp, session_id, phase="pass1")
                         db_session.add(db_prof)
                         all_db_profs.append(db_prof)
+                    total = len(r.professors)
 
                     cs.status = "error" if r.error else "done"
-                    cs.professor_count = len(r.professors)
+                    cs.professor_count = total
                     cs.error_message = r.error or ""
                     cs.crawled_at = _now()
                     db_session.commit()
 
-                    # Update global cache
-                    _upsert_cache_school(
-                        db_session, domain, name, r.professors, r.error,
-                    )
-
                     on_event({
                         "type": "school_done",
                         "school": name,
-                        "count": len(r.professors),
+                        "count": total,
+                        "new_from_crawl": len(r.professors),
                         "error": r.error,
                     })
                 else:
@@ -506,7 +821,7 @@ def run_pass2(
                 university_domain=dbp.university_domain,
                 profile_url=dbp.profile_url,
                 research_summary=dbp.research_summary,
-                crawled_at=dbp.crawled_at,
+                crawled_at=dbp.crawled_at.isoformat() if dbp.crawled_at else "",
                 source=dbp.source,
             )
             crawl_profs[i] = cp
@@ -569,7 +884,7 @@ def run_pass2(
                 dbp.recent_graduates = cp.recent_graduates
                 dbp.recruiting_likelihood = cp.recruiting_likelihood
                 dbp.source = cp.source
-                dbp.crawled_at = cp.crawled_at
+                dbp.crawled_at = _parse_iso_dt(cp.crawled_at)
                 dbp.phase = "pass2"
                 dbp.selected_for_deep = True
                 db_session.commit()

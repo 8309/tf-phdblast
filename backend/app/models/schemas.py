@@ -84,7 +84,7 @@ class ProfessorSchema(BaseModel):
     recruiting_likelihood: str = "unknown"
 
     # Metadata
-    crawled_at: str = ""
+    crawled_at: datetime | None = None
     source: str = "faculty_directory"
 
     # Scores
@@ -159,6 +159,17 @@ class CachedDepartmentSchema(BaseModel):
     model_config = {"from_attributes": True}
 
 
+class CachedCrawlRecordSchema(BaseModel):
+    id: int
+    cached_school_id: int
+    keywords: list[str] = Field(default_factory=list)
+    departments_found: list[str] = Field(default_factory=list)
+    professor_count: int = 0
+    crawled_at: datetime | None = None
+
+    model_config = {"from_attributes": True}
+
+
 class CachedSchoolSchema(BaseModel):
     id: int
     domain: str
@@ -168,6 +179,7 @@ class CachedSchoolSchema(BaseModel):
     status: str = "pending"
     last_crawled_at: datetime | None = None
     departments: list[CachedDepartmentSchema] = Field(default_factory=list)
+    crawl_records: list[CachedCrawlRecordSchema] = Field(default_factory=list)
 
     model_config = {"from_attributes": True}
 

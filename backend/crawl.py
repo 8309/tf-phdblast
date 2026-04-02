@@ -88,10 +88,10 @@ class SchoolResult:
 
 def build_directory_goal(
     keywords: list[str],
-    max_professors: int = 50,
     domain: str = "",
     university_name: str = "",
     profile_summary: str = "",
+    **_kwargs,
 ) -> str:
     """Use LLM to generate a targeted TinyFish goal for this specific school.
 
@@ -120,9 +120,10 @@ def build_directory_goal(
                     "Do NOT use Google. Do NOT use the site search.\n"
                     "- Common URL patterns: /people, /faculty, /directory, "
                     "/about/people, /department/faculty\n"
-                    "- Scroll through the ENTIRE listing and extract ALL professors\n"
+                    "- Scroll through the ENTIRE listing and extract ALL professors. "
+                    "There is NO limit — get every single one.\n"
                     "- Do NOT click into individual profiles — just read the listing page\n"
-                    "- If the listing is paginated, go through all pages\n"
+                    "- If the listing is paginated, go through ALL pages until no more remain\n"
                     "- Output: JSON array with keys: name, email, title, department, "
                     "research (brief, from listing), profile_url\n"
                     "- email = empty string if not visible on listing page\n"
@@ -137,7 +138,6 @@ def build_directory_goal(
                     f"University: {university_name}\n"
                     f"Domain: {domain}\n"
                     f"Applicant's field: {kw_str}\n"
-                    f"Max professors: {max_professors}\n"
                     f"Applicant context: {profile_summary[:500] if profile_summary else 'N/A'}"
                 ),
             },
@@ -151,7 +151,7 @@ def build_directory_goal(
 
 
 def build_directory_goal_fallback(
-    keywords: list[str], max_professors: int = 50, domain: str = "",
+    keywords: list[str], domain: str = "", **_kwargs,
 ) -> str:
     """Fallback fixed template if LLM call fails."""
     kw_str = ", ".join(keywords[:3])
@@ -159,11 +159,12 @@ def build_directory_goal_fallback(
         f"1. From this university homepage, navigate to the department most "
         f"relevant to: {kw_str}.\n"
         f"2. Find the faculty / people / directory page of that department.\n"
-        f"3. Scroll through the ENTIRE listing and extract ALL professors "
-        f"(up to {max_professors}). Do NOT search individual names.\n"
-        f"4. For each professor, extract: name, email (empty string if hidden), "
+        f"3. Scroll through the ENTIRE listing and extract ALL professors. "
+        f"There is NO limit — get every single one. Do NOT search individual names.\n"
+        f"4. If the listing is paginated, go through ALL pages.\n"
+        f"5. For each professor, extract: name, email (empty string if hidden), "
         f"title, department, research (brief), profile_url.\n"
-        f"5. Return a JSON array with those keys. Only faculty/researchers, not staff."
+        f"6. Return a JSON array with those keys. Only faculty/researchers, not staff."
     )
 
 
@@ -193,9 +194,9 @@ def crawl_school(
     *,
     stealth: bool = False,
     proxy_country: str | None = None,
-    max_professors: int = 50,
     on_progress: "Callable[[str], None] | None" = None,
     profile_summary: str = "",
+    **_kwargs,
 ) -> SchoolResult:
     """Pass 1: crawl faculty directory page.
 
@@ -218,7 +219,7 @@ def crawl_school(
     for attempt in range(1, 4):
         try:
             goal = build_directory_goal(
-                keywords, max_professors,
+                keywords,
                 domain=domain,
                 university_name=university_name,
                 profile_summary=profile_summary,
@@ -231,7 +232,7 @@ def crawl_school(
             if attempt < 3:
                 time.sleep(1)
     if goal is None:
-        goal = build_directory_goal_fallback(keywords, max_professors, domain=domain)
+        goal = build_directory_goal_fallback(keywords, domain=domain)
         _emit(f"[{university_name}] 3次均失败，使用默认策略")
     result = SchoolResult(university=university_name, domain=domain)
 
@@ -607,7 +608,7 @@ def main() -> None:
     parser.add_argument("--names", required=True, help="University names file")
     parser.add_argument("--output", default="runs/output.json", help="Output JSON path")
     parser.add_argument("--max-schools", type=int, default=0, help="Limit schools (0=all)")
-    parser.add_argument("--max-professors", type=int, default=30, help="Max per school")
+    # --max-professors removed: we now crawl ALL professors in the department
     parser.add_argument("--stealth", action="store_true", help="Anti-detection browser")
     parser.add_argument("--proxy", default=None, help="Proxy country code (US, GB, etc.)")
     parser.add_argument("--delay", type=float, default=2.0, help="Seconds between schools")
@@ -643,7 +644,6 @@ def main() -> None:
             client, domain, name, keywords,
             stealth=args.stealth,
             proxy_country=args.proxy,
-            max_professors=args.max_professors,
         )
         results.append(result)
         save_results(results, args.output)
