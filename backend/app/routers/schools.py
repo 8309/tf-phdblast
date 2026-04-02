@@ -55,6 +55,16 @@ async def search_schools(
         # Create a fresh DB session for this thread
         thread_db = SessionLocal()
         try:
+            # Clear stale professors from previous searches in this session
+            old_count = (
+                thread_db.query(Professor)
+                .filter(Professor.session_id == req.session_id)
+                .delete()
+            )
+            if old_count:
+                thread_db.commit()
+                push("info", {"message": f"Cleared {old_count} professors from previous search"})
+
             push("info", {"message": f"Starting crawl for {len(req.schools)} school(s)..."})
             crawl_service.run_pass1(
                 db_session=thread_db,
