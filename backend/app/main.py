@@ -7,8 +7,12 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import AsyncGenerator
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from slowapi import Limiter
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 
 from app.config import settings
 from app.database import Base, engine
@@ -52,11 +56,20 @@ async def lifespan(_app: FastAPI) -> AsyncGenerator[None, None]:
 # App
 # ---------------------------------------------------------------------------
 
+limiter = Limiter(key_func=get_remote_address)
+
 app = FastAPI(
     title="PhD Outreach API",
     version="0.1.0",
     lifespan=lifespan,
 )
+
+app.state.limiter = limiter
+
+
+@app.exception_handler(RateLimitExceeded)
+async def _rate_limit_handler(request: Request, exc: RateLimitExceeded):
+    return JSONResponse(status_code=429, content={"detail": "Rate limit exceeded"})
 
 # CORS
 app.add_middleware(

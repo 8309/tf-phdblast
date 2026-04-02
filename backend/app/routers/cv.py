@@ -2,8 +2,12 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, UploadFile
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 from sqlalchemy.orm import Session
+
+limiter = Limiter(key_func=get_remote_address)
 
 from app.database import get_db
 from app.models.db import DBSession
@@ -14,7 +18,9 @@ router = APIRouter(tags=["cv"])
 
 
 @router.post("/cv/parse", response_model=CVParseResponse)
+@limiter.limit("10/minute")
 async def parse_cv(
+    request: Request,
     file: UploadFile = File(...),
     session_id: str = Form(...),
     research_direction: str = Form(""),

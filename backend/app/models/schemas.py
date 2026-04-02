@@ -204,7 +204,7 @@ class CacheStatsResponse(BaseModel):
 
 class SchoolItem(BaseModel):
     name: str
-    domain: str
+    domain: str = Field(..., pattern=r"^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
 
 
 class SchoolSearchRequest(BaseModel):

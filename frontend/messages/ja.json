@@ -48,6 +48,7 @@
     "full_data": "全データ",
     "drag_drop_pdf": "PDFファイルをドラッグ＆ドロップ、またはクリックして選択",
     "pdf_only": "PDFファイルのみ",
+    "file_too_large": "ファイルは10MB以下にしてください",
     "name": "名前",
     "email": "メール",
     "university": "大学",

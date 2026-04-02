@@ -11,9 +11,7 @@ import SchoolSelector, {
 import CrawlProgress from "@/components/search/CrawlProgress";
 import ProfessorTable from "@/components/search/ProfessorTable";
 import ExportButtons from "@/components/match/ExportButtons";
-
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api";
+import { API_BASE } from "@/lib/api";
 
 export default function SearchPage() {
   const t = useTranslations();

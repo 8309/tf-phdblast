@@ -48,6 +48,7 @@
     "full_data": "完整数据",
     "drag_drop_pdf": "拖放 PDF 文件到此处，或点击浏览",
     "pdf_only": "仅支持 PDF 文件",
+    "file_too_large": "文件不能超过 10 MB",
     "name": "姓名",
     "email": "邮箱",
     "university": "大学",

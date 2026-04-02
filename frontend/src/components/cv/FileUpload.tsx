@@ -13,13 +13,23 @@ export default function FileUpload({ onChange }: FileUploadProps) {
   const [dragging, setDragging] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const [error, setError] = useState<string | null>(null);
+
   const handleFile = useCallback(
     (file: File) => {
-      if (file.type !== "application/pdf") return;
+      setError(null);
+      if (file.type !== "application/pdf") {
+        setError(t("pdf_only"));
+        return;
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        setError(t("file_too_large"));
+        return;
+      }
       setFileName(file.name);
       onChange(file);
     },
-    [onChange],
+    [onChange, t],
   );
 
   const onDrop = useCallback(
@@ -87,6 +97,9 @@ export default function FileUpload({ onChange }: FileUploadProps) {
         />
       </svg>
 
+      {error && (
+        <p className="text-sm font-medium text-red-500">{error}</p>
+      )}
       {fileName ? (
         <p className="text-sm font-medium text-gray-700">{fileName}</p>
       ) : (

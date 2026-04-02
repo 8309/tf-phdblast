@@ -2,8 +2,12 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 from sqlalchemy.orm import Session
+
+limiter = Limiter(key_func=get_remote_address)
 
 from app.database import get_db
 from app.models.db import DBSession, OutreachEmail, Professor
@@ -13,7 +17,9 @@ router = APIRouter(tags=["outreach"])
 
 
 @router.post("/outreach/generate")
+@limiter.limit("5/minute")
 def generate_outreach_emails(
+    request: Request,
     req: OutreachRequest,
     db: Session = Depends(get_db),
 ):

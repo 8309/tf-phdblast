@@ -240,36 +240,45 @@ def score_final(
     )
 
     raw = resp.choices[0].message.content.strip()
-    scored = _parse_json_response(raw)
+    try:
+        scored = _parse_json_response(raw)
+    except (json.JSONDecodeError, ValueError):
+        scored = [
+            {"idx": i, "score": 50, "reason": "AI scoring failed (parse error)"}
+            for i in range(len(profs))
+        ]
 
     results: list[dict] = []
     for item in scored:
-        idx = item["idx"]
-        if 0 <= idx < len(profs):
-            p = profs[idx]
-            p.final_score = item["score"]
-            p.final_reason = item["reason"]
-            results.append({
-                "id": p.id,
-                "name": p.name,
-                "university": p.university,
-                "email": p.email,
-                "title": p.title,
-                "lab_name": p.lab_name,
-                "research_summary": p.research_summary,
-                "research_keywords": p.research_keywords or [],
-                "recent_papers": p.recent_papers or [],
-                "funding": p.funding or [],
-                "accepting_students": p.accepting_students,
-                "recruiting_likelihood": p.recruiting_likelihood,
-                "recruiting_signals": p.recruiting_signals or [],
-                "open_positions": p.open_positions,
-                "scholar_url": p.scholar_url,
-                "profile_url": p.profile_url,
-                "lab_url": p.lab_url,
-                "final_score": p.final_score,
-                "final_reason": p.final_reason,
-            })
+        if not isinstance(item, dict):
+            continue
+        idx = item.get("idx")
+        if idx is None or not (0 <= idx < len(profs)):
+            continue
+        p = profs[idx]
+        p.final_score = item["score"]
+        p.final_reason = item["reason"]
+        results.append({
+            "id": p.id,
+            "name": p.name,
+            "university": p.university,
+            "email": p.email,
+            "title": p.title,
+            "lab_name": p.lab_name,
+            "research_summary": p.research_summary,
+            "research_keywords": p.research_keywords or [],
+            "recent_papers": p.recent_papers or [],
+            "funding": p.funding or [],
+            "accepting_students": p.accepting_students,
+            "recruiting_likelihood": p.recruiting_likelihood,
+            "recruiting_signals": p.recruiting_signals or [],
+            "open_positions": p.open_positions,
+            "scholar_url": p.scholar_url,
+            "profile_url": p.profile_url,
+            "lab_url": p.lab_url,
+            "final_score": p.final_score,
+            "final_reason": p.final_reason,
+        })
 
     db_session.commit()
 
@@ -327,6 +336,7 @@ def recommend_schools(profile: dict, top_n: int = 15) -> list[dict]:
         temperature=0,
     )
     raw = resp.choices[0].message.content.strip()
-    if raw.startswith("```"):
-        raw = raw.split("\n", 1)[1].rsplit("```", 1)[0]
-    return json.loads(raw)
+    try:
+        return _parse_json_response(raw)
+    except (json.JSONDecodeError, ValueError):
+        return []

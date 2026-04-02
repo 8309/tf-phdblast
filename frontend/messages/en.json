@@ -48,6 +48,7 @@
     "full_data": "Full Data",
     "drag_drop_pdf": "Drag & drop PDF here, or click to browse",
     "pdf_only": "PDF files only",
+    "file_too_large": "File must be under 10 MB",
     "name": "Name",
     "email": "Email",
     "university": "University",
