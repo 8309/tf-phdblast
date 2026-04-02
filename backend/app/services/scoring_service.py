@@ -131,14 +131,12 @@ def score_preliminary(
                 "total": len(profs_for_llm),
             })
 
-    # Merge scores back into DB rows
+    # Build results from scored data (do NOT write scores back to DB)
     score_map = {item["idx"]: item for item in ranked}
     results: list[dict] = []
 
     for i, prof in enumerate(profs):
         info = score_map.get(i, {})
-        prof.preliminary_score = info.get("score", 0)
-        prof.preliminary_reason = info.get("reason", "")
         results.append({
             "id": prof.id,
             "name": prof.name,
@@ -148,11 +146,9 @@ def score_preliminary(
             "department": prof.department,
             "research_summary": prof.research_summary,
             "profile_url": prof.profile_url,
-            "preliminary_score": prof.preliminary_score,
-            "preliminary_reason": prof.preliminary_reason,
+            "preliminary_score": info.get("score", 0),
+            "preliminary_reason": info.get("reason", ""),
         })
-
-    db_session.commit()
 
     results.sort(key=lambda x: x["preliminary_score"], reverse=True)
     return results

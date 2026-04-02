@@ -75,8 +75,8 @@ async def search_schools(
                 on_event=_push_adapter,
                 profile=profile,
             )
-            # After crawl, run preliminary scoring
-            scoring_service.score_preliminary(
+            # After crawl, run preliminary scoring (results returned, not saved to DB)
+            scored_results = scoring_service.score_preliminary(
                 db_session=thread_db,
                 session_id=req.session_id,
                 profile=profile or {},
@@ -88,25 +88,15 @@ async def search_schools(
                 s.workflow_step = "search"
                 thread_db.commit()
 
-            # Include scored professors in the done event so the frontend can render them
-            profs = (
-                thread_db.query(Professor)
-                .filter(Professor.session_id == req.session_id)
-                .order_by(Professor.preliminary_score.desc().nullslast())
-                .all()
-            )
-            from app.models.schemas import ProfessorSchema
-            prof_dicts = [ProfessorSchema.model_validate(p).model_dump(mode="json") for p in profs]
-            push("done", {"message": "Search and scoring complete", "professors": prof_dicts})
+            push("done", {"message": "Search and scoring complete", "professors": scored_results})
         except Exception as exc:
             import traceback
             traceback.print_exc()
-            # Still send any professors found so far
+            # Still send any professors found so far (unscored)
             try:
                 profs = (
                     thread_db.query(Professor)
                     .filter(Professor.session_id == req.session_id)
-                    .order_by(Professor.preliminary_score.desc().nullslast())
                     .all()
                 )
                 from app.models.schemas import ProfessorSchema
