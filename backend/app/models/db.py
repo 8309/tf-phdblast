@@ -217,7 +217,7 @@ class CachedDepartment(Base):
     # Relationships
     school = relationship("CachedSchool", back_populates="departments")
     cached_professors = relationship(
-        "CachedProfessor", back_populates="department", cascade="all, delete-orphan"
+        "CachedProfessor", back_populates="cached_department", cascade="all, delete-orphan"
     )
 
     __table_args__ = (
@@ -273,7 +273,7 @@ class CachedProfessor(Base):
 
     # Relationships
     school = relationship("CachedSchool")
-    department = relationship("CachedDepartment", back_populates="cached_professors")
+    cached_department = relationship("CachedDepartment", back_populates="cached_professors")
 
     __table_args__ = (
         Index("ix_cached_prof_school", "cached_school_id"),
