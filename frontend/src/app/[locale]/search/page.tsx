@@ -15,7 +15,7 @@ import { API_BASE } from "@/lib/api";
 
 export default function SearchPage() {
   const t = useTranslations();
-  const { sessionId, loading: sessionLoading } = useSession();
+  const { sessionId, profile, loading: sessionLoading } = useSession();
 
   // Mode selector
   const [mode, setMode] = useState<SearchMode>("field");
@@ -115,6 +115,13 @@ export default function SearchPage() {
 
   return (
     <div className="space-y-8">
+      {/* No-profile hint */}
+      {!profile && (
+        <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-300">
+          {t("status.no_profile_hint")}
+        </div>
+      )}
+
       {/* Mode selector */}
       <div>
         <p className="mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">

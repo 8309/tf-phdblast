@@ -23,7 +23,8 @@
     "export_deep_json": "📥 Export Deep Analysis JSON",
     "rescore": "Re-score & Rank (1 API call)",
     "csv": "📥 Export CSV",
-    "json": "📥 Export JSON"
+    "json": "📥 Export JSON",
+    "skip_to_search": "Skip CV upload, go to search →"
   },
   "label": {
     "pdf_resume": "PDF Resume",
@@ -109,6 +110,7 @@
     "deep_progress": "**Parallel deep crawl — {active} active ({done}/{total} done)**",
     "deep_complete": "**Deep crawl complete**",
     "deep_summary": "**{count}** professors | **{funding}** with funding | **{accepting}** confirmed accepting",
+    "no_profile_hint": "You haven't uploaded a CV yet. You can still search by field/overall ranking, but AI recommendation, scoring, and email generation require a CV.",
     "direction_confirmed": "✓ Research direction confirmed: **{direction}**",
     "cache_loaded": "**Loaded from cache** — {count} professors\n\nCheck the first column to select, then export or deep crawl.",
     "cache_deep_loaded": "**Loaded from cache** — deep analysis for {count} professors",

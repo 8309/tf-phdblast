@@ -23,7 +23,8 @@
     "export_deep_json": "📥 导出深度分析 JSON",
     "rescore": "重新打分排序（消耗 1 次 API 调用）",
     "csv": "📥 导出 CSV",
-    "json": "📥 导出 JSON"
+    "json": "📥 导出 JSON",
+    "skip_to_search": "跳过简历上传，直接搜索 →"
   },
   "label": {
     "pdf_resume": "PDF 简历",
@@ -109,6 +110,7 @@
     "deep_progress": "**并行深度爬取 — {active} 个进行中 ({done}/{total} 完成)**",
     "deep_complete": "**深度爬取完成**",
     "deep_summary": "**{count}** 位教授 | **{funding}** 有 funding | **{accepting}** 明确招生",
+    "no_profile_hint": "你还没有上传简历。可以直接按专业/综合排名搜索，但 AI 推荐、匹配打分和邮件生成需要先上传简历。",
     "direction_confirmed": "✓ 研究方向已确认：**{direction}**",
     "cache_loaded": "**已加载缓存** — {count} 位教授\n\n勾选表格第一列选择教授，点击导出或深度爬取。",
     "cache_deep_loaded": "**已加载缓存** — {count} 位教授的深度分析结果",

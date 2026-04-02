@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 import { useSession } from "@/hooks/useSession";
 import { parseCV } from "@/lib/api";
 import type { Profile } from "@/lib/types";
@@ -10,6 +11,7 @@ import ProfileCard from "@/components/cv/ProfileCard";
 
 export default function UploadPage() {
   const t = useTranslations();
+  const router = useRouter();
   const { sessionId, profile: sessionProfile, loading: sessionLoading, refresh } = useSession();
 
   const [file, setFile] = useState<File | null>(null);
@@ -122,6 +124,14 @@ export default function UploadPage() {
             </button>
           )}
         </div>
+
+        <button
+          type="button"
+          onClick={() => router.push("search")}
+          className="text-sm text-gray-500 underline hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+        >
+          {t("btn.skip_to_search")}
+        </button>
 
         {error && (
           <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-950 dark:text-red-300">

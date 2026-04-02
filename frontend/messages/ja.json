@@ -23,7 +23,8 @@
     "export_deep_json": "📥 詳細分析JSON出力",
     "rescore": "再スコアリング（API 1回使用）",
     "csv": "📥 CSV出力",
-    "json": "📥 JSON出力"
+    "json": "📥 JSON出力",
+    "skip_to_search": "履歴書アップロードをスキップして検索へ →"
   },
   "label": {
     "pdf_resume": "PDF履歴書",
@@ -109,6 +110,7 @@
     "deep_progress": "**並行詳細クロール — {active} 個進行中 ({done}/{total} 完了)**",
     "deep_complete": "**詳細クロール完了**",
     "deep_summary": "**{count}** 名の教授 | **{funding}** 名資金あり | **{accepting}** 名学生受入確認",
+    "no_profile_hint": "履歴書がまだアップロードされていません。専攻別・総合ランキングでの検索は可能ですが、AI推薦・スコアリング・メール生成には履歴書が必要です。",
     "direction_confirmed": "✓ 研究方向を確認しました：**{direction}**",
     "cache_loaded": "**キャッシュから読み込み** — {count} 名の教授\n\n最初の列にチェックを入れて選択し、エクスポートまたは詳細調査。",
     "cache_deep_loaded": "**キャッシュから読み込み** — {count} 名の教授の詳細分析結果",
