@@ -92,52 +92,65 @@ _now = lambda: datetime.now(timezone.utc)  # noqa: E731
 _FIELD_LABELS = list(FIELD_DISPLAY.values())
 
 
-def _normalize_keywords(raw_keywords: list[str]) -> list[str]:
-    """Map user-supplied keywords to standard field labels via gpt-4o-mini.
+# Reverse index: common keyword fragments → standard label
+_KEYWORD_ALIAS: dict[str, str] = {}
+for _key, _label in FIELD_DISPLAY.items():
+    _KEYWORD_ALIAS[_key] = _label          # "computer_science" → label
+    _KEYWORD_ALIAS[_label.lower()] = _label  # full label lowercase
+    # Extract the part after " - " as an alias
+    if " - " in _label:
+        _short = _label.split(" - ", 1)[1].lower()
+        _KEYWORD_ALIAS[_short] = _label  # "computer science (general)" → label
+        # Also without parenthetical
+        _base = _short.split("(")[0].strip()
+        if _base:
+            _KEYWORD_ALIAS[_base] = _label  # "computer science" → label
+        # Slash variants: "artificial intelligence / ml" → also "ai", "ml"
+        for _part in _short.replace("/", ",").split(","):
+            _part = _part.strip()
+            if len(_part) >= 2:
+                _KEYWORD_ALIAS[_part] = _label
 
+
+def _normalize_keywords(raw_keywords: list[str]) -> list[str]:
+    """Map user-supplied keywords to standard field labels.
+
+    Uses local substring matching against FIELD_DISPLAY — no LLM call.
     Returns at most 3 canonical labels so cache matching is consistent.
     """
     if not raw_keywords:
         return raw_keywords
 
-    try:
-        client = OpenAI()
-        resp = client.chat.completions.create(
-            model=settings.KEYWORD_MATCH_MODEL,
-            messages=[
-                {
-                    "role": "system",
-                    "content": (
-                        "You are a keyword normalizer. Given user-provided research "
-                        "keywords and a list of AVAILABLE academic field labels, "
-                        "map each user keyword to the CLOSEST matching label(s).\n"
-                        "Rules:\n"
-                        "- Return a JSON array of label strings (max 3).\n"
-                        "- Only use labels from the AVAILABLE list.\n"
-                        "- If a keyword clearly doesn't match any label, drop it.\n"
-                        "- Prefer specific labels over general ones.\n"
-                        "- Return ONLY the JSON array, nothing else."
-                    ),
-                },
-                {
-                    "role": "user",
-                    "content": (
-                        f"AVAILABLE labels: {_FIELD_LABELS}\n\n"
-                        f"User keywords: {raw_keywords}"
-                    ),
-                },
-            ],
-            temperature=0,
-            max_tokens=150,
-        )
-        import json
-        result = json.loads(resp.choices[0].message.content.strip())
-        if isinstance(result, list) and result:
-            return [str(r) for r in result[:3]]
-    except Exception:
-        pass
-    # Fallback: return originals trimmed
-    return raw_keywords[:3]
+    matched: list[str] = []
+    seen: set[str] = set()
+
+    for kw in raw_keywords:
+        kw_lower = kw.strip().lower()
+        if not kw_lower:
+            continue
+
+        # 1. Exact alias hit
+        if kw_lower in _KEYWORD_ALIAS:
+            label = _KEYWORD_ALIAS[kw_lower]
+            if label not in seen:
+                matched.append(label)
+                seen.add(label)
+            continue
+
+        # 2. Substring: find best match (shortest label that contains the keyword,
+        #    or keyword that contains an alias)
+        best: str | None = None
+        for alias, label in _KEYWORD_ALIAS.items():
+            if label in seen:
+                continue
+            if kw_lower in alias or alias in kw_lower:
+                if best is None or len(alias) > len(best):
+                    best = label
+        if best:
+            matched.append(best)
+            seen.add(best)
+
+    return matched[:3] if matched else raw_keywords[:3]
 
 
 def _cache_is_fresh(cached: CachedSchool, ttl_days: int) -> bool:
@@ -328,6 +341,8 @@ def _normalize_dept_name(raw: str) -> str:
     - Collapse whitespace
     - Title-case, but preserve known abbreviations
     """
+    if isinstance(raw, list):
+        raw = ", ".join(str(x) for x in raw)
     s = (raw or "").strip()
     if not s:
         return "Unknown"
