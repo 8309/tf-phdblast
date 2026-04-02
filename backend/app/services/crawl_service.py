@@ -143,7 +143,10 @@ def _cache_is_fresh(cached: CachedSchool, ttl_days: int) -> bool:
     """Return True if the cached school was crawled within *ttl_days*."""
     if cached.status != "done" or cached.last_crawled_at is None:
         return False
-    return (_now() - cached.last_crawled_at) < timedelta(days=ttl_days)
+    last = cached.last_crawled_at
+    if last.tzinfo is None:
+        last = last.replace(tzinfo=timezone.utc)
+    return (_now() - last) < timedelta(days=ttl_days)
 
 
 def _departments_are_stale(
@@ -782,10 +785,13 @@ def run_pass2(
             )
             .first()
         )
+        _deep_at = cached.deep_crawled_at if cached else None
+        if _deep_at and _deep_at.tzinfo is None:
+            _deep_at = _deep_at.replace(tzinfo=timezone.utc)
         if (
             cached
-            and cached.deep_crawled_at
-            and (_now() - cached.deep_crawled_at)
+            and _deep_at
+            and (_now() - _deep_at)
             < timedelta(days=settings.CACHE_TTL_PASS2_DAYS)
         ):
             # Cache hit — copy deep info directly
