@@ -365,7 +365,11 @@ def _copy_cached_to_session(
         query = query.filter(CachedProfessor.cached_department_id.in_(dept_ids))
     cached_profs = query.all()
     db_profs: list[DBProfessor] = []
+    seen_names: set[str] = set()  # dedup cross-dept professors in session
     for cp in cached_profs:
+        if cp.name in seen_names:
+            continue
+        seen_names.add(cp.name)
         dbp = DBProfessor(
             session_id=session_id,
             name=cp.name,
@@ -438,48 +442,54 @@ _ABBR_RESTORE = (
 )
 
 
-def _normalize_dept_name(raw: str) -> str:
-    """Normalize a department name for consistent storage.
+def _normalize_one_dept(part: str) -> str | None:
+    """Normalize a single department name fragment (no comma splitting)."""
+    s = part.replace(" & ", " and ")
+    s = " ".join(s.split())
+    if not s or len(s) < 3:
+        return None
+    s = s.title()
+    for abbr in _ABBR_RESTORE:
+        s = s.replace(abbr, abbr.upper())
+    return s
 
-    1. Strip bracket annotations  ("[CS And AI+D]" → "")
-    2. Strip trailing university / school suffixes
-       ("Computer Science, Columbia University" → "Computer Science")
-    3. If still has commas (multi-dept cross-appointment), take first part
-    4. Normalize " & " → " and " for consistency
-    5. Title-case with abbreviation restoration
+
+def _extract_dept_names(raw: str) -> list[str]:
+    """Extract ALL department names from a raw department string.
+
+    Cross-appointed professors (e.g. "Computer Science, Electrical Engineering")
+    are returned as multiple entries so they appear in every department.
+
+    Steps:
+      1. Strip bracket annotations  ("[CS And AI+D]" → "")
+      2. Strip trailing university / school suffixes
+      3. Split remaining on commas → multiple departments
+      4. Normalize each part individually
     """
     if isinstance(raw, list):
         raw = ", ".join(str(x) for x in raw)
     s = (raw or "").strip()
     if not s:
-        return "Unknown"
+        return ["Unknown"]
 
-    # 1. Strip bracket annotations
     s = _BRACKET_RE.sub("", s).strip()
-
-    # 2. Strip university suffixes  ", Carnegie Mellon University" etc.
     s = _UNI_SUFFIX_RE.sub("", s).strip()
 
-    # 3. Multi-dept comma split — take primary (first) department only
-    #    e.g. "Computer Science, Electrical and Computer Engineering" → "Computer Science"
-    if "," in s:
-        s = s.split(",", 1)[0].strip()
+    if not s:
+        return ["Unknown"]
 
-    # 4. Normalize & → and for dedup ("Information & CS" == "Information and CS")
-    s = s.replace(" & ", " and ")
+    parts = [p.strip() for p in s.split(",")]
+    result: list[str] = []
+    for p in parts:
+        normed = _normalize_one_dept(p)
+        if normed and normed not in result:
+            result.append(normed)
+    return result if result else ["Unknown"]
 
-    # 5. Collapse whitespace
-    s = " ".join(s.split())
 
-    # Reject ultra-short / abbreviation-only results
-    if not s or len(s) < 3:
-        return "Unknown"
-
-    # 6. Title-case then restore common abbreviations
-    s = s.title()
-    for abbr in _ABBR_RESTORE:
-        s = s.replace(abbr, abbr.upper())
-    return s
+def _normalize_dept_name(raw: str) -> str:
+    """Normalize a department name — returns the *primary* (first) department."""
+    return _extract_dept_names(raw)[0]
 
 
 def _upsert_cache_school(
@@ -507,21 +517,12 @@ def _upsert_cache_school(
 
     now = _now()
 
-    # Build set of already-cached professor names for dedup
-    existing_names: set[str] = set()
-    if not is_new_school:
-        rows = (
-            db.query(CachedProfessor.name)
-            .filter(CachedProfessor.cached_school_id == cached.id)
-            .all()
-        )
-        existing_names = {r[0] for r in rows}
-
-    # Group new professors by normalized department name
+    # Group new professors by ALL normalized department names.
+    # Cross-appointed professors appear in every department they belong to.
     dept_map: dict[str, list[CrawlProfessor]] = {}
     for cp in crawl_profs:
-        dept_name = _normalize_dept_name(cp.department)
-        dept_map.setdefault(dept_name, []).append(cp)
+        for dept_name in _extract_dept_names(cp.department):
+            dept_map.setdefault(dept_name, []).append(cp)
 
     new_count = 0
     depts_found: list[str] = []
@@ -546,13 +547,23 @@ def _upsert_cache_school(
             db.add(dept)
             db.flush()
 
+        # Per-department dedup: same professor can exist in multiple depts
+        existing_in_dept: set[str] = set()
+        if not is_new_school:
+            rows = (
+                db.query(CachedProfessor.name)
+                .filter(CachedProfessor.cached_department_id == dept.id)
+                .all()
+            )
+            existing_in_dept = {r[0] for r in rows}
+
         depts_found.append(dept_name)
         added_in_dept = 0
 
         for cp in profs:
-            if cp.name in existing_names:
-                continue  # skip duplicate
-            existing_names.add(cp.name)
+            if cp.name in existing_in_dept:
+                continue  # already in this department
+            existing_in_dept.add(cp.name)
             db.add(CachedProfessor(
                 cached_school_id=cached.id,
                 cached_department_id=dept.id,
@@ -705,24 +716,26 @@ def _update_cache_deep(
             CachedProfessor.university_domain == norm_domain,
             CachedProfessor.name == deep_prof.name,
         )
-        .first()
+        .all()  # may have rows in multiple departments
     )
-    if not cached:
+    if not cached_rows:
         return
-    cached.lab_name = deep_prof.lab_name
-    cached.lab_url = deep_prof.lab_url
-    cached.research_summary = deep_prof.research_summary
-    cached.research_keywords = deep_prof.research_keywords
-    cached.recent_papers = deep_prof.recent_papers
-    cached.scholar_url = deep_prof.scholar_url
-    cached.accepting_students = deep_prof.accepting_students
-    cached.open_positions = deep_prof.open_positions
-    cached.funding = deep_prof.funding
-    cached.recruiting_signals = deep_prof.recruiting_signals
-    cached.lab_size = deep_prof.lab_size
-    cached.recent_graduates = deep_prof.recent_graduates
-    cached.recruiting_likelihood = deep_prof.recruiting_likelihood
-    cached.deep_crawled_at = _now()
+    now = _now()
+    for cached in cached_rows:
+        cached.lab_name = deep_prof.lab_name
+        cached.lab_url = deep_prof.lab_url
+        cached.research_summary = deep_prof.research_summary
+        cached.research_keywords = deep_prof.research_keywords
+        cached.recent_papers = deep_prof.recent_papers
+        cached.scholar_url = deep_prof.scholar_url
+        cached.accepting_students = deep_prof.accepting_students
+        cached.open_positions = deep_prof.open_positions
+        cached.funding = deep_prof.funding
+        cached.recruiting_signals = deep_prof.recruiting_signals
+        cached.lab_size = deep_prof.lab_size
+        cached.recent_graduates = deep_prof.recent_graduates
+        cached.recruiting_likelihood = deep_prof.recruiting_likelihood
+        cached.deep_crawled_at = now
     # commit handled by caller
 
 
