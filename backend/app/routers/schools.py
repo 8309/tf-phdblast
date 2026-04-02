@@ -78,7 +78,16 @@ async def search_schools(
                 s.workflow_step = "search"
                 thread_db.commit()
 
-            push("done", {"message": "Search and scoring complete"})
+            # Include scored professors in the done event so the frontend can render them
+            profs = (
+                thread_db.query(Professor)
+                .filter(Professor.session_id == req.session_id)
+                .order_by(Professor.preliminary_score.desc().nullslast())
+                .all()
+            )
+            from app.models.schemas import ProfessorSchema
+            prof_dicts = [ProfessorSchema.model_validate(p).model_dump(mode="json") for p in profs]
+            push("done", {"message": "Search and scoring complete", "professors": prof_dicts})
         except Exception as exc:
             import traceback
             traceback.print_exc()
