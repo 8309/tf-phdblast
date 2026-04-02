@@ -44,9 +44,9 @@ export default function SearchPage() {
   // Derive professors from SSE events (no side effects)
   const professors = useMemo<Professor[]>(() => {
     if (crawlStream.events.length === 0) return [];
-    // Prefer the professors array from the done event
+    // Prefer the professors array from the done or error event
     for (const ev of crawlStream.events) {
-      if (ev.event === "done") {
+      if (ev.event === "done" || ev.event === "error") {
         const d = ev.data as Record<string, unknown>;
         if (d.professors && Array.isArray(d.professors)) {
           return d.professors as Professor[];

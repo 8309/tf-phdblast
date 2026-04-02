@@ -91,7 +91,19 @@ async def search_schools(
         except Exception as exc:
             import traceback
             traceback.print_exc()
-            push("error", {"message": str(exc)})
+            # Still send any professors found so far
+            try:
+                profs = (
+                    thread_db.query(Professor)
+                    .filter(Professor.session_id == req.session_id)
+                    .order_by(Professor.preliminary_score.desc().nullslast())
+                    .all()
+                )
+                from app.models.schemas import ProfessorSchema
+                prof_dicts = [ProfessorSchema.model_validate(p).model_dump(mode="json") for p in profs]
+            except Exception:
+                prof_dicts = []
+            push("error", {"message": str(exc), "professors": prof_dicts})
         finally:
             thread_db.close()
             close()
@@ -100,7 +112,7 @@ async def search_schools(
         thread = threading.Thread(target=_run, daemon=True)
         thread.start()
         while True:
-            event = await asyncio.wait_for(q.get(), timeout=300)
+            event = await asyncio.wait_for(q.get(), timeout=600)
             if event is None:
                 break
             yield event
