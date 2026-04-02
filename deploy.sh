@@ -39,13 +39,14 @@ COMMIT=$(git rev-parse --short HEAD)
 echo "==> Tagged ${NEXT_TAG} (${COMMIT})"
 
 # --- Create GitHub Release with commit messages since last tag ---
-if command -v gh &>/dev/null; then
+GH_CMD=$(command -v gh 2>/dev/null || echo /usr/local/bin/gh)
+if [[ -x "$GH_CMD" ]]; then
   if [[ -n "$LAST_TAG" ]]; then
     NOTES=$(git log --pretty=format:"- %s" "${LAST_TAG}..${NEXT_TAG}")
   else
     NOTES=$(git log --pretty=format:"- %s" "${NEXT_TAG}")
   fi
-  gh release create "$NEXT_TAG" --title "${NEXT_TAG}" --notes "$NOTES" 2>/dev/null \
+  "$GH_CMD" release create "$NEXT_TAG" --title "${NEXT_TAG}" --notes "$NOTES" 2>/dev/null \
     && echo "==> GitHub Release ${NEXT_TAG} created" \
     || echo "==> Warning: failed to create GitHub Release (continuing deploy)"
 fi
