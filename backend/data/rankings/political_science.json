@@ -1,0 +1,464 @@
+{
+  "field": "Political Science",
+  "rankings": {
+    "usnews": {
+      "url": "https://www.usnews.com/best-graduate-schools/top-humanities-schools/political-science-rankings",
+      "schools": [
+        {
+          "rank": 1,
+          "name": "Harvard University",
+          "domain": "harvard.edu",
+          "country": "US"
+        },
+        {
+          "rank": 2,
+          "name": "Stanford University",
+          "domain": "stanford.edu",
+          "country": "US"
+        },
+        {
+          "rank": 3,
+          "name": "Princeton University",
+          "domain": "princeton.edu",
+          "country": "US"
+        },
+        {
+          "rank": 4,
+          "name": "Massachusetts Institute of Technology",
+          "domain": "web.mit.edu",
+          "country": "US"
+        },
+        {
+          "rank": 5,
+          "name": "University of Michigan-Ann Arbor",
+          "domain": "umich.edu",
+          "country": "US"
+        },
+        {
+          "rank": 6,
+          "name": "Yale University",
+          "domain": "yale.edu",
+          "country": "US"
+        },
+        {
+          "rank": 7,
+          "name": "Columbia University",
+          "domain": "columbia.edu",
+          "country": "US"
+        },
+        {
+          "rank": 8,
+          "name": "University of California, Berkeley",
+          "domain": "berkeley.edu",
+          "country": "US"
+        },
+        {
+          "rank": 9,
+          "name": "Duke University",
+          "domain": "duke.edu",
+          "country": "US"
+        },
+        {
+          "rank": 10,
+          "name": "University of Chicago",
+          "domain": "uchicago.edu",
+          "country": "US"
+        },
+        {
+          "rank": 11,
+          "name": "New York University",
+          "domain": "nyu.edu",
+          "country": "US"
+        },
+        {
+          "rank": 12,
+          "name": "University of California, San Diego",
+          "domain": "ucsd.edu",
+          "country": "US"
+        },
+        {
+          "rank": 13,
+          "name": "University of California, Los Angeles",
+          "domain": "ucla.edu",
+          "country": "US"
+        },
+        {
+          "rank": 14,
+          "name": "University of Wisconsin-Madison",
+          "domain": "wisc.edu",
+          "country": "US"
+        },
+        {
+          "rank": 15,
+          "name": "University of North Carolina at Chapel Hill",
+          "domain": "unc.edu",
+          "country": "US"
+        },
+        {
+          "rank": 16,
+          "name": "Northwestern University",
+          "domain": "northwestern.edu",
+          "country": "US"
+        },
+        {
+          "rank": 17,
+          "name": "University of Rochester",
+          "domain": "rochester.edu",
+          "country": "US"
+        },
+        {
+          "rank": 18,
+          "name": "Georgetown University",
+          "domain": "georgetown.edu",
+          "country": "US"
+        },
+        {
+          "rank": 19,
+          "name": "Washington University in St. Louis",
+          "domain": "washu.edu",
+          "country": "US"
+        },
+        {
+          "rank": 20,
+          "name": "Ohio State University",
+          "domain": "osu.edu",
+          "country": "US"
+        }
+      ]
+    },
+    "qs": {
+      "url": "https://www.topuniversities.com/university-rankings/university-subject-rankings/politics",
+      "schools": [
+        {
+          "rank": 1,
+          "name": "Harvard University",
+          "domain": "harvard.edu",
+          "country": "US"
+        },
+        {
+          "rank": 2,
+          "name": "Princeton University",
+          "domain": "princeton.edu",
+          "country": "US"
+        },
+        {
+          "rank": 3,
+          "name": "Stanford University",
+          "domain": "stanford.edu",
+          "country": "US"
+        },
+        {
+          "rank": 4,
+          "name": "Yale University",
+          "domain": "yale.edu",
+          "country": "US"
+        },
+        {
+          "rank": 5,
+          "name": "Massachusetts Institute of Technology",
+          "domain": "web.mit.edu",
+          "country": "US"
+        },
+        {
+          "rank": 6,
+          "name": "Columbia University",
+          "domain": "columbia.edu",
+          "country": "US"
+        },
+        {
+          "rank": 7,
+          "name": "University of California, Berkeley",
+          "domain": "berkeley.edu",
+          "country": "US"
+        },
+        {
+          "rank": 8,
+          "name": "University of Chicago",
+          "domain": "uchicago.edu",
+          "country": "US"
+        },
+        {
+          "rank": 9,
+          "name": "Georgetown University",
+          "domain": "georgetown.edu",
+          "country": "US"
+        },
+        {
+          "rank": 10,
+          "name": "University of Michigan-Ann Arbor",
+          "domain": "umich.edu",
+          "country": "US"
+        },
+        {
+          "rank": 11,
+          "name": "Duke University",
+          "domain": "duke.edu",
+          "country": "US"
+        },
+        {
+          "rank": 12,
+          "name": "New York University",
+          "domain": "nyu.edu",
+          "country": "US"
+        },
+        {
+          "rank": 13,
+          "name": "University of California, Los Angeles",
+          "domain": "ucla.edu",
+          "country": "US"
+        },
+        {
+          "rank": 14,
+          "name": "University of Pennsylvania",
+          "domain": "upenn.edu",
+          "country": "US"
+        },
+        {
+          "rank": 15,
+          "name": "Cornell University",
+          "domain": "cornell.edu",
+          "country": "US"
+        },
+        {
+          "rank": 16,
+          "name": "University of Oxford",
+          "domain": "ox.ac.uk",
+          "country": "UK"
+        },
+        {
+          "rank": 17,
+          "name": "University of Cambridge",
+          "domain": "cam.ac.uk",
+          "country": "UK"
+        },
+        {
+          "rank": 18,
+          "name": "London School of Economics",
+          "domain": "lse.ac.uk",
+          "country": "UK"
+        },
+        {
+          "rank": 19,
+          "name": "University College London",
+          "domain": "ucl.ac.uk",
+          "country": "UK"
+        },
+        {
+          "rank": 20,
+          "name": "University of Toronto",
+          "domain": "utoronto.ca",
+          "country": "CA"
+        },
+        {
+          "rank": 21,
+          "name": "National University of Singapore",
+          "domain": "nus.edu.sg",
+          "country": "SG"
+        },
+        {
+          "rank": 22,
+          "name": "University of Melbourne",
+          "domain": "unimelb.edu.au",
+          "country": "AU"
+        },
+        {
+          "rank": 23,
+          "name": "Peking University",
+          "domain": "pku.edu.cn",
+          "country": "CN"
+        },
+        {
+          "rank": 24,
+          "name": "University of Tokyo",
+          "domain": "u-tokyo.ac.jp",
+          "country": "JP"
+        },
+        {
+          "rank": 25,
+          "name": "ETH Zurich",
+          "domain": "ethz.ch",
+          "country": "CH"
+        },
+        {
+          "rank": 26,
+          "name": "University of Hong Kong",
+          "domain": "hku.hk",
+          "country": "HK"
+        },
+        {
+          "rank": 27,
+          "name": "Seoul National University",
+          "domain": "snu.ac.kr",
+          "country": "KR"
+        }
+      ]
+    },
+    "arwu": {
+      "url": "https://www.shanghairanking.com/rankings/gras/2025/RS0602",
+      "schools": [
+        {
+          "rank": 1,
+          "name": "Harvard University",
+          "domain": "harvard.edu",
+          "country": "US"
+        },
+        {
+          "rank": 2,
+          "name": "Stanford University",
+          "domain": "stanford.edu",
+          "country": "US"
+        },
+        {
+          "rank": 3,
+          "name": "Princeton University",
+          "domain": "princeton.edu",
+          "country": "US"
+        },
+        {
+          "rank": 4,
+          "name": "University of Michigan-Ann Arbor",
+          "domain": "umich.edu",
+          "country": "US"
+        },
+        {
+          "rank": 5,
+          "name": "Massachusetts Institute of Technology",
+          "domain": "web.mit.edu",
+          "country": "US"
+        },
+        {
+          "rank": 6,
+          "name": "Columbia University",
+          "domain": "columbia.edu",
+          "country": "US"
+        },
+        {
+          "rank": 7,
+          "name": "Yale University",
+          "domain": "yale.edu",
+          "country": "US"
+        },
+        {
+          "rank": 8,
+          "name": "University of California, Berkeley",
+          "domain": "berkeley.edu",
+          "country": "US"
+        },
+        {
+          "rank": 9,
+          "name": "Duke University",
+          "domain": "duke.edu",
+          "country": "US"
+        },
+        {
+          "rank": 10,
+          "name": "University of Chicago",
+          "domain": "uchicago.edu",
+          "country": "US"
+        },
+        {
+          "rank": 11,
+          "name": "New York University",
+          "domain": "nyu.edu",
+          "country": "US"
+        },
+        {
+          "rank": 12,
+          "name": "University of California, San Diego",
+          "domain": "ucsd.edu",
+          "country": "US"
+        },
+        {
+          "rank": 13,
+          "name": "University of California, Los Angeles",
+          "domain": "ucla.edu",
+          "country": "US"
+        },
+        {
+          "rank": 14,
+          "name": "Northwestern University",
+          "domain": "northwestern.edu",
+          "country": "US"
+        },
+        {
+          "rank": 15,
+          "name": "University of Wisconsin-Madison",
+          "domain": "wisc.edu",
+          "country": "US"
+        },
+        {
+          "rank": 16,
+          "name": "University of Oxford",
+          "domain": "ox.ac.uk",
+          "country": "UK"
+        },
+        {
+          "rank": 17,
+          "name": "University of Cambridge",
+          "domain": "cam.ac.uk",
+          "country": "UK"
+        },
+        {
+          "rank": 18,
+          "name": "London School of Economics",
+          "domain": "lse.ac.uk",
+          "country": "UK"
+        },
+        {
+          "rank": 19,
+          "name": "University College London",
+          "domain": "ucl.ac.uk",
+          "country": "UK"
+        },
+        {
+          "rank": 20,
+          "name": "University of Toronto",
+          "domain": "utoronto.ca",
+          "country": "CA"
+        },
+        {
+          "rank": 21,
+          "name": "National University of Singapore",
+          "domain": "nus.edu.sg",
+          "country": "SG"
+        },
+        {
+          "rank": 22,
+          "name": "University of Melbourne",
+          "domain": "unimelb.edu.au",
+          "country": "AU"
+        },
+        {
+          "rank": 23,
+          "name": "Peking University",
+          "domain": "pku.edu.cn",
+          "country": "CN"
+        },
+        {
+          "rank": 24,
+          "name": "University of Tokyo",
+          "domain": "u-tokyo.ac.jp",
+          "country": "JP"
+        },
+        {
+          "rank": 25,
+          "name": "ETH Zurich",
+          "domain": "ethz.ch",
+          "country": "CH"
+        },
+        {
+          "rank": 26,
+          "name": "University of Hong Kong",
+          "domain": "hku.hk",
+          "country": "HK"
+        },
+        {
+          "rank": 27,
+          "name": "Seoul National University",
+          "domain": "snu.ac.kr",
+          "country": "KR"
+        }
+      ]
+    }
+  }
+}

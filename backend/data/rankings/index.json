@@ -1,0 +1,76 @@
+{
+  "sources": {
+    "usnews": {
+      "name": "US News & World Report",
+      "url": "https://www.usnews.com/best-graduate-schools",
+      "year": 2026,
+      "note": "Most widely used for US PhD admissions"
+    },
+    "qs": {
+      "name": "QS World University Rankings by Subject",
+      "url": "https://www.topuniversities.com/university-rankings/university-subject-rankings",
+      "year": 2026,
+      "note": "International recognition, reputation-weighted"
+    },
+    "arwu": {
+      "name": "Shanghai Ranking (ARWU) Global Ranking of Academic Subjects",
+      "url": "https://www.shanghairanking.com/rankings/gras/2025",
+      "year": 2025,
+      "note": "Pure academic metrics: papers, citations, awards"
+    },
+    "csrankings": {
+      "name": "CSRankings",
+      "url": "https://csrankings.org",
+      "year": 2026,
+      "note": "CS only, based on top-venue publication count"
+    },
+    "the_overall": {
+      "name": "Times Higher Education World University Rankings",
+      "url": "https://www.timeshighereducation.com/world-university-rankings",
+      "year": 2026,
+      "note": "Overall ranking, your current default list"
+    }
+  },
+  "fields": [
+    "computer_science",
+    "artificial_intelligence",
+    "data_science",
+    "cybersecurity",
+    "human_computer_interaction",
+    "robotics",
+    "mechanical_engineering",
+    "electrical_engineering",
+    "biomedical_engineering",
+    "civil_engineering",
+    "chemical_engineering",
+    "aerospace_engineering",
+    "environmental_engineering",
+    "industrial_engineering",
+    "nuclear_engineering",
+    "ocean_engineering",
+    "materials_science",
+    "physics",
+    "applied_physics",
+    "chemistry",
+    "mathematics",
+    "applied_mathematics",
+    "biology",
+    "neuroscience",
+    "genetics_genomics",
+    "bioinformatics",
+    "computational_biology",
+    "public_health",
+    "pharmacology",
+    "astronomy_astrophysics",
+    "earth_sciences",
+    "economics",
+    "statistics",
+    "political_science",
+    "psychology",
+    "sociology",
+    "finance",
+    "operations_research",
+    "energy_engineering",
+    "quantum_computing"
+  ]
+}

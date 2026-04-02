@@ -1,0 +1,1802 @@
+[
+  {
+    "rank": 1,
+    "name": "Massachusetts Institute of Technology (MIT)",
+    "domain": "mit.edu",
+    "country": "US"
+  },
+  {
+    "rank": 2,
+    "name": "Imperial College London",
+    "domain": "imperial.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 3,
+    "name": "Stanford University",
+    "domain": "stanford.edu",
+    "country": "US"
+  },
+  {
+    "rank": 4,
+    "name": "University of Oxford",
+    "domain": "ox.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 5,
+    "name": "Harvard University",
+    "domain": "harvard.edu",
+    "country": "US"
+  },
+  {
+    "rank": 6,
+    "name": "University of Cambridge",
+    "domain": "cam.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 7,
+    "name": "ETH Zurich (Swiss Federal Institute of Technology)",
+    "domain": "ethz.ch",
+    "country": "CH"
+  },
+  {
+    "rank": 8,
+    "name": "National University of Singapore (NUS)",
+    "domain": "nus.edu.sg",
+    "country": "SG"
+  },
+  {
+    "rank": 9,
+    "name": "UCL (University College London)",
+    "domain": "ucl.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 10,
+    "name": "California Institute of Technology (Caltech)",
+    "domain": "caltech.edu",
+    "country": "US"
+  },
+  {
+    "rank": 11,
+    "name": "The University of Hong Kong",
+    "domain": "hku.hk",
+    "country": "HK"
+  },
+  {
+    "rank": 12,
+    "name": "Nanyang Technological University, Singapore (NTU Singapore)",
+    "domain": "ntu.edu.sg",
+    "country": "SG"
+  },
+  {
+    "rank": 13,
+    "name": "University of Chicago",
+    "domain": "uchicago.edu",
+    "country": "US"
+  },
+  {
+    "rank": 14,
+    "name": "Peking University",
+    "domain": "pku.edu.cn",
+    "country": "CN"
+  },
+  {
+    "rank": 15,
+    "name": "University of Pennsylvania",
+    "domain": "upenn.edu",
+    "country": "US"
+  },
+  {
+    "rank": 16,
+    "name": "Cornell University",
+    "domain": "cornell.edu",
+    "country": "US"
+  },
+  {
+    "rank": 17,
+    "name": "Tsinghua University",
+    "domain": "tsinghua.edu.cn",
+    "country": "CN"
+  },
+  {
+    "rank": 17,
+    "name": "University of California, Berkeley (UCB)",
+    "domain": "berkeley.edu",
+    "country": "US"
+  },
+  {
+    "rank": 19,
+    "name": "The University of Melbourne",
+    "domain": "unimelb.edu.au",
+    "country": "AU"
+  },
+  {
+    "rank": 20,
+    "name": "The University of New South Wales",
+    "domain": "unsw.edu.au",
+    "country": "AU"
+  },
+  {
+    "rank": 21,
+    "name": "Yale University",
+    "domain": "yale.edu",
+    "country": "US"
+  },
+  {
+    "rank": 22,
+    "name": "Technical University of Munich",
+    "domain": "tum.de",
+    "country": "DE"
+  },
+  {
+    "rank": 22,
+    "name": "École Polytechnique Fédérale de Lausanne",
+    "domain": "epfl.ch",
+    "country": "CH"
+  },
+  {
+    "rank": 24,
+    "name": "Johns Hopkins University",
+    "domain": "jhu.edu",
+    "country": "US"
+  },
+  {
+    "rank": 25,
+    "name": "Princeton University",
+    "domain": "princeton.edu",
+    "country": "US"
+  },
+  {
+    "rank": 25,
+    "name": "The University of Sydney",
+    "domain": "sydney.edu.au",
+    "country": "AU"
+  },
+  {
+    "rank": 27,
+    "name": "McGill University",
+    "domain": "mcgill.ca",
+    "country": "CA"
+  },
+  {
+    "rank": 28,
+    "name": "PSL University",
+    "domain": "psl.eu",
+    "country": "FR"
+  },
+  {
+    "rank": 29,
+    "name": "University of Toronto",
+    "domain": "utoronto.ca",
+    "country": "CA"
+  },
+  {
+    "rank": 30,
+    "name": "Fudan University",
+    "domain": "fudan.edu.cn",
+    "country": "CN"
+  },
+  {
+    "rank": 31,
+    "name": "King's College London (KCL)",
+    "domain": "kcl.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 32,
+    "name": "Australian National University",
+    "domain": "anu.edu.au",
+    "country": "AU"
+  },
+  {
+    "rank": 32,
+    "name": "The Chinese University of Hong Kong",
+    "domain": "cuhk.edu.hk",
+    "country": "HK"
+  },
+  {
+    "rank": 34,
+    "name": "University of Edinburgh",
+    "domain": "ed.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 35,
+    "name": "The University of Manchester",
+    "domain": "manchester.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 36,
+    "name": "Monash University",
+    "domain": "monash.edu",
+    "country": "AU"
+  },
+  {
+    "rank": 36,
+    "name": "The University of Tokyo",
+    "domain": "u-tokyo.ac.jp",
+    "country": "JP"
+  },
+  {
+    "rank": 38,
+    "name": "Columbia University",
+    "domain": "columbia.edu",
+    "country": "US"
+  },
+  {
+    "rank": 38,
+    "name": "Seoul National University",
+    "domain": "snuh.org",
+    "country": "KR"
+  },
+  {
+    "rank": 40,
+    "name": "University of British Columbia",
+    "domain": "ubc.ca",
+    "country": "CA"
+  },
+  {
+    "rank": 41,
+    "name": "Institut Polytechnique de Paris",
+    "domain": "polytechnique.edu",
+    "country": "FR"
+  },
+  {
+    "rank": 42,
+    "name": "Northwestern University",
+    "domain": "northwestern.edu",
+    "country": "US"
+  },
+  {
+    "rank": 42,
+    "name": "The University of Queensland",
+    "domain": "uq.edu.au",
+    "country": "AU"
+  },
+  {
+    "rank": 44,
+    "name": "The Hong Kong University of Science and Technology",
+    "domain": "ust.hk",
+    "country": "HK"
+  },
+  {
+    "rank": 45,
+    "name": "University of Michigan-Ann Arbor",
+    "domain": "umich.edu",
+    "country": "US"
+  },
+  {
+    "rank": 46,
+    "name": "University of California, Los Angeles (UCLA)",
+    "domain": "ucla.edu",
+    "country": "US"
+  },
+  {
+    "rank": 47,
+    "name": "Delft University of Technology",
+    "domain": "tudelft.nl",
+    "country": "NL"
+  },
+  {
+    "rank": 47,
+    "name": "Shanghai Jiao Tong University",
+    "domain": "sjtu.edu.cn",
+    "country": "CN"
+  },
+  {
+    "rank": 49,
+    "name": "Zhejiang University",
+    "domain": "zju.edu.cn",
+    "country": "CN"
+  },
+  {
+    "rank": 50,
+    "name": "Yonsei University",
+    "domain": "yonsei.ac.kr",
+    "country": "KR"
+  },
+  {
+    "rank": 51,
+    "name": "University of Bristol",
+    "domain": "bristol.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 52,
+    "name": "Carnegie Mellon University",
+    "domain": "cmu.edu",
+    "country": "US"
+  },
+  {
+    "rank": 53,
+    "name": "The University of Amsterdam",
+    "domain": "uva.nl",
+    "country": "NL"
+  },
+  {
+    "rank": 54,
+    "name": "The Hong Kong Polytechnic University",
+    "domain": "polyu.edu.hk",
+    "country": "HK"
+  },
+  {
+    "rank": 55,
+    "name": "New York University (NYU)",
+    "domain": "nyu.edu",
+    "country": "US"
+  },
+  {
+    "rank": 56,
+    "name": "London School of Economics and Political Science (LSE)",
+    "domain": "lse.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 57,
+    "name": "Kyoto University",
+    "domain": "kyoto-u.ac.jp",
+    "country": "JP"
+  },
+  {
+    "rank": 58,
+    "name": "Ludwig-Maximilians-Universität München",
+    "domain": "lmu.de",
+    "country": "DE"
+  },
+  {
+    "rank": 58,
+    "name": "Universiti Malaya (UM)",
+    "domain": "um.edu.my",
+    "country": "MY"
+  },
+  {
+    "rank": 60,
+    "name": "KU Leuven",
+    "domain": "kuleuven.be",
+    "country": "BE"
+  },
+  {
+    "rank": 61,
+    "name": "Korea University",
+    "domain": "korea.ac.kr",
+    "country": "KR"
+  },
+  {
+    "rank": 62,
+    "name": "Duke University",
+    "domain": "duke.edu",
+    "country": "US"
+  },
+  {
+    "rank": 63,
+    "name": "City University of Hong Kong",
+    "domain": "cityu.edu.hk",
+    "country": "HK"
+  },
+  {
+    "rank": 63,
+    "name": "National Taiwan University (NTU)",
+    "domain": "ntu.edu.tw",
+    "country": "TA"
+  },
+  {
+    "rank": 65,
+    "name": "The University of Auckland",
+    "domain": "auckland.ac.nz",
+    "country": "NZ"
+  },
+  {
+    "rank": 66,
+    "name": "University of California, San Diego (UCSD)",
+    "domain": "ucsd.edu",
+    "country": "US"
+  },
+  {
+    "rank": 67,
+    "name": "King Fahd University of Petroleum & Minerals",
+    "domain": "kfupm.edu.sa",
+    "country": "SA"
+  },
+  {
+    "rank": 68,
+    "name": "University of Texas at Austin",
+    "domain": "utexas.edu",
+    "country": "US"
+  },
+  {
+    "rank": 69,
+    "name": "Brown University",
+    "domain": "brown.edu",
+    "country": "US"
+  },
+  {
+    "rank": 70,
+    "name": "University of Illinois at Urbana-Champaign",
+    "domain": "illinois.edu",
+    "country": "US"
+  },
+  {
+    "rank": 70,
+    "name": "Université Paris-Saclay",
+    "domain": "universite-paris-saclay.fr",
+    "country": "FR"
+  },
+  {
+    "rank": 72,
+    "name": "Lund University",
+    "domain": "lu.se",
+    "country": "SE"
+  },
+  {
+    "rank": 72,
+    "name": "Sorbonne University (merged from Paris IV & UPMC)",
+    "domain": "sorbonne-universite.fr",
+    "country": "FR"
+  },
+  {
+    "rank": 74,
+    "name": "The University of Warwick",
+    "domain": "warwick.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 75,
+    "name": "Trinity College Dublin, The University of Dublin",
+    "domain": "tcd.ie",
+    "country": "IE"
+  },
+  {
+    "rank": 76,
+    "name": "University of Birmingham",
+    "domain": "bham.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 77,
+    "name": "The University of Western Australia",
+    "domain": "uwa.edu.au",
+    "country": "AU"
+  },
+  {
+    "rank": 78,
+    "name": "KTH Royal Institute of Technology",
+    "domain": "kth.se",
+    "country": "SE"
+  },
+  {
+    "rank": 79,
+    "name": "University of Glasgow",
+    "domain": "glasgow.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 80,
+    "name": "Ruprecht-Karls-Universität Heidelberg",
+    "domain": "uni-heidelberg.de",
+    "country": "DE"
+  },
+  {
+    "rank": 81,
+    "name": "University of Washington",
+    "domain": "washington.edu",
+    "country": "US"
+  },
+  {
+    "rank": 82,
+    "name": "Adelaide University",
+    "domain": "adelaide.edu.au",
+    "country": "AU"
+  },
+  {
+    "rank": 82,
+    "name": "Pennsylvania State University",
+    "domain": "psu.edu",
+    "country": "US"
+  },
+  {
+    "rank": 84,
+    "name": "Universidad de Buenos Aires",
+    "domain": "uba.ar",
+    "country": "AR"
+  },
+  {
+    "rank": 85,
+    "name": "Tokyo Institute of Technology",
+    "domain": "titech.ac.jp",
+    "country": "JP"
+  },
+  {
+    "rank": 86,
+    "name": "University of Leeds",
+    "domain": "leeds.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 87,
+    "name": "University of Southampton",
+    "domain": "southampton.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 88,
+    "name": "Boston University",
+    "domain": "bu.edu",
+    "country": "US"
+  },
+  {
+    "rank": 88,
+    "name": "Freie Universität Berlin",
+    "domain": "fu-berlin.de",
+    "country": "DE"
+  },
+  {
+    "rank": 88,
+    "name": "Purdue University",
+    "domain": "purdue.edu",
+    "country": "US"
+  },
+  {
+    "rank": 91,
+    "name": "The University of Osaka",
+    "domain": "osaka-u.ac.jp",
+    "country": "JP"
+  },
+  {
+    "rank": 92,
+    "name": "The University of Sheffield",
+    "domain": "sheffield.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 93,
+    "name": "Uppsala University",
+    "domain": "uu.se",
+    "country": "SE"
+  },
+  {
+    "rank": 94,
+    "name": "Durham University",
+    "domain": "durham.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 94,
+    "name": "University of Alberta",
+    "domain": "ualberta.ca",
+    "country": "CA"
+  },
+  {
+    "rank": 96,
+    "name": "University of Technology Sydney",
+    "domain": "uts.edu.au",
+    "country": "AU"
+  },
+  {
+    "rank": 97,
+    "name": "The University of Nottingham",
+    "domain": "nottingham.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 98,
+    "name": "Karlsruhe Institute of Technology (KIT)",
+    "domain": "kit.edu",
+    "country": "DE"
+  },
+  {
+    "rank": 98,
+    "name": "Politecnico di Milano",
+    "domain": "polimi.it",
+    "country": "IT"
+  },
+  {
+    "rank": 100,
+    "name": "University of Zurich (UZH)",
+    "domain": "uzh.ch",
+    "country": "CH"
+  },
+  {
+    "rank": 101,
+    "name": "University of Copenhagen",
+    "domain": "ku.dk",
+    "country": "DK"
+  },
+  {
+    "rank": 102,
+    "name": "Pohang University of Science And Technology (POSTECH)",
+    "domain": "postech.ac.kr",
+    "country": "KR"
+  },
+  {
+    "rank": 103,
+    "name": "Nanjing University",
+    "domain": "nju.edu.cn",
+    "country": "CN"
+  },
+  {
+    "rank": 103,
+    "name": "Utrecht University",
+    "domain": "uu.nl",
+    "country": "NL"
+  },
+  {
+    "rank": 105,
+    "name": "Lomonosov Moscow State University",
+    "domain": "msu.ru",
+    "country": "RU"
+  },
+  {
+    "rank": 105,
+    "name": "Rheinisch-Westfälische Technische Hochschule Aachen",
+    "domain": "rwth-aachen.de",
+    "country": "DE"
+  },
+  {
+    "rank": 107,
+    "name": "Technical University of Denmark",
+    "domain": "dtu.dk",
+    "country": "DK"
+  },
+  {
+    "rank": 108,
+    "name": "Universidade de São Paulo (USP)",
+    "domain": "usp.br",
+    "country": "BR"
+  },
+  {
+    "rank": 109,
+    "name": "Tohoku University",
+    "domain": "tohoku.ac.jp",
+    "country": "JP"
+  },
+  {
+    "rank": 110,
+    "name": "Queen Mary University of London (QMUL)",
+    "domain": "qmul.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 110,
+    "name": "University of Wisconsin-Madison",
+    "domain": "wisc.edu",
+    "country": "US"
+  },
+  {
+    "rank": 112,
+    "name": "Qatar University",
+    "domain": "qu.edu.qa",
+    "country": "QA"
+  },
+  {
+    "rank": 113,
+    "name": "University of St Andrews",
+    "domain": "st-andrews.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 114,
+    "name": "Aalto University",
+    "domain": "aalto.fi",
+    "country": "FI"
+  },
+  {
+    "rank": 114,
+    "name": "University of California, Davis",
+    "domain": "ucdavis.edu",
+    "country": "US"
+  },
+  {
+    "rank": 116,
+    "name": "Pontificia Universidad Católica de Chile",
+    "domain": "puc.cl",
+    "country": "CL"
+  },
+  {
+    "rank": 116,
+    "name": "University of Helsinki",
+    "domain": "helsinki.fi",
+    "country": "FI"
+  },
+  {
+    "rank": 118,
+    "name": "University College Dublin",
+    "domain": "ucd.ie",
+    "country": "IE"
+  },
+  {
+    "rank": 119,
+    "name": "Leiden University",
+    "domain": "leidenuniv.nl",
+    "country": "NL"
+  },
+  {
+    "rank": 119,
+    "name": "Rice University",
+    "domain": "rice.edu",
+    "country": "US"
+  },
+  {
+    "rank": 119,
+    "name": "University of Oslo",
+    "domain": "uio.no",
+    "country": "NO"
+  },
+  {
+    "rank": 119,
+    "name": "University of Waterloo",
+    "domain": "uwaterloo.ca",
+    "country": "CA"
+  },
+  {
+    "rank": 123,
+    "name": "Georgia Institute of Technology",
+    "domain": "gatech.edu",
+    "country": "US"
+  },
+  {
+    "rank": 123,
+    "name": "Indian Institute of Technology Delhi (IITD)",
+    "domain": "iitd.ac.in",
+    "country": "IN"
+  },
+  {
+    "rank": 125,
+    "name": "RMIT University",
+    "domain": "rmit.edu.au",
+    "country": "AU"
+  },
+  {
+    "rank": 126,
+    "name": "Sungkyunkwan University",
+    "domain": "skku.edu",
+    "country": "KR"
+  },
+  {
+    "rank": 126,
+    "name": "Universiti Kebangsaan Malaysia (UKM)",
+    "domain": "ukm.my",
+    "country": "MY"
+  },
+  {
+    "rank": 128,
+    "name": "Sapienza University of Rome",
+    "domain": "sapienza.uniroma1.it",
+    "country": "IT"
+  },
+  {
+    "rank": 129,
+    "name": "Indian Institute of Technology Bombay (IITB)",
+    "domain": "iitb.ac.in",
+    "country": "IN"
+  },
+  {
+    "rank": 130,
+    "name": "Humboldt-Universität zu Berlin",
+    "domain": "hu-berlin.de",
+    "country": "DE"
+  },
+  {
+    "rank": 131,
+    "name": "Aarhus University",
+    "domain": "aarhus.dk",
+    "country": "DK"
+  },
+  {
+    "rank": 132,
+    "name": "University of Bath",
+    "domain": "bath.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 132,
+    "name": "University of Science and Technology of China",
+    "domain": "ustc.edu.cn",
+    "country": "CN"
+  },
+  {
+    "rank": 134,
+    "name": "Universiti Putra Malaysia (UPM)",
+    "domain": "upm.edu.my",
+    "country": "MY"
+  },
+  {
+    "rank": 134,
+    "name": "Universiti Sains Malaysia (USM)",
+    "domain": "usm.my",
+    "country": "MY"
+  },
+  {
+    "rank": 136,
+    "name": "Universidad Nacional Autónoma de México (UNAM)",
+    "domain": "unam.mx",
+    "country": "MX"
+  },
+  {
+    "rank": 137,
+    "name": "Newcastle University",
+    "domain": "newcastle.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 138,
+    "name": "Alma Mater Studiorum - University of Bologna",
+    "domain": "unibo.it",
+    "country": "IT"
+  },
+  {
+    "rank": 138,
+    "name": "Macquarie University",
+    "domain": "mq.edu.au",
+    "country": "AU"
+  },
+  {
+    "rank": 140,
+    "name": "Eindhoven University of Technology",
+    "domain": "tue.nl",
+    "country": "NL"
+  },
+  {
+    "rank": 140,
+    "name": "Erasmus University Rotterdam",
+    "domain": "eur.nl",
+    "country": "NL"
+  },
+  {
+    "rank": 140,
+    "name": "University of North Carolina, Chapel Hill",
+    "domain": "unc.edu",
+    "country": "US"
+  },
+  {
+    "rank": 143,
+    "name": "King Saud University",
+    "domain": "ksu.edu.sa",
+    "country": "SA"
+  },
+  {
+    "rank": 144,
+    "name": "Texas A&M University",
+    "domain": "tamu.edu",
+    "country": "US"
+  },
+  {
+    "rank": 145,
+    "name": "Technische Universität Berlin",
+    "domain": "tu-berlin.de",
+    "country": "DE"
+  },
+  {
+    "rank": 146,
+    "name": "University of Southern California",
+    "domain": "usc.edu",
+    "country": "US"
+  },
+  {
+    "rank": 147,
+    "name": "Stockholm University",
+    "domain": "su.se",
+    "country": "SE"
+  },
+  {
+    "rank": 147,
+    "name": "University of Groningen",
+    "domain": "rug.nl",
+    "country": "NL"
+  },
+  {
+    "rank": 147,
+    "name": "University of Liverpool",
+    "domain": "liverpool.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 150,
+    "name": "University of Cape Town",
+    "domain": "uct.ac.za",
+    "country": "ZA"
+  },
+  {
+    "rank": 151,
+    "name": "Western University",
+    "domain": "uwo.ca",
+    "country": "CA"
+  },
+  {
+    "rank": 152,
+    "name": "University of Vienna",
+    "domain": "univie.ac.at",
+    "country": "AT"
+  },
+  {
+    "rank": 153,
+    "name": "Universiti Teknologi Malaysia (UTM)",
+    "domain": "utm.my",
+    "country": "MY"
+  },
+  {
+    "rank": 153,
+    "name": "Wageningen University & Research",
+    "domain": "wur.nl",
+    "country": "NL"
+  },
+  {
+    "rank": 155,
+    "name": "University of Exeter",
+    "domain": "exeter.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 155,
+    "name": "University of Geneva",
+    "domain": "unige.ch",
+    "country": "CH"
+  },
+  {
+    "rank": 157,
+    "name": "Lancaster University",
+    "domain": "lancaster.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 158,
+    "name": "University of Basel",
+    "domain": "unibas.ch",
+    "country": "CH"
+  },
+  {
+    "rank": 159,
+    "name": "Hanyang University",
+    "domain": "hanyang.ac.kr",
+    "country": "KR"
+  },
+  {
+    "rank": 160,
+    "name": "University of Barcelona",
+    "domain": "ub.edu",
+    "country": "ES"
+  },
+  {
+    "rank": 161,
+    "name": "Michigan State University",
+    "domain": "msu.edu",
+    "country": "US"
+  },
+  {
+    "rank": 162,
+    "name": "Ghent University",
+    "domain": "ugent.be",
+    "country": "BE"
+  },
+  {
+    "rank": 163,
+    "name": "King Abdul Aziz University (KAU)",
+    "domain": "kau.edu.sa",
+    "country": "SA"
+  },
+  {
+    "rank": 164,
+    "name": "Nagoya University",
+    "domain": "nagoya-u.ac.jp",
+    "country": "JP"
+  },
+  {
+    "rank": 165,
+    "name": "Chalmers University of Technology",
+    "domain": "chalmers.se",
+    "country": "SE"
+  },
+  {
+    "rank": 166,
+    "name": "Al-Farabi Kazakh National University",
+    "domain": "kaznu.kz",
+    "country": "KZ"
+  },
+  {
+    "rank": 167,
+    "name": "Washington University in St. Louis",
+    "domain": "wustl.edu",
+    "country": "US"
+  },
+  {
+    "rank": 168,
+    "name": "University of Montreal",
+    "domain": "umontreal.ca",
+    "country": "CA"
+  },
+  {
+    "rank": 169,
+    "name": "University of York",
+    "domain": "york.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 170,
+    "name": "Hokkaido University",
+    "domain": "hokudai.ac.jp",
+    "country": "JP"
+  },
+  {
+    "rank": 170,
+    "name": "Kyushu University",
+    "domain": "kyushu-u.ac.jp",
+    "country": "JP"
+  },
+  {
+    "rank": 172,
+    "name": "Universitat Autónoma de Barcelona",
+    "domain": "uab.es",
+    "country": "ES"
+  },
+  {
+    "rank": 173,
+    "name": "Arizona State University",
+    "domain": "asu.edu",
+    "country": "US"
+  },
+  {
+    "rank": 173,
+    "name": "McMaster University",
+    "domain": "mcmaster.ca",
+    "country": "CA"
+  },
+  {
+    "rank": 173,
+    "name": "Universidad de Chile",
+    "domain": "uchile.cl",
+    "country": "CL"
+  },
+  {
+    "rank": 176,
+    "name": "National Tsing Hua University",
+    "domain": "nthu.edu.tw",
+    "country": "TA"
+  },
+  {
+    "rank": 177,
+    "name": "Khalifa University of Science and Technology",
+    "domain": "ku.ac.ae",
+    "country": "AE"
+  },
+  {
+    "rank": 177,
+    "name": "Tongji University",
+    "domain": "tongji.edu.cn",
+    "country": "CN"
+  },
+  {
+    "rank": 179,
+    "name": "University of California, Santa Barbara (UCSB)",
+    "domain": "ucsb.edu",
+    "country": "US"
+  },
+  {
+    "rank": 180,
+    "name": "Indian Institute of Technology Madras (IITM)",
+    "domain": "iitm.ac.in",
+    "country": "IN"
+  },
+  {
+    "rank": 181,
+    "name": "Cardiff University",
+    "domain": "cardiff.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 182,
+    "name": "Emory University",
+    "domain": "emory.edu",
+    "country": "US"
+  },
+  {
+    "rank": 183,
+    "name": "Curtin University",
+    "domain": "curtin.edu.au",
+    "country": "AU"
+  },
+  {
+    "rank": 184,
+    "name": "University of Bern",
+    "domain": "unibe.ch",
+    "country": "CH"
+  },
+  {
+    "rank": 184,
+    "name": "University of Wollongong",
+    "domain": "uow.edu.au",
+    "country": "AU"
+  },
+  {
+    "rank": 186,
+    "name": "Wuhan University",
+    "domain": "whu.edu.cn",
+    "country": "CN"
+  },
+  {
+    "rank": 187,
+    "name": "Tecnológico de Monterrey (ITESM)",
+    "domain": "itesm.mx",
+    "country": "MX"
+  },
+  {
+    "rank": 187,
+    "name": "University Complutense Madrid",
+    "domain": "ucm.es",
+    "country": "ES"
+  },
+  {
+    "rank": 189,
+    "name": "UNIVERSITAS INDONESIA",
+    "domain": "ui.ac.id",
+    "country": "ID"
+  },
+  {
+    "rank": 190,
+    "name": "Ohio State University",
+    "domain": "osu.edu",
+    "country": "US"
+  },
+  {
+    "rank": 191,
+    "name": "Queen's University, Ontario",
+    "domain": "queensu.ca",
+    "country": "CA"
+  },
+  {
+    "rank": 191,
+    "name": "Université Catholique de Louvain (UCL)",
+    "domain": "uclouvain.be",
+    "country": "BE"
+  },
+  {
+    "rank": 193,
+    "name": "Universität Hamburg",
+    "domain": "uni-hamburg.de",
+    "country": "DE"
+  },
+  {
+    "rank": 194,
+    "name": "University of Reading",
+    "domain": "reading.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 194,
+    "name": "Vrije Universiteit Amsterdam",
+    "domain": "vu.nl",
+    "country": "NL"
+  },
+  {
+    "rank": 196,
+    "name": "Waseda University",
+    "domain": "waseda.jp",
+    "country": "JP"
+  },
+  {
+    "rank": 197,
+    "name": "University of Otago",
+    "domain": "otago.ac.nz",
+    "country": "NZ"
+  },
+  {
+    "rank": 197,
+    "name": "Vienna University of Technology",
+    "domain": "tuwien.ac.at",
+    "country": "AT"
+  },
+  {
+    "rank": 199,
+    "name": "National Yang Ming Chiao Tung University",
+    "domain": "ncku.edu.tw",
+    "country": "TA"
+  },
+  {
+    "rank": 199,
+    "name": "Queen's University Belfast",
+    "domain": "utwente.nl",
+    "country": "UK"
+  },
+  {
+    "rank": 201,
+    "name": "Universität Freiburg",
+    "domain": "ens-lyon.fr",
+    "country": "DE"
+  },
+  {
+    "rank": 202,
+    "name": "University of Gothenburg",
+    "domain": "uam.es",
+    "country": "SE"
+  },
+  {
+    "rank": 203,
+    "name": "National Cheng Kung University (NCKU)",
+    "domain": "deakin.edu.au",
+    "country": "TA"
+  },
+  {
+    "rank": 203,
+    "name": "University of Twente",
+    "domain": "uni-bonn.de",
+    "country": "NL"
+  },
+  {
+    "rank": 205,
+    "name": "Ecole Normale Supérieure de Lyon",
+    "domain": "umd.edu",
+    "country": "FR"
+  },
+  {
+    "rank": 206,
+    "name": "Universidad Autónoma de Madrid",
+    "domain": "umn.edu",
+    "country": "ES"
+  },
+  {
+    "rank": 207,
+    "name": "Deakin University",
+    "domain": "ucalgary.ca",
+    "country": "AU"
+  },
+  {
+    "rank": 207,
+    "name": "Rheinische Friedrich-Wilhelms-Universität Bonn",
+    "domain": "udea.edu.co",
+    "country": "DE"
+  },
+  {
+    "rank": 207,
+    "name": "University of Maryland, College Park",
+    "domain": "ufl.edu",
+    "country": "US"
+  },
+  {
+    "rank": 210,
+    "name": "University of Minnesota (System)",
+    "domain": "unil.ch",
+    "country": "US"
+  },
+  {
+    "rank": 211,
+    "name": "University of Calgary",
+    "domain": "uni-tuebingen.de",
+    "country": "CA"
+  },
+  {
+    "rank": 212,
+    "name": "Universidad de Los Andes Colombia",
+    "domain": "iitkgp.ac.in",
+    "country": "CO"
+  },
+  {
+    "rank": 212,
+    "name": "University of Florida",
+    "domain": "keio.ac.jp",
+    "country": "US"
+  },
+  {
+    "rank": 212,
+    "name": "University of Lausanne",
+    "domain": "tu-dresden.de",
+    "country": "CH"
+  },
+  {
+    "rank": 215,
+    "name": "Eberhard Karls Universität Tübingen",
+    "domain": "iisc.ac.in",
+    "country": "DE"
+  },
+  {
+    "rank": 215,
+    "name": "Indian Institute of Technology Kharagpur (IITKGP)",
+    "domain": "uottawa.ca",
+    "country": "IN"
+  },
+  {
+    "rank": 215,
+    "name": "Keio University",
+    "domain": "chula.ac.th",
+    "country": "JP"
+  },
+  {
+    "rank": 218,
+    "name": "Technische Universität Dresden",
+    "domain": "iitk.ac.in",
+    "country": "DE"
+  },
+  {
+    "rank": 219,
+    "name": "Indian Institute of Science (IISc) Bangalore",
+    "domain": "tauex.ac.il",
+    "country": "IN"
+  },
+  {
+    "rank": 219,
+    "name": "University of Ottawa",
+    "domain": "ugm.ac.id",
+    "country": "CA"
+  },
+  {
+    "rank": 221,
+    "name": "Chulalongkorn University",
+    "domain": "lboro.ac.uk",
+    "country": "TH"
+  },
+  {
+    "rank": 222,
+    "name": "Indian Institute of Technology Kanpur (IITK)",
+    "domain": "iitk.ac.in",
+    "country": "IN"
+  },
+  {
+    "rank": 223,
+    "name": "Tel Aviv University",
+    "domain": "tau.ac.il",
+    "country": "IL"
+  },
+  {
+    "rank": 224,
+    "name": "Universitas Gadjah Mada",
+    "domain": "ugm.ac.id",
+    "country": "ID"
+  },
+  {
+    "rank": 225,
+    "name": "Loughborough University",
+    "domain": "lboro.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 226,
+    "name": "Queensland University of Technology",
+    "domain": "qut.edu.au",
+    "country": "AU"
+  },
+  {
+    "rank": 227,
+    "name": "The University of Newcastle",
+    "domain": "newcastle.edu.au",
+    "country": "AU"
+  },
+  {
+    "rank": 227,
+    "name": "Université Libre de Bruxelles (ULB)",
+    "domain": "ulb.ac.be",
+    "country": "BE"
+  },
+  {
+    "rank": 229,
+    "name": "United Arab Emirates University",
+    "domain": "uaeu.ac.ae",
+    "country": "AE"
+  },
+  {
+    "rank": 230,
+    "name": "Massey University",
+    "domain": "massey.ac.nz",
+    "country": "NZ"
+  },
+  {
+    "rank": 230,
+    "name": "University of Lisbon",
+    "domain": "ulisboa.pt",
+    "country": "PT"
+  },
+  {
+    "rank": 232,
+    "name": "Universität Erlangen-Nürnberg",
+    "domain": "fau.eu",
+    "country": "DE"
+  },
+  {
+    "rank": 233,
+    "name": "La Trobe University",
+    "domain": "latrobe.edu.au",
+    "country": "AU"
+  },
+  {
+    "rank": 233,
+    "name": "Universidade Estadual de Campinas (Unicamp)",
+    "domain": "unicamp.br",
+    "country": "BR"
+  },
+  {
+    "rank": 233,
+    "name": "University of Padova",
+    "domain": "unipd.it",
+    "country": "IT"
+  },
+  {
+    "rank": 236,
+    "name": "University of Rochester",
+    "domain": "rochester.edu",
+    "country": "US"
+  },
+  {
+    "rank": 237,
+    "name": "American University of Beirut (AUB)",
+    "domain": "aub.edu.lb",
+    "country": "LB"
+  },
+  {
+    "rank": 237,
+    "name": "University of Porto",
+    "domain": "up.pt",
+    "country": "PT"
+  },
+  {
+    "rank": 239,
+    "name": "Maastricht University",
+    "domain": "maastrichtuniversity.nl",
+    "country": "NL"
+  },
+  {
+    "rank": 240,
+    "name": "Hebrew University of Jerusalem",
+    "domain": "huji.ac.il",
+    "country": "IL"
+  },
+  {
+    "rank": 240,
+    "name": "Victoria University of Wellington",
+    "domain": "vuw.ac.nz",
+    "country": "NZ"
+  },
+  {
+    "rank": 242,
+    "name": "Politecnico di Torino",
+    "domain": "polito.it",
+    "country": "IT"
+  },
+  {
+    "rank": 243,
+    "name": "Georg-August-Universität Göttingen",
+    "domain": "uni-goettingen.de",
+    "country": "DE"
+  },
+  {
+    "rank": 244,
+    "name": "Hamad Bin Khalifa University",
+    "domain": "hbku.edu.qa",
+    "country": "QA"
+  },
+  {
+    "rank": 244,
+    "name": "Hong Kong Baptist University",
+    "domain": "hkbu.edu.hk",
+    "country": "HK"
+  },
+  {
+    "rank": 246,
+    "name": "University College Cork",
+    "domain": "ucc.ie",
+    "country": "IE"
+  },
+  {
+    "rank": 247,
+    "name": "Beijing Normal University",
+    "domain": "bnu.edu.cn",
+    "country": "CN"
+  },
+  {
+    "rank": 247,
+    "name": "Dartmouth College",
+    "domain": "dartmouth.edu",
+    "country": "US"
+  },
+  {
+    "rank": 247,
+    "name": "University of Massachusetts, Amherst",
+    "domain": "umass.edu",
+    "country": "US"
+  },
+  {
+    "rank": 250,
+    "name": "Vanderbilt University",
+    "domain": "vanderbilt.edu",
+    "country": "US"
+  },
+  {
+    "rank": 251,
+    "name": "Universiti Teknologi Petronas (UTP)",
+    "domain": "utp.edu.my",
+    "country": "MY"
+  },
+  {
+    "rank": 251,
+    "name": "University of Strathclyde",
+    "domain": "strath.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 253,
+    "name": "Taylor's University (Malaysia)",
+    "domain": "taylors.edu.my",
+    "country": "MY"
+  },
+  {
+    "rank": 253,
+    "name": "Technische Universität Darmstadt",
+    "domain": "tu-darmstadt.de",
+    "country": "DE"
+  },
+  {
+    "rank": 255,
+    "name": "Bandung Institute of Technology (ITB)",
+    "domain": "itb.ac.id",
+    "country": "ID"
+  },
+  {
+    "rank": 256,
+    "name": "Harbin Institute of Technology",
+    "domain": "hit.edu.cn",
+    "country": "CN"
+  },
+  {
+    "rank": 257,
+    "name": "Tianjin University",
+    "domain": "tju.edu.cn",
+    "country": "CN"
+  },
+  {
+    "rank": 257,
+    "name": "Université Paris 1 Panthéon-Sorbonne",
+    "domain": "sorbonne-universite.fr",
+    "country": "FR"
+  },
+  {
+    "rank": 259,
+    "name": "Beijing Institute of Technology",
+    "domain": "bit.edu.cn",
+    "country": "CN"
+  },
+  {
+    "rank": 259,
+    "name": "Universidad Nacional de Colombia",
+    "domain": "unal.edu.co",
+    "country": "CO"
+  },
+  {
+    "rank": 261,
+    "name": "University of Canterbury",
+    "domain": "canterbury.ac.nz",
+    "country": "NZ"
+  },
+  {
+    "rank": 262,
+    "name": "University of Aberdeen",
+    "domain": "abdn.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 262,
+    "name": "University of Navarra",
+    "domain": "unav.edu",
+    "country": "ES"
+  },
+  {
+    "rank": 262,
+    "name": "University of Surrey",
+    "domain": "surrey.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 265,
+    "name": "Charles University",
+    "domain": "cuni.cz",
+    "country": "CZ"
+  },
+  {
+    "rank": 265,
+    "name": "Universitat Pompeu Fabra",
+    "domain": "upf.edu",
+    "country": "ES"
+  },
+  {
+    "rank": 267,
+    "name": "Norwegian University of Science And Technology",
+    "domain": "ntnu.no",
+    "country": "NO"
+  },
+  {
+    "rank": 268,
+    "name": "Griffith University",
+    "domain": "griffith.edu.au",
+    "country": "AU"
+  },
+  {
+    "rank": 269,
+    "name": "Middle East Technical University",
+    "domain": "metu.edu.tr",
+    "country": "TR"
+  },
+  {
+    "rank": 269,
+    "name": "UCSI University",
+    "domain": "ucsi.edu.my",
+    "country": "MY"
+  },
+  {
+    "rank": 271,
+    "name": "University of Warsaw",
+    "domain": "uw.edu.pl",
+    "country": "PL"
+  },
+  {
+    "rank": 272,
+    "name": "American University of Sharjah (AUS)",
+    "domain": "aus.edu",
+    "country": "AE"
+  },
+  {
+    "rank": 272,
+    "name": "North Carolina State University",
+    "domain": "ncsu.edu",
+    "country": "US"
+  },
+  {
+    "rank": 272,
+    "name": "Universität zu Köln",
+    "domain": "uni-koeln.de",
+    "country": "DE"
+  },
+  {
+    "rank": 275,
+    "name": "University of Virginia",
+    "domain": "virginia.edu",
+    "country": "US"
+  },
+  {
+    "rank": 276,
+    "name": "Sun Yat-sen University",
+    "domain": "sysu.edu.cn",
+    "country": "CN"
+  },
+  {
+    "rank": 276,
+    "name": "University of Milan",
+    "domain": "unimi.it",
+    "country": "IT"
+  },
+  {
+    "rank": 278,
+    "name": "University of Sussex",
+    "domain": "sussex.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 279,
+    "name": "Radboud University Nijmegen",
+    "domain": "ru.nl",
+    "country": "NL"
+  },
+  {
+    "rank": 280,
+    "name": "University of Antwerp",
+    "domain": "uantwerpen.be",
+    "country": "BE"
+  },
+  {
+    "rank": 281,
+    "name": "University of Pittsburgh",
+    "domain": "pitt.edu",
+    "country": "US"
+  },
+  {
+    "rank": 281,
+    "name": "University of Waikato",
+    "domain": "waikato.ac.nz",
+    "country": "NZ"
+  },
+  {
+    "rank": 283,
+    "name": "Dalhousie University",
+    "domain": "dal.ca",
+    "country": "CA"
+  },
+  {
+    "rank": 284,
+    "name": "University of Galway / Ollscoil na Gaillimhe",
+    "domain": "universityofgalway.ie",
+    "country": "IE"
+  },
+  {
+    "rank": 285,
+    "name": "Georgetown University",
+    "domain": "georgetown.edu",
+    "country": "US"
+  },
+  {
+    "rank": 285,
+    "name": "University of Macau",
+    "domain": "um.edu.mo",
+    "country": "MA"
+  },
+  {
+    "rank": 287,
+    "name": "Heriot-Watt University",
+    "domain": "hw.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 287,
+    "name": "Universitas Airlangga",
+    "domain": "airlangga.ac.id",
+    "country": "ID"
+  },
+  {
+    "rank": 287,
+    "name": "University of Arizona",
+    "domain": "arizona.edu",
+    "country": "US"
+  },
+  {
+    "rank": 287,
+    "name": "University of Bergen",
+    "domain": "uib.no",
+    "country": "NO"
+  },
+  {
+    "rank": 291,
+    "name": "University of The Witwatersrand",
+    "domain": "wits.ac.za",
+    "country": "ZA"
+  },
+  {
+    "rank": 292,
+    "name": "Swansea University",
+    "domain": "swansea.ac.uk",
+    "country": "UK"
+  },
+  {
+    "rank": 293,
+    "name": "University of California, Irvine",
+    "domain": "uci.edu",
+    "country": "US"
+  },
+  {
+    "rank": 294,
+    "name": "Case Western Reserve University",
+    "domain": "case.edu",
+    "country": "US"
+  },
+  {
+    "rank": 294,
+    "name": "Swinburne University of Technology",
+    "domain": "swinburne.edu.au",
+    "country": "AU"
+  },
+  {
+    "rank": 294,
+    "name": "University of Notre Dame",
+    "domain": "nd.edu",
+    "country": "US"
+  },
+  {
+    "rank": 294,
+    "name": "Vrije Universiteit Brussel (VUB)",
+    "domain": "vub.ac.be",
+    "country": "BE"
+  },
+  {
+    "rank": 298,
+    "name": "Istanbul Technical University",
+    "domain": "itu.edu.tr",
+    "country": "TR"
+  },
+  {
+    "rank": 299,
+    "name": "University of Colorado Boulder",
+    "domain": "colorado.edu",
+    "country": "US"
+  },
+  {
+    "rank": 300,
+    "name": "Université Paris Cité",
+    "domain": "paris.cite.fr",
+    "country": "FR"
+  }
+]

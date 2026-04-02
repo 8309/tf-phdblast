@@ -1,0 +1,345 @@
+{
+  "field": "Pharmacology",
+  "rankings": {
+    "usnews": {
+      "url": "https://www.usnews.com/best-graduate-schools/top-science-schools/pharmacology-rankings",
+      "schools": [
+        {
+          "rank": 1,
+          "name": "Johns Hopkins University",
+          "domain": "jhu.edu",
+          "country": "US"
+        },
+        {
+          "rank": 2,
+          "name": "University of California, San Francisco",
+          "domain": "ucsf.edu",
+          "country": "US"
+        },
+        {
+          "rank": 3,
+          "name": "University of Michigan-Ann Arbor",
+          "domain": "umich.edu",
+          "country": "US"
+        },
+        {
+          "rank": 4,
+          "name": "Yale University",
+          "domain": "yale.edu",
+          "country": "US"
+        },
+        {
+          "rank": 5,
+          "name": "University of Pennsylvania",
+          "domain": "upenn.edu",
+          "country": "US"
+        },
+        {
+          "rank": 6,
+          "name": "Duke University",
+          "domain": "duke.edu",
+          "country": "US"
+        },
+        {
+          "rank": 7,
+          "name": "Vanderbilt University",
+          "domain": "vanderbilt.edu",
+          "country": "US"
+        },
+        {
+          "rank": 8,
+          "name": "University of North Carolina at Chapel Hill",
+          "domain": "unc.edu",
+          "country": "US"
+        },
+        {
+          "rank": 9,
+          "name": "Columbia University",
+          "domain": "columbia.edu",
+          "country": "US"
+        },
+        {
+          "rank": 10,
+          "name": "University of California, San Diego",
+          "domain": "ucsd.edu",
+          "country": "US"
+        },
+        {
+          "rank": 11,
+          "name": "Emory University",
+          "domain": "emory.edu",
+          "country": "US"
+        },
+        {
+          "rank": 12,
+          "name": "University of Wisconsin-Madison",
+          "domain": "wisc.edu",
+          "country": "US"
+        },
+        {
+          "rank": 13,
+          "name": "Washington University in St. Louis",
+          "domain": "washu.edu",
+          "country": "US"
+        },
+        {
+          "rank": 14,
+          "name": "University of Washington",
+          "domain": "washington.edu",
+          "country": "US"
+        },
+        {
+          "rank": 15,
+          "name": "University of Pittsburgh",
+          "domain": "pitt.edu",
+          "country": "US"
+        },
+        {
+          "rank": 16,
+          "name": "Harvard University",
+          "domain": "harvard.edu",
+          "country": "US"
+        },
+        {
+          "rank": 17,
+          "name": "Stanford University",
+          "domain": "stanford.edu",
+          "country": "US"
+        },
+        {
+          "rank": 18,
+          "name": "University of Chicago",
+          "domain": "uchicago.edu",
+          "country": "US"
+        },
+        {
+          "rank": 19,
+          "name": "Cornell University",
+          "domain": "cornell.edu",
+          "country": "US"
+        },
+        {
+          "rank": 20,
+          "name": "University of Iowa",
+          "domain": "uiowa.edu",
+          "country": "US"
+        }
+      ]
+    },
+    "qs": {
+      "url": "https://www.topuniversities.com/university-rankings/university-subject-rankings/pharmacy-pharmacology",
+      "schools": [
+        {
+          "rank": 1,
+          "name": "Harvard University",
+          "domain": "harvard.edu",
+          "country": "US"
+        },
+        {
+          "rank": 2,
+          "name": "Johns Hopkins University",
+          "domain": "jhu.edu",
+          "country": "US"
+        },
+        {
+          "rank": 3,
+          "name": "University of California, San Francisco",
+          "domain": "ucsf.edu",
+          "country": "US"
+        },
+        {
+          "rank": 4,
+          "name": "Stanford University",
+          "domain": "stanford.edu",
+          "country": "US"
+        },
+        {
+          "rank": 5,
+          "name": "University of North Carolina at Chapel Hill",
+          "domain": "unc.edu",
+          "country": "US"
+        },
+        {
+          "rank": 6,
+          "name": "University of Michigan-Ann Arbor",
+          "domain": "umich.edu",
+          "country": "US"
+        },
+        {
+          "rank": 7,
+          "name": "University of Pennsylvania",
+          "domain": "upenn.edu",
+          "country": "US"
+        },
+        {
+          "rank": 8,
+          "name": "Yale University",
+          "domain": "yale.edu",
+          "country": "US"
+        },
+        {
+          "rank": 9,
+          "name": "Columbia University",
+          "domain": "columbia.edu",
+          "country": "US"
+        },
+        {
+          "rank": 10,
+          "name": "Duke University",
+          "domain": "duke.edu",
+          "country": "US"
+        },
+        {
+          "rank": 11,
+          "name": "University of California, San Diego",
+          "domain": "ucsd.edu",
+          "country": "US"
+        },
+        {
+          "rank": 12,
+          "name": "University of Minnesota",
+          "domain": "twin-cities.umn.edu",
+          "country": "US"
+        },
+        {
+          "rank": 13,
+          "name": "University of Wisconsin-Madison",
+          "domain": "wisc.edu",
+          "country": "US"
+        },
+        {
+          "rank": 14,
+          "name": "Purdue University West Lafayette",
+          "domain": "purdue.edu",
+          "country": "US"
+        },
+        {
+          "rank": 15,
+          "name": "University of Florida",
+          "domain": "ufl.edu",
+          "country": "US"
+        },
+        {
+          "rank": 16,
+          "name": "University of Cambridge",
+          "domain": "cam.ac.uk",
+          "country": "UK"
+        },
+        {
+          "rank": 17,
+          "name": "University of Oxford",
+          "domain": "ox.ac.uk",
+          "country": "UK"
+        },
+        {
+          "rank": 18,
+          "name": "ETH Zurich",
+          "domain": "ethz.ch",
+          "country": "CH"
+        },
+        {
+          "rank": 19,
+          "name": "University College London",
+          "domain": "ucl.ac.uk",
+          "country": "UK"
+        },
+        {
+          "rank": 20,
+          "name": "University of Tokyo",
+          "domain": "u-tokyo.ac.jp",
+          "country": "JP"
+        },
+        {
+          "rank": 21,
+          "name": "Tsinghua University",
+          "domain": "tsinghua.edu.cn",
+          "country": "CN"
+        },
+        {
+          "rank": 22,
+          "name": "Peking University",
+          "domain": "pku.edu.cn",
+          "country": "CN"
+        },
+        {
+          "rank": 23,
+          "name": "National University of Singapore",
+          "domain": "nus.edu.sg",
+          "country": "SG"
+        },
+        {
+          "rank": 24,
+          "name": "University of Toronto",
+          "domain": "utoronto.ca",
+          "country": "CA"
+        },
+        {
+          "rank": 25,
+          "name": "University of Melbourne",
+          "domain": "unimelb.edu.au",
+          "country": "AU"
+        },
+        {
+          "rank": 26,
+          "name": "Australian National University",
+          "domain": "anu.edu.au",
+          "country": "AU"
+        },
+        {
+          "rank": 27,
+          "name": "University of Edinburgh",
+          "domain": "ed.ac.uk",
+          "country": "UK"
+        },
+        {
+          "rank": 28,
+          "name": "Heidelberg University",
+          "domain": "uni-heidelberg.de",
+          "country": "DE"
+        },
+        {
+          "rank": 29,
+          "name": "LMU Munich",
+          "domain": "lmu.de",
+          "country": "DE"
+        },
+        {
+          "rank": 30,
+          "name": "Kyoto University",
+          "domain": "kyoto-u.ac.jp",
+          "country": "JP"
+        },
+        {
+          "rank": 31,
+          "name": "Seoul National University",
+          "domain": "snu.ac.kr",
+          "country": "KR"
+        },
+        {
+          "rank": 32,
+          "name": "Sorbonne University",
+          "domain": "sorbonne-universite.fr",
+          "country": "FR"
+        },
+        {
+          "rank": 33,
+          "name": "University of Hong Kong",
+          "domain": "hku.hk",
+          "country": "HK"
+        },
+        {
+          "rank": 34,
+          "name": "McGill University",
+          "domain": "mcgill.ca",
+          "country": "CA"
+        },
+        {
+          "rank": 35,
+          "name": "EPFL",
+          "domain": "epfl.ch",
+          "country": "CH"
+        }
+      ]
+    }
+  }
+}

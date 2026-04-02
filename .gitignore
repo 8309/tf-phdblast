@@ -1,0 +1,17 @@
+# Secrets
+backend/.env
+
+# Python
+backend/venv/
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+.next/
+
+# OS
+.DS_Store
+
+# Test uploads (may contain user resumes)
+*.pdf

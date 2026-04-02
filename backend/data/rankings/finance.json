@@ -1,0 +1,495 @@
+{
+  "field": "Finance",
+  "rankings": {
+    "usnews": {
+      "url": "https://www.usnews.com/best-graduate-schools/top-business-schools/finance-rankings",
+      "schools": [
+        {
+          "rank": 1,
+          "name": "University of Pennsylvania",
+          "domain": "upenn.edu",
+          "country": "US"
+        },
+        {
+          "rank": 2,
+          "name": "University of Chicago",
+          "domain": "uchicago.edu",
+          "country": "US"
+        },
+        {
+          "rank": 3,
+          "name": "New York University",
+          "domain": "nyu.edu",
+          "country": "US"
+        },
+        {
+          "rank": 4,
+          "name": "Stanford University",
+          "domain": "stanford.edu",
+          "country": "US"
+        },
+        {
+          "rank": 5,
+          "name": "Massachusetts Institute of Technology",
+          "domain": "web.mit.edu",
+          "country": "US"
+        },
+        {
+          "rank": 6,
+          "name": "Columbia University",
+          "domain": "columbia.edu",
+          "country": "US"
+        },
+        {
+          "rank": 7,
+          "name": "Harvard University",
+          "domain": "harvard.edu",
+          "country": "US"
+        },
+        {
+          "rank": 8,
+          "name": "University of California, Berkeley",
+          "domain": "berkeley.edu",
+          "country": "US"
+        },
+        {
+          "rank": 9,
+          "name": "Northwestern University",
+          "domain": "northwestern.edu",
+          "country": "US"
+        },
+        {
+          "rank": 10,
+          "name": "University of Michigan-Ann Arbor",
+          "domain": "umich.edu",
+          "country": "US"
+        },
+        {
+          "rank": 11,
+          "name": "Duke University",
+          "domain": "duke.edu",
+          "country": "US"
+        },
+        {
+          "rank": 12,
+          "name": "Yale University",
+          "domain": "yale.edu",
+          "country": "US"
+        },
+        {
+          "rank": 13,
+          "name": "University of California, Los Angeles",
+          "domain": "ucla.edu",
+          "country": "US"
+        },
+        {
+          "rank": 14,
+          "name": "University of Texas at Austin",
+          "domain": "utexas.edu",
+          "country": "US"
+        },
+        {
+          "rank": 15,
+          "name": "University of Rochester",
+          "domain": "rochester.edu",
+          "country": "US"
+        },
+        {
+          "rank": 16,
+          "name": "Boston University",
+          "domain": "bu.edu",
+          "country": "US"
+        },
+        {
+          "rank": 17,
+          "name": "University of Virginia",
+          "domain": "virginia.edu",
+          "country": "US"
+        },
+        {
+          "rank": 18,
+          "name": "Cornell University",
+          "domain": "cornell.edu",
+          "country": "US"
+        },
+        {
+          "rank": 19,
+          "name": "Ohio State University",
+          "domain": "osu.edu",
+          "country": "US"
+        },
+        {
+          "rank": 20,
+          "name": "University of Southern California",
+          "domain": "usc.edu",
+          "country": "US"
+        },
+        {
+          "rank": 21,
+          "name": "Carnegie Mellon University",
+          "domain": "cmu.edu",
+          "country": "US"
+        },
+        {
+          "rank": 22,
+          "name": "Indiana University Bloomington",
+          "domain": "bloomington.iu.edu",
+          "country": "US"
+        },
+        {
+          "rank": 23,
+          "name": "University of Florida",
+          "domain": "ufl.edu",
+          "country": "US"
+        },
+        {
+          "rank": 24,
+          "name": "Rice University",
+          "domain": "rice.edu",
+          "country": "US"
+        },
+        {
+          "rank": 25,
+          "name": "Washington University in St. Louis",
+          "domain": "washu.edu",
+          "country": "US"
+        }
+      ]
+    },
+    "qs": {
+      "url": "https://www.topuniversities.com/university-rankings/university-subject-rankings/accounting-finance",
+      "schools": [
+        {
+          "rank": 1,
+          "name": "Harvard University",
+          "domain": "harvard.edu",
+          "country": "US"
+        },
+        {
+          "rank": 2,
+          "name": "Massachusetts Institute of Technology",
+          "domain": "web.mit.edu",
+          "country": "US"
+        },
+        {
+          "rank": 3,
+          "name": "Stanford University",
+          "domain": "stanford.edu",
+          "country": "US"
+        },
+        {
+          "rank": 4,
+          "name": "University of Pennsylvania",
+          "domain": "upenn.edu",
+          "country": "US"
+        },
+        {
+          "rank": 5,
+          "name": "University of Chicago",
+          "domain": "uchicago.edu",
+          "country": "US"
+        },
+        {
+          "rank": 6,
+          "name": "New York University",
+          "domain": "nyu.edu",
+          "country": "US"
+        },
+        {
+          "rank": 7,
+          "name": "Columbia University",
+          "domain": "columbia.edu",
+          "country": "US"
+        },
+        {
+          "rank": 8,
+          "name": "University of California, Berkeley",
+          "domain": "berkeley.edu",
+          "country": "US"
+        },
+        {
+          "rank": 9,
+          "name": "Yale University",
+          "domain": "yale.edu",
+          "country": "US"
+        },
+        {
+          "rank": 10,
+          "name": "Northwestern University",
+          "domain": "northwestern.edu",
+          "country": "US"
+        },
+        {
+          "rank": 11,
+          "name": "University of Michigan-Ann Arbor",
+          "domain": "umich.edu",
+          "country": "US"
+        },
+        {
+          "rank": 12,
+          "name": "Duke University",
+          "domain": "duke.edu",
+          "country": "US"
+        },
+        {
+          "rank": 13,
+          "name": "University of California, Los Angeles",
+          "domain": "ucla.edu",
+          "country": "US"
+        },
+        {
+          "rank": 14,
+          "name": "Cornell University",
+          "domain": "cornell.edu",
+          "country": "US"
+        },
+        {
+          "rank": 15,
+          "name": "University of Texas at Austin",
+          "domain": "utexas.edu",
+          "country": "US"
+        },
+        {
+          "rank": 16,
+          "name": "University of Oxford",
+          "domain": "ox.ac.uk",
+          "country": "UK"
+        },
+        {
+          "rank": 17,
+          "name": "University of Cambridge",
+          "domain": "cam.ac.uk",
+          "country": "UK"
+        },
+        {
+          "rank": 18,
+          "name": "London School of Economics",
+          "domain": "lse.ac.uk",
+          "country": "UK"
+        },
+        {
+          "rank": 19,
+          "name": "University College London",
+          "domain": "ucl.ac.uk",
+          "country": "UK"
+        },
+        {
+          "rank": 20,
+          "name": "University of Toronto",
+          "domain": "utoronto.ca",
+          "country": "CA"
+        },
+        {
+          "rank": 21,
+          "name": "National University of Singapore",
+          "domain": "nus.edu.sg",
+          "country": "SG"
+        },
+        {
+          "rank": 22,
+          "name": "University of Melbourne",
+          "domain": "unimelb.edu.au",
+          "country": "AU"
+        },
+        {
+          "rank": 23,
+          "name": "Peking University",
+          "domain": "pku.edu.cn",
+          "country": "CN"
+        },
+        {
+          "rank": 24,
+          "name": "University of Tokyo",
+          "domain": "u-tokyo.ac.jp",
+          "country": "JP"
+        },
+        {
+          "rank": 25,
+          "name": "ETH Zurich",
+          "domain": "ethz.ch",
+          "country": "CH"
+        },
+        {
+          "rank": 26,
+          "name": "University of Hong Kong",
+          "domain": "hku.hk",
+          "country": "HK"
+        },
+        {
+          "rank": 27,
+          "name": "Seoul National University",
+          "domain": "snu.ac.kr",
+          "country": "KR"
+        }
+      ]
+    },
+    "arwu": {
+      "url": "https://www.shanghairanking.com/rankings/gras/2025/RS0701",
+      "note": "ARWU Finance",
+      "schools": [
+        {
+          "rank": 1,
+          "name": "University of Chicago",
+          "domain": "uchicago.edu",
+          "country": "US"
+        },
+        {
+          "rank": 2,
+          "name": "University of Pennsylvania",
+          "domain": "upenn.edu",
+          "country": "US"
+        },
+        {
+          "rank": 3,
+          "name": "New York University",
+          "domain": "nyu.edu",
+          "country": "US"
+        },
+        {
+          "rank": 4,
+          "name": "Stanford University",
+          "domain": "stanford.edu",
+          "country": "US"
+        },
+        {
+          "rank": 5,
+          "name": "Harvard University",
+          "domain": "harvard.edu",
+          "country": "US"
+        },
+        {
+          "rank": 6,
+          "name": "Massachusetts Institute of Technology",
+          "domain": "web.mit.edu",
+          "country": "US"
+        },
+        {
+          "rank": 7,
+          "name": "Columbia University",
+          "domain": "columbia.edu",
+          "country": "US"
+        },
+        {
+          "rank": 8,
+          "name": "University of California, Berkeley",
+          "domain": "berkeley.edu",
+          "country": "US"
+        },
+        {
+          "rank": 9,
+          "name": "Northwestern University",
+          "domain": "northwestern.edu",
+          "country": "US"
+        },
+        {
+          "rank": 10,
+          "name": "Duke University",
+          "domain": "duke.edu",
+          "country": "US"
+        },
+        {
+          "rank": 11,
+          "name": "University of Michigan-Ann Arbor",
+          "domain": "umich.edu",
+          "country": "US"
+        },
+        {
+          "rank": 12,
+          "name": "University of Texas at Austin",
+          "domain": "utexas.edu",
+          "country": "US"
+        },
+        {
+          "rank": 13,
+          "name": "Yale University",
+          "domain": "yale.edu",
+          "country": "US"
+        },
+        {
+          "rank": 14,
+          "name": "University of California, Los Angeles",
+          "domain": "ucla.edu",
+          "country": "US"
+        },
+        {
+          "rank": 15,
+          "name": "University of Rochester",
+          "domain": "rochester.edu",
+          "country": "US"
+        },
+        {
+          "rank": 16,
+          "name": "University of Oxford",
+          "domain": "ox.ac.uk",
+          "country": "UK"
+        },
+        {
+          "rank": 17,
+          "name": "University of Cambridge",
+          "domain": "cam.ac.uk",
+          "country": "UK"
+        },
+        {
+          "rank": 18,
+          "name": "London School of Economics",
+          "domain": "lse.ac.uk",
+          "country": "UK"
+        },
+        {
+          "rank": 19,
+          "name": "University College London",
+          "domain": "ucl.ac.uk",
+          "country": "UK"
+        },
+        {
+          "rank": 20,
+          "name": "University of Toronto",
+          "domain": "utoronto.ca",
+          "country": "CA"
+        },
+        {
+          "rank": 21,
+          "name": "National University of Singapore",
+          "domain": "nus.edu.sg",
+          "country": "SG"
+        },
+        {
+          "rank": 22,
+          "name": "University of Melbourne",
+          "domain": "unimelb.edu.au",
+          "country": "AU"
+        },
+        {
+          "rank": 23,
+          "name": "Peking University",
+          "domain": "pku.edu.cn",
+          "country": "CN"
+        },
+        {
+          "rank": 24,
+          "name": "University of Tokyo",
+          "domain": "u-tokyo.ac.jp",
+          "country": "JP"
+        },
+        {
+          "rank": 25,
+          "name": "ETH Zurich",
+          "domain": "ethz.ch",
+          "country": "CH"
+        },
+        {
+          "rank": 26,
+          "name": "University of Hong Kong",
+          "domain": "hku.hk",
+          "country": "HK"
+        },
+        {
+          "rank": 27,
+          "name": "Seoul National University",
+          "domain": "snu.ac.kr",
+          "country": "KR"
+        }
+      ]
+    }
+  }
+}

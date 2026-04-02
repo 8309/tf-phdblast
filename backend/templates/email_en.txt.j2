@@ -1,0 +1,19 @@
+Dear {{ professor_title or 'Professor' }} {{ professor_name }},
+
+I hope this message finds you well. My name is {{ applicant_name }}, and I am currently {{ applicant_current_affiliation }} with a background in {{ applicant_highest_degree }}.
+
+I am writing to express my strong interest in potential {{ applicant_target_program }} opportunities in your group at {{ professor_university }}. I found your profile ({{ profile_url }}) and was particularly interested in your work on: {{ professor_research }}.
+
+My current research interests are {{ applicant_research_interests }}. Briefly, my relevant experience includes: {{ applicant_experience_summary }}.
+
+I believe my background and motivation align well with your group's directions. {{ applicant_motivation }}
+
+{% if applicant_publications %}Selected publications or outputs: {{ applicant_publications }}.
+
+{% endif %}If you are accepting new doctoral students, I would be very grateful for the opportunity to discuss possible supervision and fit.
+
+Thank you for your time and consideration.
+
+Sincerely,
+{{ applicant_name }}
+{{ applicant_email }}

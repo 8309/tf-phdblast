@@ -1,0 +1,15 @@
+full_name: "Alex Chen"
+email: "alex.chen@example.com"
+current_affiliation: "MSc graduate in Computer Science, Example University"
+highest_degree: "MSc in Computer Science"
+research_interests:
+  - "machine learning"
+  - "graph neural networks"
+  - "trustworthy AI"
+experience_summary: "I worked on graph representation learning projects, implemented large-scale training pipelines, and collaborated on applied ML research with industry datasets."
+publications:
+  - "Chen et al., Graph-based Domain Adaptation, arXiv 2025"
+  - "Chen et al., Reliable Node Classification under Shift, Workshop 2024"
+motivation: "I am especially interested in combining theory-driven methods with practical systems for robust and interpretable models."
+target_program: "PhD"
+cv_path: "/Users/albert/Desktop/CV .pdf"
