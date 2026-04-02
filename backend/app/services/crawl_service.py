@@ -402,34 +402,82 @@ def _copy_cached_to_session(
 
 import re
 
+# ---------------------------------------------------------------------------
+# Domain normalization — strip common prefixes so "web.mit.edu" == "mit.edu"
+# ---------------------------------------------------------------------------
+_DOMAIN_PREFIX_RE = re.compile(r"^(?:www\d?|web|m|mobile)\.", re.IGNORECASE)
+
+
+def _normalize_domain(domain: str) -> str:
+    """Strip www./web./m. prefixes from a domain for consistent cache lookup."""
+    return _DOMAIN_PREFIX_RE.sub("", domain.strip().lower())
+
+
+# ---------------------------------------------------------------------------
+# Department name normalization
+# ---------------------------------------------------------------------------
+
+# Matches ", University of X" AND ", X University" / ", X Institute of Technology"
 _UNI_SUFFIX_RE = re.compile(
-    r",\s*(?:University of |School of |Department of |"
-    r"The |College of |Institute of |Faculty of ).*$",
+    r",\s*(?:"
+    r"(?:University of |School of |Department of |The |College of |"
+    r"Institute of |Faculty of ).*"
+    r"|"
+    r".*\b(?:University|Institute of Technology|Polytechnic)\b.*"
+    r")$",
     re.IGNORECASE,
+)
+
+# Bracket annotations like "[CS And AI+D]"
+_BRACKET_RE = re.compile(r"\s*\[.*?\]\s*")
+
+# Common abbreviations to restore after title-casing
+_ABBR_RESTORE = (
+    "Ai", "Ml", "Nlp", "Cs", "Ece", "Eecs", "Bme", "Hci",
+    "Mit", "Ucsd", "Ucla", "Gse", "Cse", "Imes",
 )
 
 
 def _normalize_dept_name(raw: str) -> str:
     """Normalize a department name for consistent storage.
 
-    - Strip trailing university / school suffixes
-      ("Computer Science, Columbia University" → "Computer Science")
-    - Collapse whitespace
-    - Title-case, but preserve known abbreviations
+    1. Strip bracket annotations  ("[CS And AI+D]" → "")
+    2. Strip trailing university / school suffixes
+       ("Computer Science, Columbia University" → "Computer Science")
+    3. If still has commas (multi-dept cross-appointment), take first part
+    4. Normalize " & " → " and " for consistency
+    5. Title-case with abbreviation restoration
     """
     if isinstance(raw, list):
         raw = ", ".join(str(x) for x in raw)
     s = (raw or "").strip()
     if not s:
         return "Unknown"
-    # Strip ", University of ..." suffix
+
+    # 1. Strip bracket annotations
+    s = _BRACKET_RE.sub("", s).strip()
+
+    # 2. Strip university suffixes  ", Carnegie Mellon University" etc.
     s = _UNI_SUFFIX_RE.sub("", s).strip()
-    # Collapse whitespace
+
+    # 3. Multi-dept comma split — take primary (first) department only
+    #    e.g. "Computer Science, Electrical and Computer Engineering" → "Computer Science"
+    if "," in s:
+        s = s.split(",", 1)[0].strip()
+
+    # 4. Normalize & → and for dedup ("Information & CS" == "Information and CS")
+    s = s.replace(" & ", " and ")
+
+    # 5. Collapse whitespace
     s = " ".join(s.split())
-    # Title-case then restore common abbreviations
+
+    # Reject ultra-short / abbreviation-only results
+    if not s or len(s) < 3:
+        return "Unknown"
+
+    # 6. Title-case then restore common abbreviations
     s = s.title()
-    for abbr in ("Ai", "Ml", "Nlp", "Cs", "Ece", "Eecs", "Bme", "Hci",
-                 "Mit", "Ucsd", "Ucla", "Gse", "Cse"):
+    for abbr in _ABBR_RESTORE:
         s = s.replace(abbr, abbr.upper())
     return s
 
@@ -449,10 +497,11 @@ def _upsert_cache_school(
     created on demand.  A ``CachedCrawlRecord`` is appended so future
     sessions can check keyword coverage.
     """
-    cached = db.query(CachedSchool).filter(CachedSchool.domain == domain).first()
+    norm_domain = _normalize_domain(domain)
+    cached = db.query(CachedSchool).filter(CachedSchool.domain == norm_domain).first()
     is_new_school = cached is None
     if is_new_school:
-        cached = CachedSchool(domain=domain, name=name)
+        cached = CachedSchool(domain=norm_domain, name=name)
         db.add(cached)
         db.flush()
 
@@ -512,7 +561,7 @@ def _upsert_cache_school(
                 title=cp.title,
                 department=cp.department,
                 university=cp.university,
-                university_domain=cp.university_domain,
+                university_domain=_normalize_domain(cp.university_domain or domain),
                 profile_url=cp.profile_url,
                 research_summary=cp.research_summary,
                 source=cp.source,
@@ -649,10 +698,11 @@ def _update_cache_deep(
     deep_prof: CrawlProfessor,
 ) -> None:
     """Write deep-crawl data back to the global cache for a professor."""
+    norm_domain = _normalize_domain(domain)
     cached = (
         db.query(CachedProfessor)
         .filter(
-            CachedProfessor.university_domain == domain,
+            CachedProfessor.university_domain == norm_domain,
             CachedProfessor.name == deep_prof.name,
         )
         .first()
@@ -723,9 +773,10 @@ def run_pass1(
     to_crawl: list[tuple[int, str, str]] = []  # (idx, domain, name)
 
     for idx, (domain, name) in enumerate(school_list):
+        norm_domain = _normalize_domain(domain)
         cached = (
             db_session.query(CachedSchool)
-            .filter(CachedSchool.domain == domain)
+            .filter(CachedSchool.domain == norm_domain)
             .first()
         )
         if cached and _cache_is_fresh(cached, TTL):
@@ -931,10 +982,11 @@ def run_pass2(
     crawl_profs: list[CrawlProfessor | None] = [None] * len(db_profs)
 
     for i, dbp in enumerate(db_profs):
+        norm_dom = _normalize_domain(dbp.university_domain or "")
         cached = (
             db_session.query(CachedProfessor)
             .filter(
-                CachedProfessor.university_domain == dbp.university_domain,
+                CachedProfessor.university_domain == norm_dom,
                 CachedProfessor.name == dbp.name,
             )
             .first()

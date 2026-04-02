@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.db import CachedDepartment, CachedProfessor, CachedSchool
 from app.models.schemas import CachedSchoolSchema, CacheStatsResponse
+from app.services.crawl_service import _normalize_domain
 
 router = APIRouter(tags=["cache"])
 
@@ -36,7 +37,7 @@ def clear_school_cache(
     db: Session = Depends(get_db),
 ):
     """Clear cache for a specific school (forces re-crawl next time)."""
-    cached = db.query(CachedSchool).filter(CachedSchool.domain == domain).first()
+    cached = db.query(CachedSchool).filter(CachedSchool.domain == _normalize_domain(domain)).first()
     if not cached:
         return {"deleted": False, "message": f"No cache for {domain}"}
     db.delete(cached)  # cascade deletes departments + professors
