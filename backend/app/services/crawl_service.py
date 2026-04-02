@@ -111,6 +111,82 @@ for _key, _label in FIELD_DISPLAY.items():
             if len(_part) >= 2:
                 _KEYWORD_ALIAS[_part] = _label
 
+# Common synonyms that don't appear in FIELD_DISPLAY labels
+_EXTRA_ALIASES: dict[str, str] = {
+    "machine learning": "CS - Artificial Intelligence / ML",
+    "deep learning": "CS - Artificial Intelligence / ML",
+    "nlp": "CS - Artificial Intelligence / ML",
+    "natural language processing": "CS - Artificial Intelligence / ML",
+    "computer vision": "CS - Artificial Intelligence / ML",
+    "cv": "CS - Artificial Intelligence / ML",
+    "reinforcement learning": "CS - Artificial Intelligence / ML",
+    "neural networks": "CS - Artificial Intelligence / ML",
+    "llm": "CS - Artificial Intelligence / ML",
+    "large language models": "CS - Artificial Intelligence / ML",
+    "generative ai": "CS - Artificial Intelligence / ML",
+    "data mining": "CS - Data Science / Analytics",
+    "big data": "CS - Data Science / Analytics",
+    "databases": "CS - Data Science / Analytics",
+    "information retrieval": "CS - Data Science / Analytics",
+    "security": "CS - Cybersecurity",
+    "cryptography": "CS - Cybersecurity",
+    "network security": "CS - Cybersecurity",
+    "ux": "CS - Human-Computer Interaction",
+    "user interface": "CS - Human-Computer Interaction",
+    "ui": "CS - Human-Computer Interaction",
+    "autonomous systems": "CS - Robotics",
+    "drones": "CS - Robotics",
+    "control systems": "CS - Robotics",
+    "mems": "Eng - Mechanical Engineering",
+    "thermodynamics": "Eng - Mechanical Engineering",
+    "vlsi": "Eng - Electrical & Computer Engineering",
+    "circuits": "Eng - Electrical & Computer Engineering",
+    "signal processing": "Eng - Electrical & Computer Engineering",
+    "semiconductors": "Eng - Electrical & Computer Engineering",
+    "genomics": "Bio - Genetics & Genomics",
+    "gene editing": "Bio - Genetics & Genomics",
+    "crispr": "Bio - Genetics & Genomics",
+    "brain": "Bio - Neuroscience",
+    "cognitive science": "Bio - Neuroscience",
+    "systems biology": "Bio - Computational Biology",
+    "protein": "Bio - Computational Biology",
+    "drug discovery": "Bio - Pharmacology",
+    "epidemiology": "Bio - Public Health",
+    "quant": "Social - Finance",
+    "quantitative finance": "Social - Finance",
+    "econometrics": "Social - Economics",
+    "bayesian": "Math - Statistics",
+    "probability": "Math - Statistics",
+    "optimization": "Math - Operations Research",
+    "linear programming": "Math - Operations Research",
+    "climate": "Eng - Environmental Engineering",
+    "sustainability": "Eng - Environmental Engineering",
+    "biomechanics": "Eng - Biomedical Engineering",
+    "medical imaging": "Eng - Biomedical Engineering",
+    "tissue engineering": "Eng - Biomedical Engineering",
+    "photonics": "Phys - Applied Physics",
+    "optics": "Phys - Applied Physics",
+    "condensed matter": "Phys - Physics (General)",
+    "particle physics": "Phys - Physics (General)",
+    "astrophysics": "Phys - Astronomy & Astrophysics",
+    "cosmology": "Phys - Astronomy & Astrophysics",
+    "nanotechnology": "Phys - Materials Science",
+    "polymer": "Phys - Materials Science",
+    "qubits": "Phys - Quantum Computing",
+    "quantum information": "Phys - Quantum Computing",
+    "software engineering": "CS - Computer Science (General)",
+    "distributed systems": "CS - Computer Science (General)",
+    "operating systems": "CS - Computer Science (General)",
+    "compilers": "CS - Computer Science (General)",
+    "algorithms": "CS - Computer Science (General)",
+    "programming languages": "CS - Computer Science (General)",
+    "theory of computation": "CS - Computer Science (General)",
+    "computer architecture": "CS - Computer Science (General)",
+    "cloud computing": "CS - Computer Science (General)",
+    "parallel computing": "CS - Computer Science (General)",
+}
+_KEYWORD_ALIAS.update(_EXTRA_ALIASES)
+
 
 def _normalize_keywords(raw_keywords: list[str]) -> list[str]:
     """Map user-supplied keywords to standard field labels.
@@ -476,6 +552,30 @@ def _upsert_cache_school(
     db.commit()
 
 
+# A "General" field covers all sub-fields in the same category.
+# e.g. "CS - Computer Science (General)" covers "CS - AI / ML", "CS - Robotics", etc.
+_GENERAL_COVERS: dict[str, list[str]] = {}
+for _key, _label in FIELD_DISPLAY.items():
+    if " - " in _label:
+        _prefix = _label.split(" - ", 1)[0]  # "CS", "Eng", "Phys", etc.
+        _GENERAL_COVERS.setdefault(_prefix, []).append(_label)
+
+
+def _is_covered_by_general(prev_keywords: set[str], new_kw: str) -> bool:
+    """Return True if *new_kw* is a sub-field covered by a '(General)' entry in prev."""
+    if new_kw in prev_keywords:
+        return True
+    if " - " not in new_kw:
+        return False
+    prefix = new_kw.split(" - ", 1)[0]
+    # Check if the General label for this category was previously crawled
+    general_label = next(
+        (lbl for lbl in _GENERAL_COVERS.get(prefix, []) if "(General)" in lbl),
+        None,
+    )
+    return general_label is not None and general_label in prev_keywords
+
+
 def _keywords_already_covered(
     db: Session,
     cached_school: CachedSchool,
@@ -494,13 +594,19 @@ def _keywords_already_covered(
     if not records:
         return False
 
-    # Gather all previously crawled keyword sets
-    all_prev: list[list[str]] = [r.keywords or [] for r in records]
+    # Gather all previously crawled keywords (flat set)
+    prev_flat: set[str] = set()
+    for r in records:
+        prev_flat.update(r.keywords or [])
 
-    # Fast path: exact substring match
-    prev_flat = {k.lower() for kws in all_prev for k in kws}
+    # Fast path: general-field coverage (e.g. "CS General" covers "CS - AI/ML")
+    if all(_is_covered_by_general(prev_flat, kw) for kw in new_keywords):
+        return True
+
+    # Substring match (case-insensitive)
+    prev_lower = {k.lower() for k in prev_flat}
     new_lower = [k.lower() for k in new_keywords]
-    if all(any(n in p or p in n for p in prev_flat) for n in new_lower):
+    if all(any(n in p or p in n for p in prev_lower) for n in new_lower):
         return True
 
     # LLM semantic check
