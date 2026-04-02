@@ -38,6 +38,18 @@ git push origin "$NEXT_TAG"
 COMMIT=$(git rev-parse --short HEAD)
 echo "==> Tagged ${NEXT_TAG} (${COMMIT})"
 
+# --- Create GitHub Release with commit messages since last tag ---
+if command -v gh &>/dev/null; then
+  if [[ -n "$LAST_TAG" ]]; then
+    NOTES=$(git log --pretty=format:"- %s" "${LAST_TAG}..${NEXT_TAG}")
+  else
+    NOTES=$(git log --pretty=format:"- %s" "${NEXT_TAG}")
+  fi
+  gh release create "$NEXT_TAG" --title "${NEXT_TAG}" --notes "$NOTES" 2>/dev/null \
+    && echo "==> GitHub Release ${NEXT_TAG} created" \
+    || echo "==> Warning: failed to create GitHub Release (continuing deploy)"
+fi
+
 # --- Sync files ---
 echo "==> Syncing files to server..."
 rsync -az --delete \
