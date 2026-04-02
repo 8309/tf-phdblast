@@ -30,7 +30,7 @@ from tinyfish.agent.types import ProxyConfig, ProxyCountryCode
 
 load_dotenv()
 
-OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-5.4")
+OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o")
 
 # File logger for debugging (auto-flush)
 _LOG_PATH = Path(__file__).parent / "crawl_debug.log"

@@ -148,13 +148,26 @@ class OutreachEmailResponse(BaseModel):
 # ---------------------------------------------------------------------------
 
 
+class CachedDepartmentSchema(BaseModel):
+    id: int
+    cached_school_id: int
+    name: str = ""
+    url: str = ""
+    professor_count: int = 0
+    last_crawled_at: datetime | None = None
+
+    model_config = {"from_attributes": True}
+
+
 class CachedSchoolSchema(BaseModel):
     id: int
     domain: str
     name: str = ""
     professor_count: int = 0
+    department_count: int = 0
     status: str = "pending"
     last_crawled_at: datetime | None = None
+    departments: list[CachedDepartmentSchema] = Field(default_factory=list)
 
     model_config = {"from_attributes": True}
 
@@ -162,6 +175,7 @@ class CachedSchoolSchema(BaseModel):
 class CachedProfessorSchema(BaseModel):
     id: int
     cached_school_id: int
+    cached_department_id: int | None = None
     name: str = ""
     email: str = ""
     title: str = ""
@@ -178,6 +192,7 @@ class CachedProfessorSchema(BaseModel):
 
 class CacheStatsResponse(BaseModel):
     total_schools: int = 0
+    total_departments: int = 0
     total_professors: int = 0
     schools: list[CachedSchoolSchema] = Field(default_factory=list)
 

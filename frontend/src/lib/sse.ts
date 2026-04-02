@@ -9,11 +9,13 @@
 export async function* streamSSE<T = unknown>(
   url: string,
   body: object,
+  signal?: AbortSignal,
 ): AsyncGenerator<{ event: string; data: T }> {
   const res = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
+    signal,
   });
 
   if (!res.ok) {

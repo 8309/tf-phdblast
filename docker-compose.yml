@@ -1,12 +1,30 @@
 services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: phd
+      POSTGRES_PASSWORD: phd
+      POSTGRES_DB: phd_outreach
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U phd"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
   backend:
     build: ./backend
     ports:
       - "8000:8000"
     env_file:
       - ./backend/.env
-    volumes:
-      - db-data:/app/data
+    depends_on:
+      db:
+        condition: service_healthy
     restart: unless-stopped
 
   frontend:
@@ -31,4 +49,4 @@ services:
     restart: unless-stopped
 
 volumes:
-  db-data:
+  pg-data:

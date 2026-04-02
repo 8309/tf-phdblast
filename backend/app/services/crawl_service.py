@@ -18,6 +18,7 @@ from tinyfish import TinyFish
 
 from app.config import settings
 from app.models.db import (
+    CachedDepartment,
     CachedProfessor,
     CachedSchool,
     CrawledSchool,
@@ -134,39 +135,66 @@ def _upsert_cache_school(
     crawl_profs: list[CrawlProfessor],
     error: str | None,
 ) -> None:
-    """Insert or update the global cache for a school after a fresh crawl."""
+    """Insert or update the global cache for a school after a fresh crawl.
+
+    Professors are grouped by their ``department`` field into
+    ``CachedDepartment`` rows.
+    """
     cached = db.query(CachedSchool).filter(CachedSchool.domain == domain).first()
     if not cached:
         cached = CachedSchool(domain=domain, name=name)
         db.add(cached)
         db.flush()
 
+    # Clear old data (cascade deletes professors via department)
+    db.query(CachedProfessor).filter(
+        CachedProfessor.cached_school_id == cached.id
+    ).delete()
+    db.query(CachedDepartment).filter(
+        CachedDepartment.cached_school_id == cached.id
+    ).delete()
+
+    now = _now()
+
+    # Group professors by department name
+    dept_map: dict[str, list[CrawlProfessor]] = {}
+    for cp in crawl_profs:
+        dept_name = (cp.department or "").strip() or "Unknown"
+        dept_map.setdefault(dept_name, []).append(cp)
+
+    # Create department rows and attach professors
+    for dept_name, profs in dept_map.items():
+        dept = CachedDepartment(
+            cached_school_id=cached.id,
+            name=dept_name,
+            professor_count=len(profs),
+            last_crawled_at=now,
+        )
+        db.add(dept)
+        db.flush()
+
+        for cp in profs:
+            db.add(CachedProfessor(
+                cached_school_id=cached.id,
+                cached_department_id=dept.id,
+                name=cp.name,
+                email=cp.email,
+                title=cp.title,
+                department=cp.department,
+                university=cp.university,
+                university_domain=cp.university_domain,
+                profile_url=cp.profile_url,
+                research_summary=cp.research_summary,
+                source=cp.source,
+                crawled_at=now,
+            ))
+
     cached.name = name
     cached.status = "error" if error else "done"
     cached.error_message = error or ""
     cached.professor_count = len(crawl_profs)
-    cached.last_crawled_at = _now()
-
-    # Replace old cached professors with fresh ones
-    db.query(CachedProfessor).filter(
-        CachedProfessor.cached_school_id == cached.id
-    ).delete()
-
-    now = _now()
-    for cp in crawl_profs:
-        db.add(CachedProfessor(
-            cached_school_id=cached.id,
-            name=cp.name,
-            email=cp.email,
-            title=cp.title,
-            department=cp.department,
-            university=cp.university,
-            university_domain=cp.university_domain,
-            profile_url=cp.profile_url,
-            research_summary=cp.research_summary,
-            source=cp.source,
-            crawled_at=now,
-        ))
+    cached.department_count = len(dept_map)
+    cached.last_crawled_at = now
     db.commit()
 
 

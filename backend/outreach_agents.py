@@ -6,7 +6,7 @@ Standalone module: no Gradio dependency.
 Imports only the Professor dataclass from crawl.py and standard libs.
 
 Model strategy:
-  - EMAIL_MODEL (GPT-5.4 default): high-quality cold emails
+  - EMAIL_MODEL (GPT-4o default): high-quality cold emails
   - CV_MODEL   (GPT-4o-mini default): cheap alignment analysis & CV tailoring
 
 Usage:
@@ -43,7 +43,7 @@ logger = logging.getLogger(__name__)
 # Model configuration
 # ---------------------------------------------------------------------------
 
-EMAIL_MODEL: str = os.getenv("EMAIL_MODEL", "gpt-5.4")
+EMAIL_MODEL: str = os.getenv("EMAIL_MODEL", "gpt-4o")
 CV_MODEL: str = os.getenv("CV_MODEL", "gpt-4o-mini")
 
 _client: OpenAI | None = None

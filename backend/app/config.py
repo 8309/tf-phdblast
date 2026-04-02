@@ -10,15 +10,15 @@ class Settings(BaseSettings):
 
     # --- OpenAI ---
     OPENAI_API_KEY: str = ""
-    OPENAI_MODEL: str = "gpt-5.4"
-    EMAIL_MODEL: str = "gpt-5.4"
+    OPENAI_MODEL: str = "gpt-4o"
+    EMAIL_MODEL: str = "gpt-4o"
     CV_MODEL: str = "gpt-4o-mini"
 
     # --- TinyFish ---
     TINYFISH_API_KEY: str = ""
 
     # --- Database ---
-    DATABASE_URL: str = "sqlite:///./phd_outreach.db"
+    DATABASE_URL: str = "postgresql://phd:phd@db:5432/phd_outreach"
 
     # --- Concurrency ---
     MAX_CONCURRENT_CRAWL: int = 10

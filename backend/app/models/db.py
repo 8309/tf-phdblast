@@ -17,7 +17,15 @@ from sqlalchemy import (
     Text,
 )
 from sqlalchemy.orm import relationship
-from sqlalchemy.types import JSON
+from sqlalchemy.dialects.postgresql import JSONB as PG_JSONB
+from sqlalchemy.types import JSON as GenericJSON
+
+# Use JSONB on PostgreSQL (GIN-indexable), fall back to JSON on SQLite
+try:
+    from app.config import settings
+    JSON = PG_JSONB if settings.DATABASE_URL.startswith("postgresql") else GenericJSON
+except Exception:
+    JSON = GenericJSON
 
 from app.database import Base
 
@@ -178,6 +186,7 @@ class CachedSchool(Base):
     domain = Column(String, unique=True, nullable=False, index=True)
     name = Column(String, default="")
     professor_count = Column(Integer, default=0)
+    department_count = Column(Integer, default=0)
     status = Column(String, default="pending")  # pending | crawling | done | error
     error_message = Column(Text, default="")
     last_crawled_at = Column(DateTime, nullable=True)
@@ -185,8 +194,40 @@ class CachedSchool(Base):
     updated_at = Column(DateTime, default=_utcnow, onupdate=_utcnow)
 
     # Relationships
+    departments = relationship(
+        "CachedDepartment", back_populates="school", cascade="all, delete-orphan"
+    )
+
+
+class CachedDepartment(Base):
+    """A department discovered at a university. Groups cached professors."""
+
+    __tablename__ = "cached_departments"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    cached_school_id = Column(
+        Integer, ForeignKey("cached_schools.id"), nullable=False
+    )
+    name = Column(String, default="")
+    url = Column(String, default="")  # faculty listing page URL
+    professor_count = Column(Integer, default=0)
+    last_crawled_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, default=_utcnow)
+
+    # Relationships
+    school = relationship("CachedSchool", back_populates="departments")
     cached_professors = relationship(
-        "CachedProfessor", back_populates="school", cascade="all, delete-orphan"
+        "CachedProfessor", back_populates="department", cascade="all, delete-orphan"
+    )
+
+    __table_args__ = (
+        Index("ix_cached_dept_school", "cached_school_id"),
+        Index(
+            "ix_cached_dept_unique",
+            "cached_school_id",
+            "name",
+            unique=True,
+        ),
     )
 
 
@@ -198,6 +239,9 @@ class CachedProfessor(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     cached_school_id = Column(
         Integer, ForeignKey("cached_schools.id"), nullable=False
+    )
+    cached_department_id = Column(
+        Integer, ForeignKey("cached_departments.id"), nullable=True
     )
 
     # Basic info (pass 1)
@@ -227,10 +271,12 @@ class CachedProfessor(Base):
     recruiting_likelihood = Column(String, default="unknown")
     deep_crawled_at = Column(DateTime, nullable=True)
 
-    # Relationship
-    school = relationship("CachedSchool", back_populates="cached_professors")
+    # Relationships
+    school = relationship("CachedSchool")
+    department = relationship("CachedDepartment", back_populates="cached_professors")
 
     __table_args__ = (
         Index("ix_cached_prof_school", "cached_school_id"),
+        Index("ix_cached_prof_dept", "cached_department_id"),
         Index("ix_cached_prof_domain", "university_domain"),
     )

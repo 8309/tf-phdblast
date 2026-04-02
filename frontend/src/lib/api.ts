@@ -13,14 +13,14 @@ import type {
 } from "./types";
 import { streamSSE } from "./sse";
 
-const BASE =
+export const API_BASE =
   process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api";
 
 async function request<T>(
   path: string,
   init?: RequestInit,
 ): Promise<T> {
-  const res = await fetch(`${BASE}${path}`, {
+  const res = await fetch(`${API_BASE}${path}`, {
     ...init,
     headers: {
       "Content-Type": "application/json",
@@ -57,7 +57,7 @@ export async function parseCV(
   if (researchDirection) {
     form.append("research_direction", researchDirection);
   }
-  const res = await fetch(`${BASE}/cv/parse`, {
+  const res = await fetch(`${API_BASE}/cv/parse`, {
     method: "POST",
     body: form,
   });
@@ -73,7 +73,7 @@ export function searchSchools(
   keywords: string[],
   stealth: boolean,
 ) {
-  return streamSSE(`${BASE}/schools/search`, {
+  return streamSSE(`${API_BASE}/schools/search`, {
     session_id: sessionId,
     schools,
     keywords,
@@ -100,7 +100,7 @@ export function deepCrawl(
   professorIds: number[],
   stealth: boolean,
 ) {
-  return streamSSE(`${BASE}/professors/deep-crawl`, {
+  return streamSSE(`${API_BASE}/professors/deep-crawl`, {
     session_id: sessionId,
     professor_ids: professorIds,
     stealth,
@@ -159,7 +159,7 @@ export async function exportData(
     phase,
   });
   const res = await fetch(
-    `${BASE}/export/${format}?${params}`,
+    `${API_BASE}/export/${format}?${params}`,
   );
   if (!res.ok) throw new Error(`Export failed: ${res.status}`);
   return res.blob();

@@ -27,7 +27,7 @@ export function useSSEStream<T = unknown>(
     setStatus("streaming");
 
     try {
-      for await (const sse of streamSSE<T>(url, JSON.parse(bodyJson))) {
+      for await (const sse of streamSSE<T>(url, JSON.parse(bodyJson), abortRef.current?.signal)) {
         const ev: SSEEvent<T> = { event: sse.event, data: sse.data };
         setEvents((prev) => [...prev, ev]);
         setLatestEvent(ev);
