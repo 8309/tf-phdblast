@@ -13,6 +13,7 @@ from dataclasses import asdict
 from datetime import datetime, timedelta, timezone
 from typing import Callable
 
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from tinyfish import TinyFish
 
@@ -310,6 +311,38 @@ def _copy_cached_to_session(
     return db_profs
 
 
+import re
+
+_UNI_SUFFIX_RE = re.compile(
+    r",\s*(?:University of |School of |Department of |"
+    r"The |College of |Institute of |Faculty of ).*$",
+    re.IGNORECASE,
+)
+
+
+def _normalize_dept_name(raw: str) -> str:
+    """Normalize a department name for consistent storage.
+
+    - Strip trailing university / school suffixes
+      ("Computer Science, Columbia University" → "Computer Science")
+    - Collapse whitespace
+    - Title-case, but preserve known abbreviations
+    """
+    s = (raw or "").strip()
+    if not s:
+        return "Unknown"
+    # Strip ", University of ..." suffix
+    s = _UNI_SUFFIX_RE.sub("", s).strip()
+    # Collapse whitespace
+    s = " ".join(s.split())
+    # Title-case then restore common abbreviations
+    s = s.title()
+    for abbr in ("Ai", "Ml", "Nlp", "Cs", "Ece", "Eecs", "Bme", "Hci",
+                 "Mit", "Ucsd", "Ucla", "Gse", "Cse"):
+        s = s.replace(abbr, abbr.upper())
+    return s
+
+
 def _upsert_cache_school(
     db: Session,
     domain: str,
@@ -344,22 +377,22 @@ def _upsert_cache_school(
         )
         existing_names = {r[0] for r in rows}
 
-    # Group new professors by department name
+    # Group new professors by normalized department name
     dept_map: dict[str, list[CrawlProfessor]] = {}
     for cp in crawl_profs:
-        dept_name = (cp.department or "").strip() or "Unknown"
+        dept_name = _normalize_dept_name(cp.department)
         dept_map.setdefault(dept_name, []).append(cp)
 
     new_count = 0
     depts_found: list[str] = []
 
     for dept_name, profs in dept_map.items():
-        # Get or create department
+        # Get or create department (case-insensitive lookup)
         dept = (
             db.query(CachedDepartment)
             .filter(
                 CachedDepartment.cached_school_id == cached.id,
-                CachedDepartment.name == dept_name,
+                func.lower(CachedDepartment.name) == dept_name.lower(),
             )
             .first()
         )
