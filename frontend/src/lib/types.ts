@@ -47,6 +47,7 @@ export interface RankingSchool {
 
 /** Professor record -- mirrors the backend Professor dataclass. */
 export interface Professor {
+  id?: number;
   name: string;
   university: string;
   department?: string;
