@@ -33,8 +33,13 @@ def export_data(
         raise HTTPException(status_code=400, detail="format must be 'csv' or 'json'")
 
     query = db.query(Professor).filter(Professor.session_id == session_id)
-    if phase:
-        query = query.filter(Professor.phase == phase)
+
+    # Map frontend phase names to DB filters
+    if phase == "deep":
+        query = query.filter(Professor.selected_for_deep.is_(True))
+    elif phase == "final":
+        query = query.filter(Professor.final_score.isnot(None))
+    # "preliminary" or default: return all professors in session
 
     professors = query.all()
     rows = [ProfessorSchema.model_validate(p).model_dump() for p in professors]
