@@ -11,6 +11,7 @@ import SchoolSelector, {
 import CrawlProgress from "@/components/search/CrawlProgress";
 import ProfessorTable from "@/components/search/ProfessorTable";
 import ExportButtons from "@/components/match/ExportButtons";
+import RawDeepDisplay from "@/components/search/RawDeepDisplay";
 import { API_BASE } from "@/lib/api";
 
 export default function SearchPage() {
@@ -425,51 +426,11 @@ export default function SearchPage() {
                       )}
                     </div>
 
-                    {/* Source links from deep crawl */}
-                    {(() => {
-                      const sources = (
-                        p.raw_deep_json as Record<string, unknown> | null
-                      )?.sources;
-                      if (!Array.isArray(sources) || sources.length === 0)
-                        return null;
-                      return (
-                        <div className="mt-3">
-                          <p className="text-xs font-medium text-gray-500 dark:text-gray-400">
-                            Sources
-                          </p>
-                          <div className="mt-1 flex flex-wrap gap-2">
-                            {sources.map(
-                              (
-                                s: { url?: string; label?: string },
-                                i: number,
-                              ) =>
-                                s.url ? (
-                                  <a
-                                    key={i}
-                                    href={s.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-1 rounded-md border border-gray-200 bg-gray-50 px-2 py-1 text-xs text-blue-600 hover:bg-blue-50 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-blue-400 dark:hover:bg-gray-600"
-                                  >
-                                    {s.label || s.url}
-                                  </a>
-                                ) : null,
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })()}
-
-                    {/* Raw TinyFish JSON */}
+                    {/* Structured display of deep crawl data */}
                     {p.raw_deep_json && (
-                      <details className="mt-3">
-                        <summary className="cursor-pointer text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
-                          Raw JSON
-                        </summary>
-                        <pre className="mt-1 max-h-80 overflow-auto rounded-md bg-gray-50 p-3 text-xs leading-relaxed text-gray-800 dark:bg-gray-900 dark:text-gray-200">
-                          {JSON.stringify(p.raw_deep_json, null, 2)}
-                        </pre>
-                      </details>
+                      <RawDeepDisplay
+                        data={p.raw_deep_json as Record<string, unknown>}
+                      />
                     )}
                   </div>
                 ))}
