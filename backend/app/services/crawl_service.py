@@ -718,24 +718,24 @@ def _update_cache_deep(
         )
         .all()  # may have rows in multiple departments
     )
-    if not cached_rows:
+    if not cached:
         return
     now = _now()
-    for cached in cached_rows:
-        cached.lab_name = deep_prof.lab_name
-        cached.lab_url = deep_prof.lab_url
-        cached.research_summary = deep_prof.research_summary
-        cached.research_keywords = deep_prof.research_keywords
-        cached.recent_papers = deep_prof.recent_papers
-        cached.scholar_url = deep_prof.scholar_url
-        cached.accepting_students = deep_prof.accepting_students
-        cached.open_positions = deep_prof.open_positions
-        cached.funding = deep_prof.funding
-        cached.recruiting_signals = deep_prof.recruiting_signals
-        cached.lab_size = deep_prof.lab_size
-        cached.recent_graduates = deep_prof.recent_graduates
-        cached.recruiting_likelihood = deep_prof.recruiting_likelihood
-        cached.deep_crawled_at = now
+    for row in cached:
+        row.lab_name = deep_prof.lab_name
+        row.lab_url = deep_prof.lab_url
+        row.research_summary = deep_prof.research_summary
+        row.research_keywords = deep_prof.research_keywords
+        row.recent_papers = deep_prof.recent_papers
+        row.scholar_url = deep_prof.scholar_url
+        row.accepting_students = deep_prof.accepting_students
+        row.open_positions = deep_prof.open_positions
+        row.funding = deep_prof.funding
+        row.recruiting_signals = deep_prof.recruiting_signals
+        row.lab_size = deep_prof.lab_size
+        row.recent_graduates = deep_prof.recent_graduates
+        row.recruiting_likelihood = deep_prof.recruiting_likelihood
+        row.deep_crawled_at = now
     # commit handled by caller
 
 
