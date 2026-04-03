@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useSession } from "@/hooks/useSession";
 import { useSSEStream } from "@/hooks/useSSEStream";
@@ -26,6 +26,19 @@ export default function SearchPage() {
   // Search options
   const [customKeywords, setCustomKeywords] = useState("");
   const [stealth, setStealth] = useState(false);
+
+  // Saved professors from previous session (loaded on mount)
+  const [savedProfs, setSavedProfs] = useState<Professor[]>([]);
+
+  useEffect(() => {
+    if (!sessionId) return;
+    fetch(`${API_BASE}/session/professors?session_id=${sessionId}`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) setSavedProfs(data);
+      })
+      .catch(() => {});
+  }, [sessionId]);
 
   // SSE stream control
   const [crawlEnabled, setCrawlEnabled] = useState(false);
@@ -64,7 +77,7 @@ export default function SearchPage() {
       }
     }
     // 2. Otherwise use crawl results (unscored)
-    if (crawlStream.events.length === 0) return [];
+    if (crawlStream.events.length === 0) return savedProfs;
     for (const ev of crawlStream.events) {
       if (ev.event === "done" || ev.event === "error") {
         const d = ev.data as Record<string, unknown>;
@@ -80,10 +93,11 @@ export default function SearchPage() {
       }
     }
     return profs;
-  }, [crawlStream.events, scoreStream.events]);
+  }, [crawlStream.events, scoreStream.events, savedProfs]);
 
   const crawlDone =
     crawlStream.status === "done" || crawlStream.status === "error";
+  const hasResults = crawlDone || savedProfs.length > 0;
 
   // Start crawl
   const handleSearch = useCallback(() => {
@@ -256,7 +270,7 @@ export default function SearchPage() {
       )}
 
       {/* Professor results table */}
-      {crawlDone && professors.length > 0 && (
+      {hasResults && professors.length > 0 && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
@@ -415,7 +429,7 @@ export default function SearchPage() {
         </div>
       )}
 
-      {crawlDone && professors.length === 0 && (
+      {crawlDone && !hasResults && (
         <div className="rounded-lg border border-yellow-200 bg-yellow-50 px-4 py-3 text-sm text-yellow-800 dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-300">
           {t("status.no_professors")}
         </div>

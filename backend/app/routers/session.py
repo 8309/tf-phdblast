@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models.db import DBSession, Professor
-from app.models.schemas import ProfessorCounts, SessionCreate, SessionResponse
+from app.models.schemas import ProfessorCounts, ProfessorSchema, SessionCreate, SessionResponse
 
 router = APIRouter(tags=["session"])
 
@@ -68,3 +68,17 @@ def get_session(
         created_at=sess.created_at,
         professor_counts=counts,
     )
+
+
+@router.get("/session/professors")
+def get_session_professors(
+    session_id: str = Query(...),
+    db: Session = Depends(get_db),
+):
+    """Return all professors for a session (restores previous results on page reload)."""
+    profs = (
+        db.query(Professor)
+        .filter(Professor.session_id == session_id)
+        .all()
+    )
+    return [ProfessorSchema.model_validate(p).model_dump(mode="json") for p in profs]
