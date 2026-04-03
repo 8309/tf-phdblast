@@ -38,6 +38,16 @@ export default function SearchPage() {
     crawlEnabled,
   );
 
+  // Preliminary scoring
+  const [scoreEnabled, setScoreEnabled] = useState(false);
+  const [scoreBody, setScoreBody] = useState<object>({});
+
+  const scoreStream = useSSEStream<Record<string, unknown>>(
+    `${API_BASE}/professors/score-preliminary`,
+    scoreBody,
+    scoreEnabled,
+  );
+
   // Selected professor indices for deep crawl
   const [selectedProfIndices, setSelectedProfIndices] = useState<number[]>([]);
 
@@ -93,16 +103,6 @@ export default function SearchPage() {
     });
     setCrawlEnabled(true);
   }, [sessionId, selectedSchools, customKeywords, stealth]);
-
-  // Preliminary scoring
-  const [scoreEnabled, setScoreEnabled] = useState(false);
-  const [scoreBody, setScoreBody] = useState<object>({});
-
-  const scoreStream = useSSEStream<Record<string, unknown>>(
-    `${API_BASE}/professors/score-preliminary`,
-    scoreBody,
-    scoreEnabled,
-  );
 
   const handleScore = useCallback(() => {
     if (!sessionId) return;
