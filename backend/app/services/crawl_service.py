@@ -1014,6 +1014,7 @@ def run_pass2(
             and _deep_at
             and (_now() - _deep_at)
             < timedelta(days=settings.CACHE_TTL_PASS2_DAYS)
+            and cached.raw_deep_json is not None
         ):
             # Cache hit — copy deep info directly
             dbp.lab_name = cached.lab_name
