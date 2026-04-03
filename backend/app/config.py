@@ -22,8 +22,8 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "postgresql://phd:phd@db:5432/phd_outreach"
 
     # --- Concurrency ---
-    MAX_CONCURRENT_CRAWL: int = 10
-    DEEP_CONCURRENT: int = 10
+    MAX_CONCURRENT_CRAWL: int = 20
+    DEEP_CONCURRENT: int = 20
 
     # --- Cache ---
     CACHE_TTL_PASS1_DAYS: int = 7
