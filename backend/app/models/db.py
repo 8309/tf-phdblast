@@ -121,6 +121,9 @@ class Professor(Base):
     recent_graduates = Column(Integer, nullable=True)
     recruiting_likelihood = Column(String, default="unknown")
 
+    # Raw TinyFish deep-crawl response (full JSON preserved)
+    raw_deep_json = Column(JSON, nullable=True)
+
     # Metadata
     crawled_at = Column(DateTime, nullable=True)
     source = Column(String, default="faculty_directory")
@@ -298,6 +301,7 @@ class CachedProfessor(Base):
     lab_size = Column(Integer, nullable=True)
     recent_graduates = Column(Integer, nullable=True)
     recruiting_likelihood = Column(String, default="unknown")
+    raw_deep_json = Column(JSON, nullable=True)
     deep_crawled_at = Column(DateTime, nullable=True)
 
     # Relationships

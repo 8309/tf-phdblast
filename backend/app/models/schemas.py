@@ -83,6 +83,9 @@ class ProfessorSchema(BaseModel):
     recent_graduates: int | None = None
     recruiting_likelihood: str = "unknown"
 
+    # Raw deep-crawl response
+    raw_deep_json: dict[str, Any] | None = None
+
     # Metadata
     crawled_at: datetime | str | None = None
     source: str = "faculty_directory"

@@ -354,7 +354,7 @@ export default function SearchPage() {
                     key={p.id ?? p.name}
                     className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800"
                   >
-                    {/* Header: name, title, badges */}
+                    {/* Header */}
                     <div className="flex items-start justify-between gap-4">
                       <div className="min-w-0">
                         <h4 className="font-semibold text-gray-900 dark:text-gray-100">
@@ -366,118 +366,25 @@ export default function SearchPage() {
                         </p>
                       </div>
                       <div className="flex shrink-0 items-center gap-2">
-                        {p.accepting_students != null && (
-                          <span
-                            className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${
-                              p.accepting_students
-                                ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
-                                : "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300"
-                            }`}
-                          >
-                            {p.accepting_students
-                              ? "Accepting Students"
-                              : "Not Accepting"}
-                          </span>
-                        )}
-                        {p.recruiting_likelihood && (
-                          <span
-                            className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${
-                              p.recruiting_likelihood === "high"
-                                ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
-                                : p.recruiting_likelihood === "medium"
-                                  ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300"
-                                  : "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300"
-                            }`}
-                          >
-                            Recruiting: {p.recruiting_likelihood}
-                          </span>
-                        )}
+                        {p.recruiting_likelihood &&
+                          p.recruiting_likelihood !== "unknown" && (
+                            <span
+                              className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${
+                                p.recruiting_likelihood === "high"
+                                  ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
+                                  : p.recruiting_likelihood === "medium"
+                                    ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300"
+                                    : "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300"
+                              }`}
+                            >
+                              Recruiting: {p.recruiting_likelihood}
+                            </span>
+                          )}
                       </div>
                     </div>
 
-                    {/* Lab info */}
-                    {p.lab_name && (
-                      <div className="mt-2 flex items-center gap-3 text-sm">
-                        <span className="font-medium text-blue-600 dark:text-blue-400">
-                          {p.lab_name}
-                        </span>
-                        {p.lab_size != null && (
-                          <span className="text-gray-500 dark:text-gray-400">
-                            {p.lab_size} members
-                          </span>
-                        )}
-                        {p.recent_graduates != null && (
-                          <span className="text-gray-500 dark:text-gray-400">
-                            {p.recent_graduates} recent grads
-                          </span>
-                        )}
-                      </div>
-                    )}
-
-                    {/* Research summary */}
-                    {p.research_summary && (
-                      <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">
-                        {p.research_summary}
-                      </p>
-                    )}
-
-                    {/* Research keywords */}
-                    {(p.research_keywords ?? []).length > 0 && (
-                      <div className="mt-2 flex flex-wrap gap-1.5">
-                        {p.research_keywords!.map((kw) => (
-                          <span
-                            key={kw}
-                            className="rounded-full bg-blue-50 px-2.5 py-0.5 text-xs text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
-                          >
-                            {kw}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Open positions */}
-                    {p.open_positions && (
-                      <p className="mt-2 text-sm text-emerald-700 dark:text-emerald-400">
-                        <span className="font-medium">Positions:</span>{" "}
-                        {p.open_positions}
-                      </p>
-                    )}
-
-                    {/* Recruiting signals */}
-                    {(p.recruiting_signals ?? []).length > 0 && (
-                      <ul className="mt-2 space-y-0.5 text-xs text-gray-600 dark:text-gray-400">
-                        {p.recruiting_signals!.map((s, i) => (
-                          <li key={i}>• {s}</li>
-                        ))}
-                      </ul>
-                    )}
-
-                    {/* Recent papers */}
-                    {(p.recent_papers ?? []).length > 0 && (
-                      <div className="mt-2">
-                        <p className="text-xs font-medium text-gray-500 dark:text-gray-400">
-                          Recent Papers
-                        </p>
-                        <ul className="mt-0.5 space-y-0.5 text-xs text-gray-600 dark:text-gray-400">
-                          {p.recent_papers!.slice(0, 5).map((paper, i) => (
-                            <li key={i} className="truncate">
-                              {i + 1}. {paper}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {/* Funding */}
-                    {(p.funding ?? []).length > 0 && (
-                      <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                        <span className="font-medium">Funding:</span>{" "}
-                        {p.funding!.join(", ")}
-                      </p>
-                    )}
-
                     {/* Links */}
-                    <div className="mt-3 flex flex-wrap gap-3 text-xs">
+                    <div className="mt-2 flex flex-wrap gap-3 text-xs">
                       {p.email && (
                         <a
                           href={`mailto:${p.email}`}
@@ -517,6 +424,13 @@ export default function SearchPage() {
                         </a>
                       )}
                     </div>
+
+                    {/* Raw TinyFish JSON */}
+                    {p.raw_deep_json && (
+                      <pre className="mt-3 max-h-80 overflow-auto rounded-md bg-gray-50 p-3 text-xs leading-relaxed text-gray-800 dark:bg-gray-900 dark:text-gray-200">
+                        {JSON.stringify(p.raw_deep_json, null, 2)}
+                      </pre>
+                    )}
                   </div>
                 ))}
               </div>

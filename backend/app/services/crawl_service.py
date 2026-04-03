@@ -398,6 +398,7 @@ def _copy_cached_to_session(
             dbp.lab_size = cp.lab_size
             dbp.recent_graduates = cp.recent_graduates
             dbp.recruiting_likelihood = cp.recruiting_likelihood
+            dbp.raw_deep_json = cp.raw_deep_json
         db.add(dbp)
         db_profs.append(dbp)
     db.commit()
@@ -735,6 +736,7 @@ def _update_cache_deep(
         row.lab_size = deep_prof.lab_size
         row.recent_graduates = deep_prof.recent_graduates
         row.recruiting_likelihood = deep_prof.recruiting_likelihood
+        row.raw_deep_json = deep_prof.raw_deep_json
         row.deep_crawled_at = now
     # commit handled by caller
 
@@ -1027,6 +1029,7 @@ def run_pass2(
             dbp.lab_size = cached.lab_size
             dbp.recent_graduates = cached.recent_graduates
             dbp.recruiting_likelihood = cached.recruiting_likelihood
+            dbp.raw_deep_json = cached.raw_deep_json
             dbp.phase = "pass2"
             dbp.selected_for_deep = True
             on_event({
@@ -1108,6 +1111,7 @@ def run_pass2(
                 dbp.lab_size = cp.lab_size
                 dbp.recent_graduates = cp.recent_graduates
                 dbp.recruiting_likelihood = cp.recruiting_likelihood
+                dbp.raw_deep_json = cp.raw_deep_json
                 dbp.source = cp.source
                 dbp.crawled_at = _parse_iso_dt(cp.crawled_at)
                 dbp.phase = "pass2"

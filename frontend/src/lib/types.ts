@@ -67,6 +67,8 @@ export interface Professor {
   recruiting_signals?: string[];
   open_positions?: string;
   recent_papers?: string[];
+  /** Full raw TinyFish deep-crawl response. */
+  raw_deep_json?: Record<string, unknown> | null;
   crawled_at?: string;
   source?: string;
   /** Added after preliminary AI scoring. */

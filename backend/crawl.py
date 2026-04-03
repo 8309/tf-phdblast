@@ -68,6 +68,9 @@ class Professor:
     recent_graduates: int | None = None
     recruiting_likelihood: str = "unknown"  # high / medium / low / unknown
 
+    # Raw TinyFish deep-crawl response (preserved as-is)
+    raw_deep_json: dict | None = None
+
     # Metadata
     crawled_at: str = ""
     source: str = "faculty_directory"
@@ -473,6 +476,9 @@ def _merge_deep(professor: Professor, raw: object) -> None:
 
     professor.lab_size = data.get("lab_size")
     professor.recent_graduates = data.get("recent_graduates")
+
+    # Preserve the full raw response
+    professor.raw_deep_json = data
 
 
 # ---------------------------------------------------------------------------
