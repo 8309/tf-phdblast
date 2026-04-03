@@ -25,7 +25,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from openai import OpenAI
-from tinyfish import EventType, RunStatus, TinyFish
+from tinyfish import RunStatus, TinyFish
 from tinyfish.agent.types import ProxyConfig, ProxyCountryCode
 
 load_dotenv()
@@ -251,34 +251,19 @@ def crawl_school(
     now = datetime.now(timezone.utc).isoformat()
 
     try:
-        with client.agent.stream(**kwargs) as stream:
-            for event in stream:
-                if event.type == EventType.PROGRESS:
-                    purpose = getattr(event, "purpose", "")
-                    _emit(f"[{university_name}] {purpose}")
-                elif event.type == EventType.COMPLETE:
-                    result.tinyfish_run_id = getattr(event, "run_id", None)
-                    if event.status == RunStatus.COMPLETED:
-                        # Streaming result_json is often None; fetch via runs.get()
-                        raw = getattr(event, "result_json", None)
-                        if raw is None and result.tinyfish_run_id:
-                            _emit(f"[{university_name}] 正在获取搜索结果...")
-                            try:
-                                run_detail = client.runs.get(result.tinyfish_run_id)
-                                raw = run_detail.result
-                            except Exception as e:
-                                _log(f"runs.get error: {e}")
-                                _emit(f"[{university_name}] 获取结果失败: {e}")
-
-                        if raw is not None:
-                            result.professors = _parse_professors(
-                                raw, university_name, domain, now,
-                            )
-                        _emit(f"[{university_name}] 解析到 {len(result.professors)} 位教授")
-                    else:
-                        err = getattr(event, "error", None)
-                        result.error = str(err) if err else "Unknown failure"
-                        _emit(f"[{university_name}] 失败: {result.error}")
+        response = client.agent.run(**kwargs)
+        result.tinyfish_run_id = response.run_id
+        if response.status == RunStatus.COMPLETED:
+            raw = response.result
+            if raw is not None:
+                result.professors = _parse_professors(
+                    raw, university_name, domain, now,
+                )
+            _emit(f"[{university_name}] 解析到 {len(result.professors)} 位教授")
+        else:
+            err = response.error
+            result.error = str(err) if err else "Unknown failure"
+            _emit(f"[{university_name}] 失败: {result.error}")
     except Exception as exc:
         result.error = str(exc)
         _emit(f"[{university_name}] 错误: {exc}")
@@ -357,33 +342,20 @@ def crawl_deep(
     _emit(f"[{professor.name}] 开始深度爬取 — {professor.profile_url}")
 
     try:
-        with client.agent.stream(**kwargs) as stream:
-            for event in stream:
-                if event.type == EventType.PROGRESS:
-                    purpose = getattr(event, "purpose", "")
-                    _emit(f"[{professor.name}] {purpose}")
-                elif event.type == EventType.COMPLETE:
-                    run_id = getattr(event, "run_id", None)
-                    if event.status == RunStatus.COMPLETED:
-                        raw = getattr(event, "result_json", None)
-                        if raw is None and run_id:
-                            try:
-                                run_detail = client.runs.get(run_id)
-                                raw = run_detail.result
-                            except Exception as e:
-                                _emit(f"[{professor.name}] 获取结果失败: {e}")
-                        _merge_deep(professor, raw)
-                        professor.source = "profile_page"
-                        professor.crawled_at = datetime.now(timezone.utc).isoformat()
-                        # LLM recruiting likelihood assessment
-                        _emit(f"[{professor.name}] 正在评估招生可能性...")
-                        professor.recruiting_likelihood = _assess_recruiting(professor)
-                        _emit(f"[{professor.name}] 完成 (funding: {len(professor.funding)}, "
-                              f"papers: {len(professor.recent_papers)}, "
-                              f"accepting: {professor.accepting_students}, "
-                              f"recruiting: {professor.recruiting_likelihood})")
-                    else:
-                        _emit(f"[{professor.name}] 深度爬取失败")
+        response = client.agent.run(**kwargs)
+        if response.status == RunStatus.COMPLETED:
+            raw = response.result
+            _merge_deep(professor, raw)
+            professor.source = "profile_page"
+            professor.crawled_at = datetime.now(timezone.utc).isoformat()
+            _emit(f"[{professor.name}] 正在评估招生可能性...")
+            professor.recruiting_likelihood = _assess_recruiting(professor)
+            _emit(f"[{professor.name}] 完成 (funding: {len(professor.funding)}, "
+                  f"papers: {len(professor.recent_papers)}, "
+                  f"accepting: {professor.accepting_students}, "
+                  f"recruiting: {professor.recruiting_likelihood})")
+        else:
+            _emit(f"[{professor.name}] 深度爬取失败: {response.error}")
     except Exception as exc:
         _emit(f"[{professor.name}] 深度爬取错误: {exc}")
 

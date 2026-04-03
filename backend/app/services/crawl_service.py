@@ -854,12 +854,13 @@ def run_pass1(
 
     def _make_thread(idx: int, domain: str, name: str) -> threading.Thread:
         def _do() -> None:
+            thread_client = TinyFish()  # own httpx.Client per thread
             def _cb(msg: str) -> None:
                 if msg is not None:
                     q.put((idx, msg))
             try:
                 r = crawl_school(
-                    client,
+                    thread_client,
                     domain=domain,
                     university_name=name,
                     keywords=kw_trimmed,
@@ -1067,11 +1068,12 @@ def run_pass2(
 
     def _make_thread(idx: int, prof: CrawlProfessor) -> threading.Thread:
         def _do() -> None:
+            thread_client = TinyFish()  # own httpx.Client per thread
             def _cb(msg: str) -> None:
                 if msg is not None:
                     q.put((idx, msg))
             try:
-                crawl_deep(client, prof, stealth=stealth, on_progress=_cb)
+                crawl_deep(thread_client, prof, stealth=stealth, on_progress=_cb)
             except Exception as e:
                 q.put((idx, f"[{prof.name}] error: {e}"))
             q.put((idx, None))
