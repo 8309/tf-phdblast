@@ -25,7 +25,6 @@ export default function SearchPage() {
   const [selectedSchools, setSelectedSchools] = useState<SchoolItem[]>([]);
 
   // Search options
-  const [customKeywords, setCustomKeywords] = useState("");
   const [stealth, setStealth] = useState(false);
 
   // Saved professors from previous session (loaded on mount)
@@ -105,19 +104,14 @@ export default function SearchPage() {
     if (!sessionId || selectedSchools.length === 0) return;
     setSelectedProfIndices([]);
 
-    const keywords = customKeywords
-      .split(",")
-      .map((s) => s.trim())
-      .filter(Boolean);
-
     setCrawlBody({
       session_id: sessionId,
       schools: selectedSchools,
-      keywords: keywords.length > 0 ? keywords : [],
+      keywords: [],
       stealth,
     });
     setCrawlEnabled(true);
-  }, [sessionId, selectedSchools, customKeywords, stealth]);
+  }, [sessionId, selectedSchools, stealth]);
 
   const handleScore = useCallback(() => {
     if (!sessionId) return;
@@ -215,30 +209,16 @@ export default function SearchPage() {
         onSchoolsChange={setSelectedSchools}
       />
 
-      {/* Custom keywords + stealth */}
-      <div className="flex flex-wrap items-end gap-4">
-        <div className="flex-1 min-w-[200px]">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            {t("label.custom_keywords")}
-          </label>
-          <input
-            type="text"
-            value={customKeywords}
-            onChange={(e) => setCustomKeywords(e.target.value)}
-            placeholder={t("placeholder.custom_kw")}
-            className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
-          />
-        </div>
-        <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
-          <input
-            type="checkbox"
-            checked={stealth}
-            onChange={(e) => setStealth(e.target.checked)}
-            className="rounded text-blue-600"
-          />
-          {t("label.stealth_mode")}
-        </label>
-      </div>
+      {/* Stealth mode */}
+      <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+        <input
+          type="checkbox"
+          checked={stealth}
+          onChange={(e) => setStealth(e.target.checked)}
+          className="rounded text-blue-600"
+        />
+        {t("label.stealth_mode")}
+      </label>
 
       {/* Search button */}
       <button
