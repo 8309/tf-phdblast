@@ -23,7 +23,7 @@ export default function ProfessorTable({
 }: ProfessorTableProps) {
   const t = useTranslations("label");
   const [sorting, setSorting] = useState<SortingState>([
-    { id: "score", desc: true },
+    { id: "name", desc: false },
   ]);
   const [selected, setSelected] = useState<Set<number>>(new Set());
 
