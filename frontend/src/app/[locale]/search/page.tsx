@@ -103,6 +103,7 @@ export default function SearchPage() {
   const handleSearch = useCallback(() => {
     if (!sessionId || selectedSchools.length === 0) return;
     setSelectedProfIndices([]);
+    setSavedProfs([]);
 
     setCrawlBody({
       session_id: sessionId,
