@@ -106,7 +106,7 @@ export default function SchoolSelector({
         }));
       }
       setSchools(result);
-      setSelected(new Set(result.map((_: DisplaySchool, i: number) => i)));
+      setSelected(new Set());
     } catch (err) {
       console.error("Failed to load schools", err);
     } finally {
