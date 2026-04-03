@@ -27,6 +27,23 @@ def list_fields():
     return FIELD_DISPLAY
 
 
+@router.get("/rankings/fields/{field}/sources")
+def list_field_sources(field: str):
+    """Return available ranking sources for a field."""
+    if field not in FIELD_DISPLAY:
+        raise HTTPException(status_code=404, detail=f"Unknown field: {field}")
+    sources = get_available_sources(field)
+    # Return with display names from index
+    SOURCE_NAMES = {
+        "usnews": "US News",
+        "qs": "QS",
+        "arwu": "ARWU (Shanghai)",
+        "csrankings": "CSRankings",
+        "the_overall": "THE",
+    }
+    return [{"key": s, "name": SOURCE_NAMES.get(s, s)} for s in sources]
+
+
 # ---------------------------------------------------------------------------
 # GET /rankings/global/{source}
 # ---------------------------------------------------------------------------

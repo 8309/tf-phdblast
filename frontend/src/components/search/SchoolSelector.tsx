@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import {
   getRankingFields,
   getFieldRanking,
+  getFieldSources,
   getGlobalSchools,
   recommendSchools,
 } from "@/lib/api";
@@ -63,6 +64,9 @@ export default function SchoolSelector({
   const [fields, setFields] = useState<Record<string, string>>({});
   const [selectedField, setSelectedField] = useState("");
   const [selectedSource, setSelectedSource] = useState("");
+  const [availableSources, setAvailableSources] = useState<
+    { key: string; name: string }[]
+  >([]);
 
   // Mode 2 state
   const [rankingType, setRankingType] = useState<"all" | "qs" | "the">("all");
@@ -85,6 +89,18 @@ export default function SchoolSelector({
         .catch(console.error);
     }
   }, [mode]);
+
+  // Load available sources when field changes
+  useEffect(() => {
+    if (mode === "field" && selectedField) {
+      setSelectedSource("");
+      getFieldSources(selectedField)
+        .then(setAvailableSources)
+        .catch(() => setAvailableSources([]));
+    } else {
+      setAvailableSources([]);
+    }
+  }, [mode, selectedField]);
 
   // Fetch schools when criteria change (modes 1 & 2)
   const fetchSchools = useCallback(async () => {
@@ -199,7 +215,16 @@ export default function SchoolSelector({
             onChange={(e) => setSelectedSource(e.target.value)}
             className="rounded-lg border border-gray-300 px-3 py-2 text-sm"
           >
-            <option value="">Default</option>
+            <option value="">
+              {availableSources.length > 0
+                ? `Auto (${availableSources[0]?.name})`
+                : "Auto"}
+            </option>
+            {availableSources.map((s) => (
+              <option key={s.key} value={s.key}>
+                {s.name}
+              </option>
+            ))}
           </select>
 
           <select

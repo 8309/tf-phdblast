@@ -122,6 +122,12 @@ export function getRankingFields(): Promise<Record<string, string>> {
   return request("/rankings/fields");
 }
 
+export function getFieldSources(
+  field: string,
+): Promise<{ key: string; name: string }[]> {
+  return request(`/rankings/fields/${field}/sources`);
+}
+
 export function getFieldRanking(
   field: string,
   source?: string,
