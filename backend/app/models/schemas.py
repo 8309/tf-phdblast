@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 
 # ---------------------------------------------------------------------------
@@ -84,7 +84,7 @@ class ProfessorSchema(BaseModel):
     recruiting_likelihood: str = "unknown"
 
     # Metadata
-    crawled_at: datetime | None = None
+    crawled_at: datetime | str | None = None
     source: str = "faculty_directory"
 
     # Scores
@@ -96,6 +96,20 @@ class ProfessorSchema(BaseModel):
     # Workflow
     selected_for_deep: bool = False
     phase: str = "pass1"
+
+    @field_validator("crawled_at", mode="before")
+    @classmethod
+    def _coerce_crawled_at(cls, v: Any) -> datetime | None:
+        if v is None:
+            return None
+        if isinstance(v, datetime):
+            return v
+        if isinstance(v, str):
+            try:
+                return datetime.fromisoformat(v)
+            except ValueError:
+                return None
+        return None
 
     model_config = {"from_attributes": True}
 
