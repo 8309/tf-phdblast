@@ -664,44 +664,11 @@ def _keywords_already_covered(
     if all(_is_covered_by_general(prev_flat, kw) for kw in new_keywords):
         return True
 
-    # Substring match (case-insensitive)
+    # Exact / substring match only (case-insensitive)
+    # No LLM — avoids false positives like "CS" covering "finance"
     prev_lower = {k.lower() for k in prev_flat}
     new_lower = [k.lower() for k in new_keywords]
-    if all(any(n in p or p in n for p in prev_lower) for n in new_lower):
-        return True
-
-    # LLM semantic check
-    try:
-        client = OpenAI()
-        resp = client.chat.completions.create(
-            model=settings.KEYWORD_MATCH_MODEL,
-            messages=[
-                {
-                    "role": "system",
-                    "content": (
-                        "You decide whether a NEW set of research keywords is already "
-                        "covered by PREVIOUS crawl keyword sets. 'Covered' means the "
-                        "previous crawls would have targeted the same university "
-                        "departments that the new keywords would target.\n"
-                        "Reply with ONLY 'yes' or 'no'."
-                    ),
-                },
-                {
-                    "role": "user",
-                    "content": (
-                        f"Previous crawl keyword sets: {all_prev}\n"
-                        f"New keywords: {new_keywords}\n"
-                        "Are the new keywords already covered?"
-                    ),
-                },
-            ],
-            temperature=0,
-            max_tokens=3,
-        )
-        answer = resp.choices[0].message.content.strip().lower()
-        return answer.startswith("yes")
-    except Exception:
-        return False
+    return all(any(n in p or p in n for p in prev_lower) for n in new_lower)
 
 
 def _update_cache_deep(
