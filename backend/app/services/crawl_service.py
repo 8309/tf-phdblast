@@ -647,6 +647,9 @@ def _keywords_already_covered(
     Uses gpt-4o-mini for a cheap yes/no judgement.  Falls back to simple
     substring matching if the LLM call fails.
     """
+    if not new_keywords:
+        return False
+
     records = (
         db.query(CachedCrawlRecord)
         .filter(CachedCrawlRecord.cached_school_id == cached_school.id)
