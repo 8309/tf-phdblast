@@ -24,23 +24,33 @@ interface DisplaySchool extends SchoolItem {
   country?: string;
 }
 
-const COUNTRIES = [
-  "",
+const COUNTRY_MAP: Record<string, string> = {
   // North America
-  "US", "CA",
+  US: "United States", CA: "Canada",
   // Europe
-  "UK", "DE", "FR", "NL", "CH", "SE", "IT", "ES", "BE", "AT", "DK", "NO", "FI", "IE", "PL", "CZ", "PT", "GR", "HU", "RO", "HR", "SI", "RS",
+  UK: "United Kingdom", DE: "Germany", FR: "France", NL: "Netherlands",
+  CH: "Switzerland", SE: "Sweden", IT: "Italy", ES: "Spain", BE: "Belgium",
+  AT: "Austria", DK: "Denmark", NO: "Norway", FI: "Finland", IE: "Ireland",
+  PL: "Poland", CZ: "Czech Republic", PT: "Portugal", GR: "Greece",
+  HU: "Hungary", RO: "Romania", HR: "Croatia", SI: "Slovenia", RS: "Serbia",
   // Asia-Pacific
-  "CN", "HK", "TW", "JP", "KR", "SG", "IN", "AU", "NZ", "TH", "MY", "ID", "PH", "VN", "LK",
+  CN: "China", HK: "Hong Kong", TW: "Taiwan", JP: "Japan", KR: "South Korea",
+  SG: "Singapore", IN: "India", AU: "Australia", NZ: "New Zealand",
+  TH: "Thailand", MY: "Malaysia", ID: "Indonesia", PH: "Philippines",
+  VN: "Vietnam", LK: "Sri Lanka",
   // Middle East
-  "IL", "SA", "AE", "QA", "TR", "IR", "LB", "JO",
+  IL: "Israel", SA: "Saudi Arabia", AE: "UAE", QA: "Qatar", TR: "Turkey",
+  IR: "Iran", LB: "Lebanon", JO: "Jordan",
   // Africa
-  "ZA", "EG", "NG", "KE", "GH", "MA", "TN", "UG", "TZ", "ET",
+  ZA: "South Africa", EG: "Egypt", NG: "Nigeria", KE: "Kenya", GH: "Ghana",
+  MA: "Morocco", TN: "Tunisia", UG: "Uganda", TZ: "Tanzania", ET: "Ethiopia",
   // Latin America
-  "BR", "MX", "AR", "CL", "CO",
+  BR: "Brazil", MX: "Mexico", AR: "Argentina", CL: "Chile", CO: "Colombia",
   // Central Asia
-  "RU", "KZ",
-];
+  RU: "Russia", KZ: "Kazakhstan",
+};
+
+const COUNTRIES = ["", ...Object.keys(COUNTRY_MAP)];
 
 export default function SchoolSelector({
   mode,
@@ -200,7 +210,7 @@ export default function SchoolSelector({
             <option value="">{t("country_filter")}</option>
             {COUNTRIES.filter(Boolean).map((c) => (
               <option key={c} value={c}>
-                {c}
+                {COUNTRY_MAP[c] || c}
               </option>
             ))}
           </select>
@@ -248,7 +258,7 @@ export default function SchoolSelector({
             <option value="">{t("country_filter")}</option>
             {COUNTRIES.filter(Boolean).map((c) => (
               <option key={c} value={c}>
-                {c}
+                {COUNTRY_MAP[c] || c}
               </option>
             ))}
           </select>
