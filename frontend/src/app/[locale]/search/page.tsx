@@ -342,33 +342,46 @@ export default function SearchPage() {
           {/* Deep crawl results */}
           {deepProfessors.length > 0 && (
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                Deep Crawl Results ({deepProfessors.length})
-              </h3>
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                  Deep Crawl Results ({deepProfessors.length})
+                </h3>
+                <ExportButtons sessionId={sessionId} phase="deep" />
+              </div>
               <div className="grid gap-4">
                 {deepProfessors.map((p) => (
                   <div
                     key={p.id ?? p.name}
-                    className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800"
+                    className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800"
                   >
-                    <div className="flex items-start justify-between">
-                      <div>
+                    {/* Header: name, title, badges */}
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="min-w-0">
                         <h4 className="font-semibold text-gray-900 dark:text-gray-100">
                           {p.name}
                         </h4>
                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                          {p.title} &middot; {p.university}
+                          {p.title} &middot; {p.department} &middot;{" "}
+                          {p.university}
                         </p>
-                        {p.lab_name && (
-                          <p className="text-sm text-blue-600 dark:text-blue-400">
-                            {p.lab_name}
-                          </p>
-                        )}
                       </div>
-                      <div className="text-right text-xs text-gray-500 dark:text-gray-400">
+                      <div className="flex shrink-0 items-center gap-2">
+                        {p.accepting_students != null && (
+                          <span
+                            className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${
+                              p.accepting_students
+                                ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
+                                : "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300"
+                            }`}
+                          >
+                            {p.accepting_students
+                              ? "Accepting Students"
+                              : "Not Accepting"}
+                          </span>
+                        )}
                         {p.recruiting_likelihood && (
                           <span
-                            className={`inline-block rounded px-2 py-0.5 font-medium ${
+                            className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${
                               p.recruiting_likelihood === "high"
                                 ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
                                 : p.recruiting_likelihood === "medium"
@@ -376,23 +389,111 @@ export default function SearchPage() {
                                   : "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300"
                             }`}
                           >
-                            {p.recruiting_likelihood}
+                            Recruiting: {p.recruiting_likelihood}
                           </span>
                         )}
                       </div>
                     </div>
+
+                    {/* Lab info */}
+                    {p.lab_name && (
+                      <div className="mt-2 flex items-center gap-3 text-sm">
+                        <span className="font-medium text-blue-600 dark:text-blue-400">
+                          {p.lab_name}
+                        </span>
+                        {p.lab_size != null && (
+                          <span className="text-gray-500 dark:text-gray-400">
+                            {p.lab_size} members
+                          </span>
+                        )}
+                        {p.recent_graduates != null && (
+                          <span className="text-gray-500 dark:text-gray-400">
+                            {p.recent_graduates} recent grads
+                          </span>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Research summary */}
                     {p.research_summary && (
-                      <p className="mt-2 text-sm text-gray-700 dark:text-gray-300 line-clamp-3">
+                      <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">
                         {p.research_summary}
                       </p>
                     )}
-                    <div className="mt-2 flex flex-wrap gap-2 text-xs">
+
+                    {/* Research keywords */}
+                    {(p.research_keywords ?? []).length > 0 && (
+                      <div className="mt-2 flex flex-wrap gap-1.5">
+                        {p.research_keywords!.map((kw) => (
+                          <span
+                            key={kw}
+                            className="rounded-full bg-blue-50 px-2.5 py-0.5 text-xs text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
+                          >
+                            {kw}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Open positions */}
+                    {p.open_positions && (
+                      <p className="mt-2 text-sm text-emerald-700 dark:text-emerald-400">
+                        <span className="font-medium">Positions:</span>{" "}
+                        {p.open_positions}
+                      </p>
+                    )}
+
+                    {/* Recruiting signals */}
+                    {(p.recruiting_signals ?? []).length > 0 && (
+                      <ul className="mt-2 space-y-0.5 text-xs text-gray-600 dark:text-gray-400">
+                        {p.recruiting_signals!.map((s, i) => (
+                          <li key={i}>• {s}</li>
+                        ))}
+                      </ul>
+                    )}
+
+                    {/* Recent papers */}
+                    {(p.recent_papers ?? []).length > 0 && (
+                      <div className="mt-2">
+                        <p className="text-xs font-medium text-gray-500 dark:text-gray-400">
+                          Recent Papers
+                        </p>
+                        <ul className="mt-0.5 space-y-0.5 text-xs text-gray-600 dark:text-gray-400">
+                          {p.recent_papers!.slice(0, 5).map((paper, i) => (
+                            <li key={i} className="truncate">
+                              {i + 1}. {paper}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* Funding */}
+                    {(p.funding ?? []).length > 0 && (
+                      <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                        <span className="font-medium">Funding:</span>{" "}
+                        {p.funding!.join(", ")}
+                      </p>
+                    )}
+
+                    {/* Links */}
+                    <div className="mt-3 flex flex-wrap gap-3 text-xs">
                       {p.email && (
                         <a
                           href={`mailto:${p.email}`}
                           className="text-blue-600 hover:underline dark:text-blue-400"
                         >
                           {p.email}
+                        </a>
+                      )}
+                      {p.profile_url && (
+                        <a
+                          href={p.profile_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline dark:text-blue-400"
+                        >
+                          Profile
                         </a>
                       )}
                       {p.scholar_url && (
@@ -416,11 +517,6 @@ export default function SearchPage() {
                         </a>
                       )}
                     </div>
-                    {(p.funding ?? []).length > 0 && (
-                      <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                        Funding: {p.funding!.join(", ")}
-                      </p>
-                    )}
                   </div>
                 ))}
               </div>
