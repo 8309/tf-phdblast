@@ -27,6 +27,7 @@ const SKIP_KEYS = new Set(["name", "email", "title", "department", "university"]
 
 /** Order for display — unlisted keys appear at the end. */
 const KEY_ORDER = [
+  "sources",
   "research_summary",
   "research_keywords",
   "lab_name",
@@ -40,7 +41,6 @@ const KEY_ORDER = [
   "recent_papers",
   "funding",
   "scholar_url",
-  "sources",
 ];
 
 function formatLabel(key: string): string {
