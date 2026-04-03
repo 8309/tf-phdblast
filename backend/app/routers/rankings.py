@@ -81,6 +81,13 @@ def field_ranking(
     if country:
         schools = filter_by_country(schools, country)
 
+    # Fallback: if country filter yields no field-specific results,
+    # return all schools from that country in the global database
+    if not schools and country:
+        global_schools = get_global_schools("all")
+        schools = filter_by_country(global_schools, country)
+        source_url = ""
+
     return RankingResponse(
         schools=[RankingSchool(**s) for s in schools],
         source_url=source_url,
