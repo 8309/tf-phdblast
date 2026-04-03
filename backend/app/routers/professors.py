@@ -121,7 +121,19 @@ async def deep_crawl(
                 s.workflow_step = "deep"
                 thread_db.commit()
 
-            push("done", {"message": "Deep crawl complete"})
+            # Return deep-crawled professors with full details
+            from app.models.db import Professor
+            from app.models.schemas import ProfessorSchema
+            profs = (
+                thread_db.query(Professor)
+                .filter(
+                    Professor.session_id == req.session_id,
+                    Professor.id.in_(req.professor_ids),
+                )
+                .all()
+            )
+            prof_dicts = [ProfessorSchema.model_validate(p).model_dump(mode="json") for p in profs]
+            push("done", {"message": "Deep crawl complete", "professors": prof_dicts})
         except Exception as exc:
             import traceback
             traceback.print_exc()

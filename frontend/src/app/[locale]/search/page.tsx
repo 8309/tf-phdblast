@@ -120,6 +120,18 @@ export default function SearchPage() {
     deepEnabled,
   );
 
+  const deepProfessors = useMemo<Professor[]>(() => {
+    for (const ev of deepStream.events) {
+      if (ev.event === "done") {
+        const d = ev.data as Record<string, unknown>;
+        if (d.professors && Array.isArray(d.professors)) {
+          return d.professors as Professor[];
+        }
+      }
+    }
+    return [];
+  }, [deepStream.events]);
+
   const handleDeepCrawl = useCallback(() => {
     if (!sessionId || selectedProfIndices.length === 0) return;
     // Convert array indices to actual professor DB IDs
@@ -311,6 +323,94 @@ export default function SearchPage() {
           {/* Deep crawl progress */}
           {deepStream.events.length > 0 && (
             <CrawlProgress events={deepStream.events} phase="deep" />
+          )}
+
+          {/* Deep crawl results */}
+          {deepProfessors.length > 0 && (
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                Deep Crawl Results ({deepProfessors.length})
+              </h3>
+              <div className="grid gap-4">
+                {deepProfessors.map((p) => (
+                  <div
+                    key={p.id ?? p.name}
+                    className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+                          {p.name}
+                        </h4>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                          {p.title} &middot; {p.university}
+                        </p>
+                        {p.lab_name && (
+                          <p className="text-sm text-blue-600 dark:text-blue-400">
+                            {p.lab_name}
+                          </p>
+                        )}
+                      </div>
+                      <div className="text-right text-xs text-gray-500 dark:text-gray-400">
+                        {p.recruiting_likelihood && (
+                          <span
+                            className={`inline-block rounded px-2 py-0.5 font-medium ${
+                              p.recruiting_likelihood === "high"
+                                ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
+                                : p.recruiting_likelihood === "medium"
+                                  ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300"
+                                  : "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300"
+                            }`}
+                          >
+                            {p.recruiting_likelihood}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    {p.research_summary && (
+                      <p className="mt-2 text-sm text-gray-700 dark:text-gray-300 line-clamp-3">
+                        {p.research_summary}
+                      </p>
+                    )}
+                    <div className="mt-2 flex flex-wrap gap-2 text-xs">
+                      {p.email && (
+                        <a
+                          href={`mailto:${p.email}`}
+                          className="text-blue-600 hover:underline dark:text-blue-400"
+                        >
+                          {p.email}
+                        </a>
+                      )}
+                      {p.scholar_url && (
+                        <a
+                          href={p.scholar_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline dark:text-blue-400"
+                        >
+                          Scholar
+                        </a>
+                      )}
+                      {p.lab_url && (
+                        <a
+                          href={p.lab_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline dark:text-blue-400"
+                        >
+                          Lab
+                        </a>
+                      )}
+                    </div>
+                    {(p.funding ?? []).length > 0 && (
+                      <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                        Funding: {p.funding!.join(", ")}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
         </div>
       )}
