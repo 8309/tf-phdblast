@@ -317,6 +317,13 @@ DEEP_GOAL = (
     "'New NIH R01 awarded 2025', 'Recent PhD student graduated 2024'). Empty list if none found.\n"
     "- lab_size: number of current PhD students/postdocs in the lab if visible, null if not found.\n"
     "- recent_graduates: number of students who graduated in the last 2 years if visible, null if not.\n\n"
+    "STEP 3 — Source URLs: Record EVERY page you actually visited to gather the above information.\n"
+    "- sources: list of objects, each with:\n"
+    "  - url: the full URL of the page you visited\n"
+    "  - label: short description of what this page is (e.g. 'Faculty profile', "
+    "'Lab website', 'Google Scholar', 'Department openings page', 'Lab people page')\n"
+    "Include ALL pages visited, even if they didn't contain useful info. "
+    "Order by visit sequence.\n\n"
     "Return ONLY valid JSON with all keys above, no markdown."
 )
 
