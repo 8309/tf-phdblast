@@ -122,13 +122,17 @@ export default function SearchPage() {
 
   const handleDeepCrawl = useCallback(() => {
     if (!sessionId || selectedProfIndices.length === 0) return;
+    // Convert array indices to actual professor DB IDs
+    const ids = selectedProfIndices
+      .map((i) => professors[i]?.id)
+      .filter((id): id is number => id != null);
     setDeepBody({
       session_id: sessionId,
-      professor_ids: selectedProfIndices,
+      professor_ids: ids,
       stealth,
     });
     setDeepEnabled(true);
-  }, [sessionId, selectedProfIndices, stealth]);
+  }, [sessionId, selectedProfIndices, professors, stealth]);
 
   if (sessionLoading || !sessionId) {
     return (
