@@ -103,6 +103,12 @@ def _ensure_loaded() -> None:
     else:
         _rankings_cache["global:qs"] = []
 
+    all_path = _DATA_DIR / "global_universities.json"
+    if all_path.exists():
+        _rankings_cache["global:all"] = json.loads(all_path.read_text())
+    else:
+        _rankings_cache["global:all"] = []
+
 
 def load_all_rankings() -> None:
     """Explicitly pre-load all rankings (call at startup)."""

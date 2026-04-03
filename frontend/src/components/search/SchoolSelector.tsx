@@ -26,20 +26,20 @@ interface DisplaySchool extends SchoolItem {
 
 const COUNTRIES = [
   "",
-  "US",
-  "UK",
-  "CA",
-  "AU",
-  "CN",
-  "HK",
-  "SG",
-  "JP",
-  "KR",
-  "DE",
-  "CH",
-  "NL",
-  "FR",
-  "SE",
+  // North America
+  "US", "CA",
+  // Europe
+  "UK", "DE", "FR", "NL", "CH", "SE", "IT", "ES", "BE", "AT", "DK", "NO", "FI", "IE", "PL", "CZ", "PT", "GR", "HU", "RO", "HR", "SI", "RS",
+  // Asia-Pacific
+  "CN", "HK", "TW", "JP", "KR", "SG", "IN", "AU", "NZ", "TH", "MY", "ID", "PH", "VN", "LK",
+  // Middle East
+  "IL", "SA", "AE", "QA", "TR", "IR", "LB", "JO",
+  // Africa
+  "ZA", "EG", "NG", "KE", "GH", "MA", "TN", "UG", "TZ", "ET",
+  // Latin America
+  "BR", "MX", "AR", "CL", "CO",
+  // Central Asia
+  "RU", "KZ",
 ];
 
 export default function SchoolSelector({
@@ -55,7 +55,7 @@ export default function SchoolSelector({
   const [selectedSource, setSelectedSource] = useState("");
 
   // Mode 2 state
-  const [rankingType, setRankingType] = useState<"qs" | "the">("the");
+  const [rankingType, setRankingType] = useState<"all" | "qs" | "the">("all");
 
   // Mode 3 state
   const [topN, setTopN] = useState(15);
@@ -211,6 +211,15 @@ export default function SchoolSelector({
       {mode === "overall" && (
         <div className="flex flex-wrap gap-3">
           <div className="flex gap-4">
+            <label className="flex items-center gap-1.5 text-sm">
+              <input
+                type="radio"
+                checked={rankingType === "all"}
+                onChange={() => setRankingType("all")}
+                className="text-blue-600"
+              />
+              All (619)
+            </label>
             <label className="flex items-center gap-1.5 text-sm">
               <input
                 type="radio"
