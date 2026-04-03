@@ -41,8 +41,8 @@ def global_ranking(
 
     ``source`` must be ``"qs"`` or ``"the"``.
     """
-    if source not in ("qs", "the"):
-        raise HTTPException(status_code=400, detail="source must be 'qs' or 'the'")
+    if source not in ("qs", "the", "all"):
+        raise HTTPException(status_code=400, detail="source must be 'qs', 'the', or 'all'")
 
     schools = get_global_schools(source)
     if country:
