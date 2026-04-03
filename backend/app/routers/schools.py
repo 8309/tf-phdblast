@@ -13,7 +13,7 @@ from app.core.sse import create_sse_queue, sse_event
 from app.database import SessionLocal, get_db
 from app.models.db import DBSession, Professor
 from app.models.schemas import SchoolRecommendRequest, SchoolSearchRequest
-from app.services import crawl_service, scoring_service
+from app.services import crawl_service
 
 router = APIRouter(tags=["schools"])
 
@@ -75,20 +75,22 @@ async def search_schools(
                 on_event=_push_adapter,
                 profile=profile,
             )
-            # After crawl, run preliminary scoring (results returned, not saved to DB)
-            scored_results = scoring_service.score_preliminary(
-                db_session=thread_db,
-                session_id=req.session_id,
-                profile=profile or {},
-                on_event=_push_adapter,
+            # Return unscored professors — user triggers scoring separately
+            profs = (
+                thread_db.query(Professor)
+                .filter(Professor.session_id == req.session_id)
+                .all()
             )
+            from app.models.schemas import ProfessorSchema
+            prof_dicts = [ProfessorSchema.model_validate(p).model_dump(mode="json") for p in profs]
+
             # Advance workflow step
             s = thread_db.query(DBSession).filter(DBSession.id == req.session_id).first()
             if s:
                 s.workflow_step = "search"
                 thread_db.commit()
 
-            push("done", {"message": "Search and scoring complete", "professors": scored_results})
+            push("done", {"message": "Search complete", "professors": prof_dicts})
         except Exception as exc:
             import traceback
             traceback.print_exc()

@@ -81,8 +81,9 @@ def score_preliminary(
     ranked: list[dict] = []
     profile_text = _profile_summary_text(profile)
 
-    for start in range(0, len(profs_for_llm), 40):
-        batch = profs_for_llm[start : start + 40]
+    BATCH_SIZE = 100
+    for start in range(0, len(profs_for_llm), BATCH_SIZE):
+        batch = profs_for_llm[start : start + BATCH_SIZE]
         batch_ranked: list[dict] | None = None
 
         for attempt in range(3):
@@ -127,7 +128,7 @@ def score_preliminary(
         if on_event:
             on_event({
                 "type": "scoring_progress",
-                "done": min(start + 40, len(profs_for_llm)),
+                "done": min(start + BATCH_SIZE, len(profs_for_llm)),
                 "total": len(profs_for_llm),
             })
 

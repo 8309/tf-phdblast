@@ -237,6 +237,10 @@ class DeepCrawlRequest(BaseModel):
 # ---------------------------------------------------------------------------
 
 
+class ScorePreliminaryRequest(BaseModel):
+    session_id: str
+
+
 class MatchRequest(BaseModel):
     session_id: str
 

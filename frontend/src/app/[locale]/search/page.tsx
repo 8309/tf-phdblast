@@ -42,9 +42,19 @@ export default function SearchPage() {
   const [selectedProfIndices, setSelectedProfIndices] = useState<number[]>([]);
 
   // Derive professors from SSE events (no side effects)
+  // Prefer scored results from scoreStream, fallback to unscored from crawlStream
   const professors = useMemo<Professor[]>(() => {
+    // 1. If scoring is done, use scored professors
+    for (const ev of scoreStream.events) {
+      if (ev.event === "done") {
+        const d = ev.data as Record<string, unknown>;
+        if (d.professors && Array.isArray(d.professors)) {
+          return d.professors as Professor[];
+        }
+      }
+    }
+    // 2. Otherwise use crawl results (unscored)
     if (crawlStream.events.length === 0) return [];
-    // Prefer the professors array from the done or error event
     for (const ev of crawlStream.events) {
       if (ev.event === "done" || ev.event === "error") {
         const d = ev.data as Record<string, unknown>;
@@ -53,7 +63,6 @@ export default function SearchPage() {
         }
       }
     }
-    // Fallback: collect individual professor events
     const profs: Professor[] = [];
     for (const ev of crawlStream.events) {
       if (ev.event === "professor") {
@@ -61,7 +70,7 @@ export default function SearchPage() {
       }
     }
     return profs;
-  }, [crawlStream.events]);
+  }, [crawlStream.events, scoreStream.events]);
 
   const crawlDone =
     crawlStream.status === "done" || crawlStream.status === "error";
@@ -84,6 +93,22 @@ export default function SearchPage() {
     });
     setCrawlEnabled(true);
   }, [sessionId, selectedSchools, customKeywords, stealth]);
+
+  // Preliminary scoring
+  const [scoreEnabled, setScoreEnabled] = useState(false);
+  const [scoreBody, setScoreBody] = useState<object>({});
+
+  const scoreStream = useSSEStream<Record<string, unknown>>(
+    `${API_BASE}/professors/score-preliminary`,
+    scoreBody,
+    scoreEnabled,
+  );
+
+  const handleScore = useCallback(() => {
+    if (!sessionId) return;
+    setScoreBody({ session_id: sessionId });
+    setScoreEnabled(true);
+  }, [sessionId]);
 
   // Deep crawl
   const [deepEnabled, setDeepEnabled] = useState(false);
@@ -224,13 +249,29 @@ export default function SearchPage() {
             <ExportButtons sessionId={sessionId} phase="preliminary" />
           </div>
 
-          <ProfessorTable
-            professors={professors}
-            onSelectionChange={setSelectedProfIndices}
-          />
-
-          {/* Deep crawl button */}
+          {/* Score + Deep crawl buttons */}
           <div className="flex items-center gap-4">
+            <button
+              type="button"
+              onClick={handleScore}
+              disabled={
+                scoreStream.status === "streaming" ||
+                scoreStream.status === "done"
+              }
+              className="rounded-lg bg-purple-600 px-5 py-2 text-sm font-medium text-white shadow-sm hover:bg-purple-700 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {scoreStream.status === "streaming" ? (
+                <span className="flex items-center gap-2">
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                  Scoring...
+                </span>
+              ) : scoreStream.status === "done" ? (
+                "Scored"
+              ) : (
+                `Score (${professors.length})`
+              )}
+            </button>
+
             <button
               type="button"
               onClick={handleDeepCrawl}
@@ -252,6 +293,16 @@ export default function SearchPage() {
               )}
             </button>
           </div>
+
+          {/* Scoring progress */}
+          {scoreStream.events.length > 0 && (
+            <CrawlProgress events={scoreStream.events} phase="search" />
+          )}
+
+          <ProfessorTable
+            professors={professors}
+            onSelectionChange={setSelectedProfIndices}
+          />
 
           {/* Deep crawl progress */}
           {deepStream.events.length > 0 && (

@@ -12,10 +12,68 @@ from sqlalchemy.orm import Session
 from app.core.sse import create_sse_queue, sse_event
 from app.database import SessionLocal, get_db
 from app.models.db import DBSession
-from app.models.schemas import DeepCrawlRequest, MatchRequest
+from app.models.schemas import DeepCrawlRequest, MatchRequest, ScorePreliminaryRequest
 from app.services import crawl_service, scoring_service
 
 router = APIRouter(tags=["professors"])
+
+
+# ---------------------------------------------------------------------------
+# POST /professors/score-preliminary  (SSE)
+# ---------------------------------------------------------------------------
+
+
+@router.post("/professors/score-preliminary")
+async def score_preliminary(
+    req: ScorePreliminaryRequest,
+    db: Session = Depends(get_db),
+):
+    """Run preliminary AI scoring on Pass-1 professors.
+
+    Streams SSE events:
+      - ``scoring_progress``: batch progress
+      - ``done``: scored professor list
+      - ``error``: on failure
+    """
+    sess = db.query(DBSession).filter(DBSession.id == req.session_id).first()
+    if sess is None:
+        raise HTTPException(status_code=404, detail="Session not found")
+
+    profile = sess.profile
+    q, push, close = create_sse_queue()
+
+    def _push_adapter(event: dict) -> None:
+        event_type = event.pop("type", "message")
+        push(event_type, event)
+
+    def _run():
+        thread_db = SessionLocal()
+        try:
+            scored_results = scoring_service.score_preliminary(
+                db_session=thread_db,
+                session_id=req.session_id,
+                profile=profile or {},
+                on_event=_push_adapter,
+            )
+            push("done", {"message": "Scoring complete", "professors": scored_results})
+        except Exception as exc:
+            import traceback
+            traceback.print_exc()
+            push("error", {"message": str(exc)})
+        finally:
+            thread_db.close()
+            close()
+
+    async def generate():
+        thread = threading.Thread(target=_run, daemon=True)
+        thread.start()
+        while True:
+            event = await asyncio.wait_for(q.get(), timeout=300)
+            if event is None:
+                break
+            yield event
+
+    return StreamingResponse(generate(), media_type="text/event-stream")
 
 
 # ---------------------------------------------------------------------------
